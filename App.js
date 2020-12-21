@@ -1,26 +1,62 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import MinorScreen from "./src/screens/MinorScreen";
-import ExchangeScreen from "./src/screens/ExchangeScreen";
+import React, { useState } from "react";
+import { StyleSheet, Text, ScrollView, SafeAreaView } from "react-native";
 
-export default function App() {
-  return (
-    <MinorScreen
-      myMinorName="Советская и постсоветская культура: политики, практики, конфликты"
-      myMinorCredits="99"
-      myMinorAdress="Ул. Старая Басманная, д. 21/4, стр. 3"
-      myMinorHead="Наринская Екатерина Владимировна"
-      myMinorDescription="Древний Восток – родина первых в истории человечества систем письма. В этом обширном ареале, включающем (в широком смысле) Ближний Восток, а также Восточную и Юго-восточную Азию, начиная с конца IV – начала III тысячелетия, сформировалось несколько самостоятельных письменных систем. Часть из них имеет словесно-слоговую природу (клинопись, использовавшаяся в Месопотамии и сопредельных регионах на протяжении более трех тысячелетий, а также египетская и китайская иероглифика)."
-    />
-  );
+import MainScreen from "./src/screens/MainScreen";
+import MenuScreen from "./src/screens/MenuScreen";
+import SettingsScreen from "./src/screens/SettingsScreen";
+import AllMinorsScreen from "./src/screens/AllMinorsScreen";
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      actualPageId: 0,
+    };
+  }
+
+  changePage = (pageId) => {
+    // changeActualPage(pageId);
+
+    this.setState({ actualPageId: pageId });
+  };
+
+  render() {
+    if (this.state.actualPageId === 0) {
+      return (
+        <SafeAreaView style={styles.mainContainer}>
+          <MainScreen changePage={this.changePage} />
+        </SafeAreaView>
+      );
+    } else if (this.state.actualPageId === 1) {
+      return (
+        <SafeAreaView style={styles.mainContainer}>
+          <MenuScreen changePage={this.changePage} />
+        </SafeAreaView>
+      );
+    } else if (this.state.actualPageId === 2) {
+      return (
+        <SafeAreaView style={styles.mainContainer}>
+          <SettingsScreen changePage={this.changePage} />
+        </SafeAreaView>
+      );
+    } else if (this.state.actualPageId === 3) {
+      return (
+        <SafeAreaView style={styles.mainContainer}>
+          <AllMinorsScreen changePage={this.changePage} />
+        </SafeAreaView>
+      );
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  mainContainer: {
+    // alignItems: "center",
+    marginLeft: 20,
+    paddingRight: 20,
+    marginTop: 63,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
