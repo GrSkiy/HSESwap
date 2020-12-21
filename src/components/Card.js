@@ -1,22 +1,32 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-export default function Card() {
+const renderExchangeMinors = (minors) => {
+  let minorItems = [];
+  if (minors.length > 0) {
+    minors.forEach((minor, i) => {
+      minorItems.push(
+        <Text style={styles.minorChips} key={i}>
+          {minor}
+        </Text>
+      );
+    });
+    return <View style={styles.minorList}>{minorItems}</View>;
+  }
+};
+
+export default function Card(props) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardHeader}>
-        <Text style={styles.h4}>Кампус</Text>
-        <Text style={styles.h4}>Год</Text>
+        <Text style={styles.h4}>
+          {props.city} • {props.year}
+        </Text>
       </View>
-      <Text style={styles.h1}>Название майнора</Text>
-      <Text style={styles.h4}>Адрес</Text>
-      <Text style={styles.h4}>Кредиты</Text>
-      <View style={styles.minorList}>
-        <Text style={styles.minorChips}>Майнор</Text>
-        <Text style={styles.minorChips}>Майнор</Text>
-        <Text style={styles.minorChips}>Майнор</Text>
-        <Text style={styles.minorChips}>Майнор</Text>
-      </View>
+      <Text style={styles.h1}>{props.title}</Text>
+      <Text style={styles.h4}>{props.adres}</Text>
+      <Text style={styles.h4}>{props.credits} кредитов</Text>
+      {renderExchangeMinors(props.exchangeMinors)}
     </View>
   );
 }
@@ -24,7 +34,7 @@ export default function Card() {
 const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 20,
-    width: "97%",
+    width: "100%",
     backgroundColor: "#FFF",
     paddingTop: 20,
     paddingLeft: 18,
@@ -74,16 +84,8 @@ const styles = StyleSheet.create({
     marginBottom: 9,
     height: "auto",
 
-    backgroundColor: "#FFF",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowRadius: 23,
-    shadowOpacity: 0.09,
+    backgroundColor: "#F2F2F2",
     borderRadius: 36,
-    elevation: 23,
     marginRight: 9,
   },
 });
