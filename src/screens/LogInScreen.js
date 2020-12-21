@@ -1,20 +1,57 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import MyComponentTextInput from "../components/TextInput";
+import Navbar from "../components/Navbar";
+import LinkButton from "../components/LinkButton";
+import MainButton from "../components/MainButton";
 
-export const LogInScreen = () => {
+export default function SingIn() {
   return (
-    <View style={styles.container}>
-      <Text>LogInScreen</Text>
+    <View>
+      <Navbar title="Вход" />
+      <View style={styles.containerSingIn}>
+        <Text style={styles.title}>
+          Введите свою корпоративную почту чтобы войти
+        </Text>
+        <MyComponentTextInput lableText="Почта hse" value="Почта hse" />
+        <LinkButton
+          title="Зарегистрироваться"
+          onPress={() => Alert.alert("Simple Button pressed")}
+        />
+        <MainButton
+          title="Далее"
+          onPress={() => Alert.alert("Simple Button pressed")}
+        />
+      </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+  containerSingIn: {
+    display: "flex",
+
     justifyContent: "center",
+    alignItems: "center",
+  },
+
+  title: {
+    marginBottom: 40,
+    marginTop: 200,
+    color: "#0D407B",
+    fontWeight: "bold",
+    fontSize: 24,
+  },
+  button: {
+    marginTop: 20,
+    fontSize: 12,
   },
 });
