@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 export const SignInScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>SignInScreen</Text>
+      <Text>Введи свою корпоративную почту для регистриации</Text>
     </View>
   );
 };

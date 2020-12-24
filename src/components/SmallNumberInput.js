@@ -1,23 +1,18 @@
 import React from "react";
 import { StyleSheet, TextInput, Text, View } from "react-native";
-import { Icon } from "react-native-elements";
 
-export default function MyComponentTextInput({
-  lableText,
-  value,
-  setText,
-  name,
-}) {
+export default function SmallNumberInput({ lableText, placeholder, setText }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.ladle}>{lableText}</Text>
+      <Text style={styles.lable}>{lableText}</Text>
       <View style={styles.componentsWhisIcon}>
         <TextInput
           style={styles.input}
-          onChangeText={(text) => setText(text)}
-          value={value}
+          onChangeText={(value) => setText(value)}
+          // value={}
+          placeholder={placeholder}
+          placeholderTextColor="#979797"
         />
-        <Icon style={styles.icon} name={name} size={20} color="#BDBDBD" />
       </View>
     </View>
   );
@@ -25,10 +20,9 @@ export default function MyComponentTextInput({
 
 const styles = StyleSheet.create({
   input: {
-    flex: 1,
-    marginBottom: 20,
-    color: "#BDBDBD",
-    //width: 200,
+    color: "#000",
+    width: 75,
+    textAlign: "center",
     height: 48,
     fontSize: 16,
     backgroundColor: "#FFFFFF",
@@ -51,9 +45,9 @@ const styles = StyleSheet.create({
   searchIcon: {
     padding: 10,
   },
-  ladle: {
+  lable: {
     marginBottom: 12,
-    color: "#0D407B",
+    color: "#005AAB",
     fontWeight: "bold",
     fontSize: 12,
   },

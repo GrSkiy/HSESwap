@@ -11,15 +11,17 @@ export default function MainButton({ onPress, title }) {
 
 const styles = StyleSheet.create({
   mainButtonArea: {
-    marginTop: 200,
+    height: 60,
+    width: 160,
     elevation: 8,
-    backgroundColor: "#0D407B",
+    backgroundColor: "#0488FF",
     borderRadius: 20,
-    paddingVertical: 15,
-    paddingHorizontal: 70,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   mainButtonText: {
-    fontSize: 24,
+    fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",

@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Platform, Text } from "react-native";
+import { View, StyleSheet, Platform, Text, Image } from "react-native";
 
-export default function Navbar({ title }) {
+export default function Navbar({ title, handleText, onPress }) {
   return (
     <View
       style={{
@@ -12,6 +12,13 @@ export default function Navbar({ title }) {
         }),
       }}
     >
+      <View onPress={onPress}>
+        <Image
+          style={styles.backArrow}
+          source={require("../../assets/svg/backArrow.svg")}
+        />
+        <Text>{handleText}</Text>
+      </View>
       <Text style={styles.text}>{title}</Text>
     </View>
   );
@@ -19,22 +26,20 @@ export default function Navbar({ title }) {
 
 const styles = StyleSheet.create({
   navbar: {
-    height: 95,
+    height: 55,
     alignItems: "center",
     justifyContent: "flex-end",
     paddingBottom: 10,
   },
-  navbarAndroid: {
-    backgroundColor: "#0D407B",
+  backArrow: {
+    width: Platform.OS === "ios" ? 40 : 8,
+    height: 17,
   },
-  navbarIos: {
-    borderBottomColor: "#0D407B",
-    borderBottomWidth: 1,
-    backgroundColor: "#0D407B",
-  },
+  navbarAndroid: {},
+  navbarIos: {},
   text: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: "#000",
+    fontWeight: "500",
     fontSize: 16,
   },
 });

@@ -1,62 +1,33 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, ScrollView, SafeAreaView } from "react-native";
+import React from "react";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
+import FiltersScreen from "./src/screens/FiltersScreen";
+import { AppLoading } from "expo";
+import LogInScreen from "./src/screens/LogInScreen";
+import MinorScreen from "./src/screens/MinorScreen";
 
-import MainScreen from "./src/screens/MainScreen";
-import MenuScreen from "./src/screens/MenuScreen";
-import SettingsScreen from "./src/screens/SettingsScreen";
-import AllMinorsScreen from "./src/screens/AllMinorsScreen";
-
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      actualPageId: 0,
-    };
-  }
-
-  changePage = (pageId) => {
-    // changeActualPage(pageId);
-
-    this.setState({ actualPageId: pageId });
-  };
-
-  render() {
-    if (this.state.actualPageId === 0) {
-      return (
-        <SafeAreaView style={styles.mainContainer}>
-          <MainScreen changePage={this.changePage} />
-        </SafeAreaView>
-      );
-    } else if (this.state.actualPageId === 1) {
-      return (
-        <SafeAreaView style={styles.mainContainer}>
-          <MenuScreen changePage={this.changePage} />
-        </SafeAreaView>
-      );
-    } else if (this.state.actualPageId === 2) {
-      return (
-        <SafeAreaView style={styles.mainContainer}>
-          <SettingsScreen changePage={this.changePage} />
-        </SafeAreaView>
-      );
-    } else if (this.state.actualPageId === 3) {
-      return (
-        <SafeAreaView style={styles.mainContainer}>
-          <AllMinorsScreen changePage={this.changePage} />
-        </SafeAreaView>
-      );
-    }
-  }
-}
+const App = () => {
+  return (
+    <View style={styles.appContainer}>
+      <MinorScreen
+        name={
+          "Советская и постсоветская культура: политики, практики, конфликты"
+        }
+        credits={"99"}
+        adress={"Ул. Старая Басманная, д. 21/4, стр. 3"}
+        head={"Наринская Екатерина Владимировна"}
+        description={
+          "Древний Восток – родина первых в истории человечества систем письма. В этом обширном ареале, включающем (в широком смысле) Ближний Восток, а также Восточную и Юго-восточную Азию, начиная с конца IV – начала III тысячелетия, сформировалось несколько самостоятельных письменных систем. Часть из них имеет словесно-слоговую природу (клинопись, использовавшаяся в Месопотамии и сопредельных регионах на протяжении более трех тысячелетий, а также египетская и китайская иероглифика."
+        }
+        descUrl={null}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    // alignItems: "center",
-    marginLeft: 20,
-    paddingRight: 20,
-    marginTop: 63,
-    backgroundColor: "#fff",
+  appContainer: {
+    height: "100%",
   },
 });
+
+export default App;
