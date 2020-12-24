@@ -7,6 +7,8 @@ import {
   Button,
   SafeAreaView,
   Platform,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import Navbar from "../components/Navbar";
 
@@ -17,19 +19,31 @@ export default class MinorScreen extends React.Component {
   }
 
   render() {
-    let { name, credits, adress, head, description, descUrl } = this.props;
+    let {
+      handleReadMore,
+      name,
+      credits,
+      adress,
+      head,
+      description,
+    } = this.props;
 
     return (
       <SafeAreaView style={styles.safeArea}>
         <Navbar
           title={"Майнор"}
-          onPress={() => {
-            console.log(1);
+          backTitle={"Назад"}
+          changeTitle={"Изменить"}
+          handleBack={() => {
+            console.log(3);
+          }}
+          handleChange={() => {
+            console.log(4);
           }}
         />
         <View style={styles.safeAreaContainer}>
           <View style={styles.container}>
-            <Text style={styles.headerMinor}>Мой майнор</Text>
+            <Text style={styles.headerMinor}>Название майнора</Text>
             <Text style={styles.minorName}>{name}</Text>
           </View>
           <View style={styles.creditAdressContainer}>
@@ -46,10 +60,20 @@ export default class MinorScreen extends React.Component {
             <Text style={styles.header}>Ответственный за майнор</Text>
             <Text style={styles.head}>{head}</Text>
           </View>
-          <View style={styles.container}>
+          <View style={styles.descriptionContainer}>
             <Text style={styles.header}>Описание майнора</Text>
             <Text style={styles.description}>{description}</Text>
           </View>
+          <TouchableOpacity
+            onPress={handleReadMore}
+            style={styles.reedMoreContainer}
+          >
+            <Text style={styles.readMoreText}>Читать дальше</Text>
+            <Image
+              style={styles.readMoreLink}
+              source={require("../../assets/png/readMoreLink2x.png")}
+            />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -60,6 +84,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     marginBottom: 20,
+  },
+  reedMoreContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  readMoreText: {
+    color: "#0488FF",
+  },
+  readMoreLink: {
+    width: 9,
+    height: 8,
+    marginLeft: 6,
+  },
+
+  descriptionContainer: {
+    marginBottom: 12,
   },
 
   header: {
