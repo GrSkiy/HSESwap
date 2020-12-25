@@ -23,6 +23,7 @@ export default class MainScreen extends React.Component {
           title: "Театр с нуля",
           adres: "Старая Басманная 11",
           credits: "5",
+          handleBack: () => this.props.changePage(8),
           exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
         },
         {
@@ -31,6 +32,7 @@ export default class MainScreen extends React.Component {
           title: "Биоинформатика",
           adres: "Старая Басманная 11",
           credits: "5",
+          handleBack: () => this.props.changePage(3),
           exchangeMinors: ["Театр с нуля", "Психология", "Биология", "Азия"],
         },
         {
@@ -39,6 +41,7 @@ export default class MainScreen extends React.Component {
           title: "Психология",
           adres: "Старая Басманная 11",
           credits: "5",
+          handleBack: () => this.props.changePage(3),
           exchangeMinors: [
             "Биоинформатика",
             "Театр с нуля",
@@ -52,6 +55,7 @@ export default class MainScreen extends React.Component {
           title: "Биология",
           adres: "Старая Басманная 11",
           credits: "5",
+          handleBack: () => this.props.changePage(3),
           exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
         },
         {
@@ -60,6 +64,7 @@ export default class MainScreen extends React.Component {
           title: "Азия",
           adres: "Старая Басманная 11",
           credits: "5",
+          handleBack: () => this.props.changePage(3),
           exchangeMinors: [
             "Биоинформатика",
             "Психология",
@@ -82,7 +87,7 @@ export default class MainScreen extends React.Component {
           adres={minor.adres}
           credits={minor.credits}
           exchangeMinors={minor.exchangeMinors}
-          handleBack={() => this.props.changePage(3)}
+          handleBack={minor.handleBack}
           key={i}
         />
       );

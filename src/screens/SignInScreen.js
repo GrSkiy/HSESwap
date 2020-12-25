@@ -9,20 +9,21 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+
 import Navbar from "../components/Navbar";
 import MainButton from "../components/MainButton";
-import LargeInput from "../components/LargeInput";
+import LargeInput from "../components/LargeInput___RESTILINGfromLera";
 import LargeSelect from "../components/LargeSelect";
 
 const SignInScreen = (props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Navbar
-        style={styles.navbarAdd}
-        title={"Регистрация"}
-        // handleBack={() => props.changePage(1)}
-      />
       <View style={styles.safeAreaContainer}>
+        <Navbar
+          style={styles.navbarAdd}
+          title={"Регистрация"}
+          handleBack={() => props.changePage(3)}
+        />
         <View style={styles.inputContainer}>
           <LargeInput
             style={styles.signInInput}
@@ -48,7 +49,7 @@ const SignInScreen = (props) => {
             placeholder="Введите адрес почты"
             setText={() => Alert.alert("Simple Button pressed")}
           />
-          <LargeSelect
+          <LargeInput
             style={styles.signInInput}
             lableText="Ваш кампус"
             placeholder="Выберите свой кампус"
@@ -56,7 +57,7 @@ const SignInScreen = (props) => {
               console.log(1);
             }}
           />
-          <LargeSelect
+          <LargeInput
             style={styles.signInInput}
             lableText="Ваш майнор"
             placeholder="Выберите свой текущий майнор"
@@ -65,31 +66,28 @@ const SignInScreen = (props) => {
             }}
           />
         </View>
-
-        <View style={styles.mainButton}>
-          <MainButton title="Далее" onPress={mainButtonHandle} />
-        </View>
+      </View>
+      <View style={styles.mainButton}>
+        <MainButton title="Далее" onPress={() => props.changePage(7)} />
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
+  safeArea: {
     height: "100%",
 
     display: "flex",
     justifyContent: "space-between",
-    paddingBottom: Platform.OS === "ios" ? 180 : 44,
+    // paddingBottom: Platform.OS === "ios" ? 180 : 44,
   },
   signInInput: {
     marginBottom: 20,
   },
   mainButton: {
     alignItems: "center",
-    marginTop: 55,
+    marginBottom: 30,
   },
   inputContainer: {},
 

@@ -11,28 +11,28 @@ export default class SuccessExchangeScreen extends React.Component {
     super(props);
   }
   //нужно отформатировать алерты
-  sucsessExchange = () => {
+  sucsessExchange = (changePage) => {
     Alert.alert(
       "Ты успешно обменялся манором",
       "Обязательно прочитай нашу инструкцию, чтобы грамотно проинформировать об обмене учебную часть",
       [
         {
           text: "Читать",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => changePage(0),
           style: "cancel",
         },
       ],
       { cancelable: false }
     );
   };
-  unSucsessExchange = () => {
+  unSucsessExchange = (changePage) => {
     Alert.alert(
       "Ты не можешь обменяться  :(",
       "У твоега факультета есть ограничения по выбору майнора, можешь ознакомится со всеми органичениями по ссылке",
       [
         {
           text: "Смотреть ограничения",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => changePage(0),
           style: "cancel",
         },
       ],
@@ -47,12 +47,7 @@ export default class SuccessExchangeScreen extends React.Component {
           title={"Успешный обмен"}
           backTitle={"Назад"}
           changeTitle={"         "}
-          handleBack={() => {
-            console.log(3);
-          }}
-          handleChange={() => {
-            console.log(4);
-          }}
+          handleBack={() => this.props.changePage(0)}
         />
         <View style={styles.cardsCollection}>
           <ExchangeCard
@@ -95,7 +90,10 @@ export default class SuccessExchangeScreen extends React.Component {
             </View>
           </View>
         </View>
-        <MainButton onPress={this.unSucsessExchange} title={"Обменяться"} />
+        <MainButton
+          onPress={() => this.unSucsessExchange(this.props.changePage)}
+          title={"Обменяться"}
+        />
       </View>
     );
   }

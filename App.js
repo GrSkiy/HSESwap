@@ -85,6 +85,32 @@ export default class App extends React.Component {
           mainButtonHandle={() => console.log(2)}
         />
       );
+    } else if (pageId === 4) {
+      return (
+        <MinorScreen
+          name={
+            "Советская и постсоветская культура: политики, практики, конфликты"
+          }
+          credits={"99"}
+          adress={"Ул. Старая Басманная, д. 21/4, стр. 3"}
+          head={"Наринская Екатерина Владимировна"}
+          description={
+            "Древний Восток – родина первых в истории человечества систем письма. В этом обширном ареале, включающем (в широком смысле) Ближний Восток, а также Восточную и Юго-восточную Азию, начиная с конца IV – начала III тысячелетия, сформировалось несколько самостоятельных письменных систем. Часть из них имеет словесно-слоговую природу (клинопись, использовавшаяся в Месопотамии и сопредельных регионах на протяжении более трех тысячелетий, а также египетская и китайская иероглифика."
+          }
+          handleReadMore={() => {
+            console.log(1);
+          }}
+          changePage={this.changePage}
+        />
+      );
+    } else if (pageId === 5) {
+      return <LogInScreen changePage={this.changePage} />;
+    } else if (pageId === 6) {
+      return <SignInScreen changePage={this.changePage} />;
+    } else if (pageId === 7) {
+      return <EmailVerificationScreen changePage={this.changePage} />;
+    } else if (pageId === 8) {
+      return <SuccessExchangeScreen changePage={this.changePage} />;
     }
   };
 

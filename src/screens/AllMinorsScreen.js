@@ -34,6 +34,7 @@ export default class AllMinorsScreen extends React.Component {
             title="Биоинформатика"
             adres="Старая Басманная 11"
             credits="5"
+            handleBack={() => this.props.changePage(4)}
             exchangeMinors={[]}
           />
           <Card
@@ -42,6 +43,7 @@ export default class AllMinorsScreen extends React.Component {
             title="Театр с нуля"
             adres="Старая Басманная 11"
             credits="5"
+            handleBack={() => this.props.changePage(4)}
             exchangeMinors={[]}
           />
           <Card
@@ -50,6 +52,7 @@ export default class AllMinorsScreen extends React.Component {
             title="Биология"
             adres="Старая Басманная 11"
             credits="5"
+            handleBack={() => this.props.changePage(4)}
             exchangeMinors={[]}
           />
           <Card
@@ -58,6 +61,7 @@ export default class AllMinorsScreen extends React.Component {
             title="Азия"
             adres="Старая Басманная 11"
             credits="5"
+            handleBack={() => this.props.changePage(4)}
             exchangeMinors={[]}
           />
         </ScrollView>

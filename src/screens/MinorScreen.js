@@ -31,15 +31,10 @@ export default class MinorScreen extends React.Component {
     return (
       <SafeAreaView style={styles.safeArea}>
         <Navbar
-          title={"Майнор"}
+          title={"Все майноры"}
           backTitle={"Назад"}
-          changeTitle={"Изменить"}
-          handleBack={() => {
-            console.log(3);
-          }}
-          handleChange={() => {
-            console.log(4);
-          }}
+          changeTitle={"         "}
+          handleBack={() => this.props.changePage(2.3)}
         />
         <View style={styles.safeAreaContainer}>
           <View style={styles.container}>

@@ -24,6 +24,7 @@ import {
 export default function EmailVerificationScreen({
   mainButtonHandle,
   handleSendAgain,
+  changePage,
 }) {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -38,7 +39,11 @@ export default function EmailVerificationScreen({
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.safeAreaContainer}>
         <View style={styles.navbarContainer}>
-          <Navbar title="Регистрация" />
+          <Navbar
+            style={styles.navbarAdd}
+            title={"Регистрация"}
+            handleBack={() => changePage(6)}
+          />
         </View>
         <View style={styles.mainContainer}>
           <Text style={styles.title}>
@@ -73,9 +78,9 @@ export default function EmailVerificationScreen({
             <Text style={styles.sendAgainTitle}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.mainButton}>
-          <MainButton title="Далее" onPress={mainButtonHandle} />
-        </View>
+      </View>
+      <View style={styles.mainButton}>
+        <MainButton title="Далее" onPress={() => changePage(0)} />
       </View>
     </SafeAreaView>
   );
@@ -89,11 +94,15 @@ const styles = StyleSheet.create({
     color: "#005AAB",
     fontWeight: "bold",
   },
-  sendAgainContainer: {
-    alignItems: "center",
+  safeArea: {
+    // alignItems: "center",
     marginTop: 20,
+    height: "100%",
+    justifyContent: "space-between",
   },
   sendAgainTitle: {
+    textAlign: "center",
+    marginTop: 20,
     fontSize: 14,
     color: "#0488FF",
   },
@@ -123,13 +132,12 @@ const styles = StyleSheet.create({
   safeAreaContainer: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: "100%",
 
-    paddingBottom: Platform.OS === "ios" ? 180 : 44,
+    // paddingBottom: Platform.OS === "ios" ? 180 : 44,
   },
   mainButton: {
     alignItems: "center",
-    marginTop: 450,
+    marginBottom: 40,
   },
   mainContainer: {
     marginTop: 100,

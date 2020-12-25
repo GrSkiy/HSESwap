@@ -8,9 +8,30 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import Navbar from "../components/Navbar";
 import MainButton from "../components/MainButton";
+
+const showAlert = (changePage) => {
+  return Alert.alert(
+    "Открой все возможности",
+    "Чтобы иметь возможность обмениваться и изменять настройки фильтров войди или зарегестрируйся",
+    [
+      {
+        text: "Вход",
+        onPress: () => changePage(5),
+        style: "cancel",
+      },
+      {
+        text: "Регистрация",
+        onPress: () => changePage(6),
+        style: "cancel",
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
 const ExchangeDescriptionScreen = ({
   handleReadMore,
@@ -78,16 +99,19 @@ const ExchangeDescriptionScreen = ({
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.mainButton}>
-          <MainButton title="Обменяться" onPress={mainButtonHandle} />
-        </View>
+      </View>
+      <View style={styles.mainButton}>
+        <MainButton title="Обменяться" onPress={() => showAlert(changePage)} />
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeAreaContainer: {},
+  safeArea: {
+    height: "100%",
+    justifyContent: "space-between",
+  },
   container: {
     backgroundColor: "#fff",
     marginBottom: 20,
@@ -121,11 +145,11 @@ const styles = StyleSheet.create({
   },
 
   mainButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: Platform.OS === "ios" ? 150 : -150,
-    left: Platform.OS === "ios" ? 134 : 100,
+    // alignItems: "center",
+    // justifyContent: "center",
+    // position: "absolute",
+    marginBottom: 30,
+    // left: Platform.OS === "ios" ? 134 : 100,
   },
 
   headerMinor: {
@@ -149,7 +173,6 @@ const styles = StyleSheet.create({
   safeAreaContainer: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: "100%",
     // display: "flex",
     // alignItems: "center",
     // justifyContent: "center",
