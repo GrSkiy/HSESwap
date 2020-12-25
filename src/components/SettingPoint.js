@@ -47,15 +47,15 @@ export default class SettingPoint extends React.Component {
     return (
       <View style={styles.settingLine}>
         <Line />
-        <View style={styles.settingPoint}>
-          <Text style={styles.p}>{this.props.title}</Text>
-          <TouchableOpacity
-            style={styles.handleContainer}
-            onPress={this.props.handleBack}
-          >
+        <TouchableOpacity
+          style={styles.handleContainer}
+          onPress={this.props.changePage}
+        >
+          <View style={styles.settingPoint}>
+            <Text style={styles.p}>{this.props.title}</Text>
             {this.renderActiveItem()}
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }

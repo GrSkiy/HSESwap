@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import Card from "../components/Card";
+import Navbar from "../components/Navbar";
 
 export default class AllMinorsScreen extends React.Component {
   constructor(props) {
@@ -20,18 +21,12 @@ export default class AllMinorsScreen extends React.Component {
   render() {
     return (
       <View>
-        <View style={styles.header}>
-          <Text style={styles.h1}>All minors</Text>
-          <TouchableOpacity
-            onPress={() => this.props.changePage(1)}
-            activeOpacity={0.5}
-          >
-            <Image
-              style={styles.icon}
-              source={require("../../assets/hamburger.png")}
-            />
-          </TouchableOpacity>
-        </View>
+        <Navbar
+          title={"Все майноры"}
+          backTitle={"Назад"}
+          changeTitle={"              "}
+          handleBack={() => this.props.changePage(2)}
+        />
         <ScrollView contentContainerStyle={styles.list}>
           <Card
             city="Москва"

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 const renderExchangeMinors = (minors) => {
   let minorItems = [];
@@ -17,7 +17,7 @@ const renderExchangeMinors = (minors) => {
 
 export default function Card(props) {
   return (
-    <View style={styles.cardContainer}>
+    <TouchableOpacity style={styles.cardContainer} onPress={props.handleBack}>
       <View style={styles.cardHeader}>
         <Text style={styles.h4}>
           {props.city} • {props.year}
@@ -27,7 +27,7 @@ export default function Card(props) {
       <Text style={styles.h4}>{props.adres}</Text>
       <Text style={styles.h4}>{props.credits} кредитов</Text>
       {renderExchangeMinors(props.exchangeMinors)}
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -25,12 +25,8 @@ export default class Setting_myData_view extends React.Component {
           title={"Мои данные"}
           backTitle={"Назад"}
           changeTitle={"Изменить"}
-          handleBack={() => {
-            console.log(3);
-          }}
-          handleChange={() => {
-            console.log(4);
-          }}
+          handleBack={() => this.props.changePage(2)}
+          handleChange={() => this.props.changePage(2.11)}
         />
         <View style={styles.itemsCollection}>
           <FullInfoInput title={"Фамилия"} content={"Салаватовна"} />

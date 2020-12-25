@@ -20,12 +20,8 @@ export default class Setting_sosialNetworcs_view extends React.Component {
           title={"Мои данные"}
           backTitle={"Назад"}
           changeTitle={"Готово"}
-          handleBack={() => {
-            console.log(3);
-          }}
-          handleChange={() => {
-            console.log(4);
-          }}
+          handleBack={() => this.props.changePage(2.1)}
+          handleChange={() => this.props.changePage(2.1)}
         />
 
         <ScrollView style={styles.itemsCollection}>

@@ -21,6 +21,7 @@ const ExchangeDescriptionScreen = ({
   description,
   suits,
   mainButtonHandle,
+  changePage,
 }) => {
   let suitsText = "";
 
@@ -35,9 +36,7 @@ const ExchangeDescriptionScreen = ({
       <View>
         <Navbar
           title={"Предложение об обмене"}
-          handleBack={() => {
-            console.log(3);
-          }}
+          handleBack={() => changePage(0)}
           handleChange={() => {
             console.log(4);
           }}

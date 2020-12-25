@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import Navbar from "../components/Navbar";
+
 export default class MenuScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -26,27 +28,14 @@ export default class MenuScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => this.props.changePage(2)}
-            activeOpacity={0.5}
-          >
-            <Image
-              style={styles.icon}
-              source={require("../../assets/settings.png")}
-            />
-          </TouchableOpacity>
-          <Text style={styles.h1}>vsinsafutdinova</Text>
-          <TouchableOpacity
-            onPress={() => this.props.changePage(0)}
-            activeOpacity={0.5}
-          >
-            <Image
-              style={styles.icon}
-              source={require("../../assets/close_big.png")}
-            />
-          </TouchableOpacity>
-        </View>
+        <Navbar
+          title={"vsinsafutdinova"}
+          backTitle={"        "}
+          changeTitle={"        "}
+          handleBack={() => this.props.changePage(2)}
+          handleChange={() => this.props.changePage(0)}
+          setting={true}
+        />
         <View style={styles.minorList}>
           <Text style={styles.minorChips}>Москва</Text>
           <Text style={styles.minorChips}>3 курс</Text>
@@ -59,22 +48,6 @@ export default class MenuScreen extends React.Component {
           <Text style={styles.minorChips}>Биология</Text>
           <Text style={styles.minorChips}>Азия</Text>
         </View>
-        <View style={styles.setPoint}>
-          <Text style={styles.p}>Настроить фильтры</Text>
-          <Button title="0" onPress={() => console.log("piy")} />
-        </View>
-        <View style={styles.setPoint}>
-          <Text style={styles.p}>Видимость моего профиля</Text>
-          <Switch
-            trackColor={{ false: "#3e3e3e", true: "#3e3e3e" }}
-            thumbColor={this.state.isEnabled ? "#005AAB" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={this.toggleSwitch}
-            value={this.state.isEnabled}
-          />
-        </View>
-
-        <Button onPress={() => this.props.changePage(3)} title="All minors" />
       </View>
     );
   }

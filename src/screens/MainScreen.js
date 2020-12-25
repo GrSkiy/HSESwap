@@ -82,6 +82,7 @@ export default class MainScreen extends React.Component {
           adres={minor.adres}
           credits={minor.credits}
           exchangeMinors={minor.exchangeMinors}
+          handleBack={() => this.props.changePage(3)}
           key={i}
         />
       );

@@ -25,12 +25,7 @@ export default class SettingsScreen extends React.Component {
           title={"Настройки"}
           backTitle={"Назад"}
           changeTitle={"            "}
-          handleBack={() => {
-            console.log(3);
-          }}
-          handleChange={() => {
-            console.log(4);
-          }}
+          handleBack={() => this.props.changePage(1)}
         />
         <View style={styles.settingBody}>
           <View style={styles.pointsCollection}>
@@ -41,23 +36,23 @@ export default class SettingsScreen extends React.Component {
             />
             <SettingPoint
               title={"Мои данные"}
-              changePage={this.props.changePage}
+              changePage={() => this.props.changePage(2.1)}
             />
             <SettingPoint
               title={"Социальные сети"}
-              changePage={this.props.changePage}
+              changePage={() => this.props.changePage(2.2)}
             />
             <SettingPoint
               title={"Список всех майноров"}
-              changePage={this.props.changePage}
+              changePage={() => this.props.changePage(2.3)}
             />
             <SettingPoint
               title={"Изменить настройки фильтров"}
-              changePage={this.props.changePage}
+              changePage={() => this.props.changePage(2)}
             />
             <SettingPoint
               title={"Мои обмены"}
-              changePage={this.props.changePage}
+              changePage={() => this.props.changePage(2)}
             />
             <Line />
           </View>

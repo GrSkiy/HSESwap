@@ -14,15 +14,13 @@ import MainButton from "../components/MainButton";
 import LargeInput from "../components/LargeInput";
 import LargeSelect from "../components/LargeSelect";
 
-const SignInScreen = ({ mainButtonHandle }) => {
+const SignInScreen = (props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Navbar
         style={styles.navbarAdd}
         title={"Регистрация"}
-        handleBack={() => {
-          console.log(3);
-        }}
+        // handleBack={() => props.changePage(1)}
       />
       <View style={styles.safeAreaContainer}>
         <View style={styles.inputContainer}>
