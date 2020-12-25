@@ -21,16 +21,6 @@ export default class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.settingBody}>
-<<<<<<< HEAD
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => this.props.changePage(1)}
-            activeOpacity={0.5}
-          >
-            <Image
-              style={styles.icon}
-              source={require("../../assets/png/navbarBackIOS3x.png")}
-=======
         <Navbar
           title={"Настройки"}
           backTitle={"Назад"}
@@ -60,7 +50,6 @@ export default class SettingsScreen extends React.Component {
             <SettingPoint
               title={"Список всех майноров"}
               changePage={this.props.changePage}
->>>>>>> origin/Settings_screens
             />
             <SettingPoint
               title={"Изменить настройки фильтров"}
