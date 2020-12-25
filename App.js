@@ -4,11 +4,13 @@ import FiltersScreen from "./src/screens/FiltersScreen";
 import { AppLoading } from "expo";
 import LogInScreen from "./src/screens/LogInScreen";
 import MinorScreen from "./src/screens/MinorScreen";
+import SignInScreen from "./src/screens/SignInScreen";
+import ExchangeDescriptionScreen from "./src/screens/ExchangeDescriptionScreen";
 
 const App = () => {
   return (
     <View style={styles.appContainer}>
-      <MinorScreen
+      <ExchangeDescriptionScreen
         name={
           "Советская и постсоветская культура: политики, практики, конфликты"
         }
@@ -21,6 +23,8 @@ const App = () => {
         handleReadMore={() => {
           console.log(1);
         }}
+        suits={true}
+        mainButtonHandle={() => console.log(2)}
       />
     </View>
   );

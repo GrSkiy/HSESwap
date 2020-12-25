@@ -15,7 +15,7 @@ import LinkButton from "../components/LinkButton";
 import MainButton from "../components/MainButton";
 import LargeInput from "../components/LargeInput";
 
-export default function LogInScreen() {
+export default function LogInScreen({ mainButtonHandle }) {
   return (
     <View style={styles.safeAreaContainer}>
       <View style={styles.navbarContainer}>
@@ -32,7 +32,6 @@ export default function LogInScreen() {
             lableText="Почта hse"
             placeholder="Почта hse"
             setText={() => Alert.alert("Simple Button pressed")}
-            marginBottom={30}
           />
 
           <LinkButton
@@ -41,10 +40,7 @@ export default function LogInScreen() {
           />
         </View>
         <View style={styles.mainButton}>
-          <MainButton
-            title="Далее"
-            onPress={() => Alert.alert("Simple Button pressed")}
-          />
+          <MainButton title="Войти" onPress={mainButtonHandle} />
         </View>
       </View>
     </View>

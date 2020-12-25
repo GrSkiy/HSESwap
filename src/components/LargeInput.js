@@ -6,9 +6,10 @@ export default function SmallNumberInput({
   lableText,
   placeholder,
   setText,
+  style,
 }) {
   return (
-    <View style={styles.container}>
+    <View style={(styles.container, style)}>
       <Text style={styles.lable}>{lableText}</Text>
       <View style={styles.componentsWhisIcon}>
         <TextInput
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     height: 48,
     fontSize: 16,
-    marginBottom: 30,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
     shadowOffset: {

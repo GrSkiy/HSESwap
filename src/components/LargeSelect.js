@@ -1,16 +1,21 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 
-export default function LargeSelect({ lableText, placeholder, handlePress }) {
+export default function LargeSelect({
+  lableText,
+  placeholder,
+  handlePress,
+  style,
+}) {
   return (
-    <View style={styles.container}>
+    <View style={(styles.container, style)}>
       <Text style={styles.lable}>{lableText}</Text>
       <View style={styles.componentsWhithIcon}>
         <View style={styles.input} onPress={handlePress}>
           <Text style={styles.inputPlaceholder}>{placeholder}</Text>
           <Image
             style={styles.dropTriangle}
-            source={require("../../assets/svg/dropTriangle.svg")}
+            source={require("../../assets/png/dropTriangle3x.png")}
           />
         </View>
       </View>
@@ -45,6 +50,7 @@ const styles = StyleSheet.create({
 
   inputPlaceholder: {
     color: "#979797",
+    fontSize: 16,
   },
   dropTriangle: {
     width: 20,
