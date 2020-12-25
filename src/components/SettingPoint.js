@@ -13,30 +13,34 @@ import Line from "../components/Line";
 export default class SettingPoint extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isEnabled: false,
+    };
   }
+  toggleSwitch = () => {
+    this.setState({ isEnabled: !this.state.isEnabled });
+  };
 
   renderActiveItem = () => {
-    let item;
     if (this.props.toggle) {
-      //___________НЕРЕНДЕРИТСЯ
-      //передовать функцию изменения через контекст
-      <Switch
-        trackColor={{ false: "#3e3e3e", true: "#3e3e3e" }}
-        // thumbColor={this.state.isEnabled ? "#005AAB" : "#f4f3f4"}
-        thumbColor={"#005AAB"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() => console.log("miy")}
-        value={false}
-      />;
-    } else {
-      item = (
-        <Image
-          style={styles.backArrow}
-          source={require("../../assets/png/navbarBackIOS3x.png")}
+      //надо понять как добавить обводку и
+      return (
+        <Switch
+          trackColor={{ false: "#E7F4FF", true: "#CCDEEE" }}
+          thumbColor={"#005AAB"}
+          ios_backgroundColor="#CCDEEE"
+          onValueChange={this.toggleSwitch}
+          value={this.state.isEnabled}
         />
       );
+    } else {
+      return;
+      <Image
+        style={styles.backArrow}
+        source={require("../../assets/png/navbarBackIOS3x.png")}
+      />;
     }
-    return item;
   };
 
   render() {
