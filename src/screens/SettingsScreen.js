@@ -10,6 +10,8 @@ import {
 } from "react-native";
 
 import SettingPoint from "../components/SettingPoint";
+import Navbar from "../components/Navbar";
+import Line from "../components/Line";
 
 export default class SettingsScreen extends React.Component {
   constructor(props) {
@@ -19,34 +21,54 @@ export default class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.settingBody}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => this.props.changePage(1)}
-            activeOpacity={0.5}
-          >
-            <Image
-              style={styles.icon}
-              source={require("../../assets/back.png")}
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.h1}>Настройки</Text>
-          <Text> </Text>
-        </View>
+        <Navbar
+          title={"Настройки"}
+          backTitle={"Назад"}
+          changeTitle={"            "}
+          handleBack={() => {
+            console.log(3);
+          }}
+          handleChange={() => {
+            console.log(4);
+          }}
+        />
         <View style={styles.settingBody}>
-          <SettingPoint
-            title={"Основная информация"}
-            changePage={this.props.changePage}
-          />
-          <SettingPoint
-            title={"Социальные сети"}
-            changePage={this.props.changePage}
-          />
-          <SettingPoint
-            title={"Уведомления"}
-            changePage={this.props.changePage}
-          />
-          <Text>Выход</Text>
+          <View style={styles.pointsCollection}>
+            <SettingPoint
+              title={"Открыть мое объявление"}
+              changePage={this.props.changePage}
+              toggle={true}
+            />
+            <SettingPoint
+              title={"Мои данные"}
+              changePage={this.props.changePage}
+            />
+            <SettingPoint
+              title={"Социальные сети"}
+              changePage={this.props.changePage}
+            />
+            <SettingPoint
+              title={"Список всех майноров"}
+              changePage={this.props.changePage}
+            />
+            <SettingPoint
+              title={"Изменить настройки фильтров"}
+              changePage={this.props.changePage}
+            />
+            <SettingPoint
+              title={"Мои обмены"}
+              changePage={this.props.changePage}
+            />
+            <Line />
+          </View>
+
+          <View style={styles.logOut}>
+            <Line />
+            <TouchableOpacity>
+              <Text style={styles.logOutTitle}>Выйти</Text>
+            </TouchableOpacity>
+            <Line />
+          </View>
         </View>
       </View>
     );
@@ -54,19 +76,26 @@ export default class SettingsScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    zIndex: 1,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 31,
-  },
   settingBody: {
     justifyContent: "space-between",
+    marginTop: 20,
     width: "100%",
+    height: "100%",
+  },
+  pointsCollection: {
+    width: "auto",
   },
   icon: {
     width: 30,
     height: 30,
+  },
+  logOut: {
+    alignItems: "center",
+    paddingBottom: 79,
+  },
+  logOutTitle: {
+    color: "#BF0C0C",
+    fontSize: 17,
+    marginBottom: 12,
   },
 });
