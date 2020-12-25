@@ -11,6 +11,8 @@ export default function MainButton({ onPress, title }) {
 
 const styles = StyleSheet.create({
   mainButtonArea: {
+    marginRight: "auto",
+    marginLeft: "auto",
     height: 60,
     width: 160,
     elevation: 8,
