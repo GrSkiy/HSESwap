@@ -26,7 +26,7 @@ export default class SettingsScreen extends React.Component {
           >
             <Image
               style={styles.icon}
-              source={require("../../assets/back.png")}
+              source={require("../../assets/png/navbarBackIOS3x.png")}
             />
           </TouchableOpacity>
 
