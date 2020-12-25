@@ -14,7 +14,7 @@ import MainButton from "../components/MainButton";
 import LargeInput from "../components/LargeInput";
 import LargeSelect from "../components/LargeSelect";
 
-const SignInScreen = () => {
+const SignInScreen = ({ mainButtonHandle }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Navbar
@@ -69,7 +69,7 @@ const SignInScreen = () => {
         </View>
 
         <View style={styles.mainButton}>
-          <MainButton title="Далее" onPress={() => console.log(1)} />
+          <MainButton title="Далее" onPress={mainButtonHandle} />
         </View>
       </View>
     </SafeAreaView>
