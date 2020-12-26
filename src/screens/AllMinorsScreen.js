@@ -13,6 +13,8 @@ import {
 import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 
+import { GetAllMinors, MyContext } from "../context/controller";
+
 export default class AllMinorsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +23,7 @@ export default class AllMinorsScreen extends React.Component {
   render() {
     return (
       <View>
+        <GetAllMinors />
         <Navbar
           title={"Все майноры"}
           backTitle={"Назад"}
