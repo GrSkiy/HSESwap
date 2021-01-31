@@ -10,68 +10,82 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
 import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 
-import { GetAllMinors, MyContext } from "../context/controller";
+// import { AppContext } from "../context/appContext";
+// import { GetAllMinors } from "../context/controller";
 
 export default class AllMinorsScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      loading: true,
+    };
   }
 
-  render() {
+  async componentDidMount() {
+    const url = "http://localhost:3000/api/v1/minors";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+  }
+
+  renderCards = () => {
+    const cities = this.state.data;
+    let bloks = [];
+    let minors = [];
+    cities.forEach((city, i) => {
+      city.minors.forEach((minor, y) => {
+        minors.push(
+          <Card
+            city={city.city}
+            year={minor.year}
+            title={minor.name}
+            adres={minor.adress}
+            credits={minor.credits}
+            handleBack={() =>
+              this.props.navigation.navigate("Minor", {
+                url: minor.url,
+              })
+            }
+            exchangeMinors={[]}
+            key={i + "_" + y}
+          />
+        );
+      });
+    });
+
     return (
-      <View>
-        <GetAllMinors />
-        <Navbar
-          title={"Все майноры"}
-          backTitle={"Назад"}
-          changeTitle={"              "}
-          handleBack={() => this.props.changePage(2)}
-        />
-        <ScrollView contentContainerStyle={styles.list}>
-          <Card
-            city="Москва"
-            year="2020"
-            title="Биоинформатика"
-            adres="Старая Басманная 11"
-            credits="5"
-            handleBack={() => this.props.changePage(4)}
-            exchangeMinors={[]}
-          />
-          <Card
-            city="Москва"
-            year="2020"
-            title="Театр с нуля"
-            adres="Старая Басманная 11"
-            credits="5"
-            handleBack={() => this.props.changePage(4)}
-            exchangeMinors={[]}
-          />
-          <Card
-            city="Москва"
-            year="2020"
-            title="Биология"
-            adres="Старая Басманная 11"
-            credits="5"
-            handleBack={() => this.props.changePage(4)}
-            exchangeMinors={[]}
-          />
-          <Card
-            city="Москва"
-            year="2020"
-            title="Азия"
-            adres="Старая Басманная 11"
-            credits="5"
-            handleBack={() => this.props.changePage(4)}
-            exchangeMinors={[]}
-          />
-        </ScrollView>
-      </View>
+      <ScrollView contentContainerStyle={styles.list}>{minors}</ScrollView>
+    );
+  };
+
+  render() {
+    return this.state.loading ? (
+      <Text>Loading.....</Text>
+    ) : (
+      <View>{this.renderCards()}</View>
     );
   }
 }
+
+AllMinorsScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Все майноры",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"filter"}
+        onPress={() => navigation.push("Filter")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 const styles = StyleSheet.create({
   icon: {

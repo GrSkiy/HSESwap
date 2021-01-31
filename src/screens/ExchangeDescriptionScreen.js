@@ -10,8 +10,10 @@ import {
   Image,
   Alert,
 } from "react-native";
-import Navbar from "../components/Navbar";
 import MainButton from "../components/MainButton";
+
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
 
 const showAlert = (changePage) => {
   return Alert.alert(
@@ -33,79 +35,112 @@ const showAlert = (changePage) => {
   );
 };
 
-const ExchangeDescriptionScreen = ({
-  handleReadMore,
-  name,
-  credits,
-  adress,
-  head,
-  description,
-  suits,
-  mainButtonHandle,
-  changePage,
-}) => {
-  let suitsText = "";
+class ExchangeDescriptionScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-  if (suits) {
-    suitsText = "Студент хочет твой майнор!";
-  } else {
-    let suitsText = "";
+    this.state = {
+      loading: true,
+    };
   }
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View>
-        <Navbar
-          title={"Предложение об обмене"}
-          handleBack={() => changePage(0)}
-          handleChange={() => {
-            console.log(4);
-          }}
-        />
-        <View style={styles.safeAreaContainer}>
-          <View style={styles.suitsContainer}>
-            <Text style={styles.suitsText}>{suitsText}</Text>
-          </View>
-          <View style={styles.container}>
-            <Text style={styles.headerMinor}>Название майнора</Text>
-            <Text style={styles.minorName}>{name}</Text>
-          </View>
-          <View style={styles.creditAdressContainer}>
-            <View style={styles.creditsContainer}>
-              <Text style={styles.headerCredits}>Кредиты</Text>
-              <Text style={styles.credits}>{credits}</Text>
-            </View>
-            <View style={styles.adressContainer}>
-              <Text style={styles.header}>Адрес</Text>
-              <Text style={styles.adress}>{adress}</Text>
-            </View>
-          </View>
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Ответственный за майнор</Text>
-            <Text style={styles.head}>{head}</Text>
-          </View>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.header}>Описание майнора</Text>
-            <Text style={styles.description}>{description}</Text>
-          </View>
-          <TouchableOpacity
-            onPress={handleReadMore}
-            style={styles.reedMoreContainer}
-          >
-            <Text style={styles.readMoreText}>Читать дальше</Text>
-            <Image
-              style={styles.readMoreLink}
-              source={require("../../assets/png/readMoreLink2x.png")}
-            />
-          </TouchableOpacity>
+  async componentDidMount() {
+    const url = this.props.navigation.getParam("url");
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+  }
+
+  // let suitsText = "";
+  //
+  // if (suits) {
+  //   suitsText = "Студент хочет твой майнор!";
+  // } else {
+  //   let suitsText = "";
+  // }
+
+  renderContent = () => {
+    const {
+      handleReadMore,
+      minor,
+      credits,
+      address,
+      responsible,
+      description,
+      suits,
+      mainButtonHandle,
+      url,
+    } = this.state.data;
+    return (
+      <View style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <Text style={styles.headerMinor}>Название майнора</Text>
+          <Text style={styles.minorName}>{minor}</Text>
         </View>
+        <View style={styles.creditAdressContainer}>
+          <View style={styles.creditsContainer}>
+            <Text style={styles.headerCredits}>Кредиты</Text>
+            <Text style={styles.credits}>{credits}</Text>
+          </View>
+          <View style={styles.adressContainer}>
+            <Text style={styles.header}>Адрес</Text>
+            <Text style={styles.adress}>{address}</Text>
+          </View>
+        </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Ответственный за майнор</Text>
+          <Text style={styles.head}>{responsible}</Text>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.header}>Описание майнора</Text>
+          <Text style={styles.description}>{description}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={handleReadMore}
+          style={styles.reedMoreContainer}
+        >
+          <Text style={styles.readMoreText}>Читать дальше</Text>
+          <Image
+            style={styles.readMoreLink}
+            source={require("../../assets/png/readMoreLink2x.png")}
+          />
+        </TouchableOpacity>
       </View>
-      <View style={styles.mainButton}>
-        <MainButton title="Обменяться" onPress={() => showAlert(changePage)} />
-      </View>
-    </SafeAreaView>
-  );
-};
+    );
+  };
+
+  render() {
+    // <View style={styles.suitsContainer}>
+    //   <Text style={styles.suitsText}>{suitsText}</Text>
+    // </View>
+    return this.state.loading ? (
+      <Text> Loading ...</Text>
+    ) : (
+      <SafeAreaView style={styles.safeArea}>
+        {this.renderContent()}
+        <View style={styles.mainButton}>
+          <MainButton
+            title="Обменяться"
+            onPress={() => showAlert(changePage)}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
+
+ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Все объявления",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"menu"}
+        onPress={() => navigation.push("Settings")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 const styles = StyleSheet.create({
   safeArea: {

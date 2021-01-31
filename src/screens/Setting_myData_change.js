@@ -6,6 +6,9 @@ import FullInfoInput from "../components/FullInfoInput";
 import Navbar from "../components/Navbar";
 import Line from "../components/Line";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
 import LargeInput from "../components/LargeInput___RESTILINGfromLera";
 
 export default class Setting_sosialNetworcs_view extends React.Component {
@@ -16,14 +19,6 @@ export default class Setting_sosialNetworcs_view extends React.Component {
   render() {
     return (
       <View style={styles.itemsBody}>
-        <Navbar
-          title={"Мои данные"}
-          backTitle={"Назад"}
-          changeTitle={"Готово"}
-          handleBack={() => this.props.changePage(2.1)}
-          handleChange={() => this.props.changePage(2.1)}
-        />
-
         <ScrollView style={styles.itemsCollection}>
           <LargeInput
             lableText={"Фамилия"}
@@ -60,11 +55,40 @@ export default class Setting_sosialNetworcs_view extends React.Component {
             setText={() => console.log("value")}
             value={"Театр с нуля"}
           />
+          <LargeInput
+            lableText={"VK"}
+            setText={() => console.log("value")}
+            value={"lera_leo"}
+          />
+          <Line />
+          <LargeInput
+            lableText={"Facebook"}
+            setText={() => console.log("value")}
+          />
+          <Line />
+          <LargeInput
+            lableText={"Telegram"}
+            setText={() => console.log("value")}
+            value={"@ALeo75C"}
+          />
         </ScrollView>
       </View>
     );
   }
 }
+
+Setting_sosialNetworcs_view.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Мои данные",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"checkmark-sharp"}
+        onPress={() => navigation.navigate("PersonData")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 // <Text style={styles.caption}>
 //   Ты можешь поменять информацию о своих социальных сетях, если при

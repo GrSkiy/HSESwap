@@ -10,70 +10,94 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import Navbar from "../components/Navbar";
+
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
 
 export default class MinorScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { counter: 0 };
+    this.state = { loading: true };
   }
 
-  render() {
+  async componentDidMount() {
+    const url = this.props.navigation.getParam("url");
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+    console.log(this.state.data);
+  }
+
+  renderContent = () => {
     let {
       handleReadMore,
       name,
       credits,
       adress,
-      head,
-      description,
-    } = this.props;
-
+      responsible,
+      minorDescription,
+    } = this.state.data;
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <Navbar
-          title={"Все майноры"}
-          backTitle={"Назад"}
-          changeTitle={"         "}
-          handleBack={() => this.props.changePage(2.3)}
-        />
-        <View style={styles.safeAreaContainer}>
-          <View style={styles.container}>
-            <Text style={styles.headerMinor}>Название майнора</Text>
-            <Text style={styles.minorName}>{name}</Text>
-          </View>
-          <View style={styles.creditAdressContainer}>
-            <View style={styles.creditsContainer}>
-              <Text style={styles.headerCredits}>Кредиты</Text>
-              <Text style={styles.credits}>{credits}</Text>
-            </View>
-            <View style={styles.adressContainer}>
-              <Text style={styles.header}>Адрес</Text>
-              <Text style={styles.adress}>{adress}</Text>
-            </View>
-          </View>
-          <View style={styles.container}>
-            <Text style={styles.header}>Ответственный за майнор</Text>
-            <Text style={styles.head}>{head}</Text>
-          </View>
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.header}>Описание майнора</Text>
-            <Text style={styles.description}>{description}</Text>
-          </View>
-          <TouchableOpacity
-            onPress={handleReadMore}
-            style={styles.reedMoreContainer}
-          >
-            <Text style={styles.readMoreText}>Читать дальше</Text>
-            <Image
-              style={styles.readMoreLink}
-              source={require("../../assets/png/readMoreLink2x.png")}
-            />
-          </TouchableOpacity>
+      <View style={styles.safeAreaContainer}>
+        <View style={styles.container}>
+          <Text style={styles.headerMinor}>Название майнора</Text>
+          <Text style={styles.minorName}>{name}</Text>
         </View>
+        <View style={styles.creditAdressContainer}>
+          <View style={styles.creditsContainer}>
+            <Text style={styles.headerCredits}>Кредиты</Text>
+            <Text style={styles.credits}>{credits}</Text>
+          </View>
+          <View style={styles.adressContainer}>
+            <Text style={styles.header}>Адрес</Text>
+            <Text style={styles.adress}>{adress}</Text>
+          </View>
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.header}>Ответственный за майнор</Text>
+          <Text style={styles.head}>{responsible}</Text>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.header}>Описание майнора</Text>
+          <Text style={styles.description}>{minorDescription}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => console.log(";handleReadMore")}
+          style={styles.reedMoreContainer}
+        >
+          <Text style={styles.readMoreText}>Читать дальше</Text>
+          <Image
+            style={styles.readMoreLink}
+            source={require("../../assets/png/readMoreLink2x.png")}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  render() {
+    return this.state.loading ? (
+      <Text> Loading ...</Text>
+    ) : (
+      <SafeAreaView style={styles.safeArea}>
+        {this.renderContent()}
       </SafeAreaView>
     );
   }
 }
+
+MinorScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Все майноры",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"filter"}
+        onPress={() => navigation.push("Filter")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 const styles = StyleSheet.create({
   container: {

@@ -30,24 +30,7 @@ export default class Setting_sosialNetworcs_view extends React.Component {
           handleBack={() => this.props.changePage(2.1)}
           handleChange={() => this.props.changePage(2.1)}
         />
-        <View style={styles.itemsCollection}>
-          <LargeInput
-            lableText={"VK"}
-            setText={() => console.log("value")}
-            value={"lera_leo"}
-          />
-          <Line />
-          <LargeInput
-            lableText={"Facebook"}
-            setText={() => console.log("value")}
-          />
-          <Line />
-          <LargeInput
-            lableText={"Telegram"}
-            setText={() => console.log("value")}
-            value={"@ALeo75C"}
-          />
-        </View>
+        <View style={styles.itemsCollection}></View>
       </View>
     );
   }

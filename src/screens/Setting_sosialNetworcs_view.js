@@ -28,11 +28,7 @@ export default class Setting_sosialNetworcs_view extends React.Component {
           handleBack={() => this.props.changePage(2)}
           handleChange={() => this.props.changePage(2.21)}
         />
-        <View style={styles.itemsCollection}>
-          <FullInfoInput title={"VK"} content={"@lera_leo"} />
-          <FullInfoInput title={"Facebook"} content={"Лера Инсафутдинова"} />
-          <FullInfoInput title={"Telegram"} content={"@ALeo75C"} />
-        </View>
+        <View style={styles.itemsCollection}></View>
         <Text style={styles.caption}>
           Ты можешь поменять информацию о своих социальных сетях, если при
           регистрации допустил ошибку. Все изменения будут сохранены.

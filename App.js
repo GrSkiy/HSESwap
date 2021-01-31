@@ -1,32 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Image,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { AppLoading } from "expo";
-
-import MainScreen from "./src/screens/MainScreen";
-import MenuScreen from "./src/screens/MenuScreen";
-
-import LogInScreen from "./src/screens/LogInScreen";
-import SignInScreen from "./src/screens/SignInScreen";
-import EmailVerificationScreen from "./src/screens/EmailVerificationScreen";
-import FiltersScreen from "./src/screens/FiltersScreen";
-
-import SettingsScreen from "./src/screens/SettingsScreen";
-import Setting_myData_view from "./src/screens/Setting_myData_view";
-import Setting_myData_change from "./src/screens/Setting_myData_change";
-import Setting_sosialNetworcs_view from "./src/screens/Setting_sosialNetworcs_view";
-import Setting_sosialNetworcs_change from "./src/screens/Setting_sosialNetworcs_change";
-import AllMinorsScreen from "./src/screens/AllMinorsScreen";
-
-import MinorScreen from "./src/screens/MinorScreen";
-import ExchangeDescriptionScreen from "./src/screens/ExchangeDescriptionScreen";
-import SuccessExchangeScreen from "./src/screens/SuccessExchangeScreen";
+import { AppNavigation } from "./src/navigation/AppNavigation";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -37,9 +12,9 @@ export default class App extends React.Component {
     };
   }
 
-  changePage = (page) => {
-    this.setState({ pageId: page });
-  };
+  // changePage = (page) => {
+  //   this.setState({ pageId: page });
+  // };
 
   renderPage = () => {
     const { pageId } = this.state;
@@ -59,12 +34,12 @@ export default class App extends React.Component {
       return <Setting_sosialNetworcs_change changePage={this.changePage} />;
     } else if (pageId === 2.3) {
       return <AllMinorsScreen changePage={this.changePage} />;
-      // } else if (pageId === 2.4) {
-      //   return <AllMinorsScreen changePage={this.changePage} />;
-      // } else if (pageId === 2.5) {
-      //   return <AllMinorsScreen changePage={this.changePage} />;
-      // } else if (pageId === 3) {
-      //   return <AllMinorsScreen changePage={this.changePage} />;
+    } else if (pageId === 2.4) {
+      return <AllMinorsScreen changePage={this.changePage} />;
+    } else if (pageId === 2.5) {
+      return <AllMinorsScreen changePage={this.changePage} />;
+    } else if (pageId === 3) {
+      return <AllMinorsScreen changePage={this.changePage} />;
     } else if (pageId === 3) {
       return (
         <ExchangeDescriptionScreen
@@ -115,10 +90,11 @@ export default class App extends React.Component {
   };
 
   render() {
+    // {this.renderPage()}
     return (
-      <SafeAreaView style={styles.appContainer}>
-        {this.renderPage()}
-      </SafeAreaView>
+      <View style={styles.appContainer}>
+        <AppNavigation />
+      </View>
     );
   }
 }
@@ -126,5 +102,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   appContainer: {
     height: "100%",
+    backgroundColor: "#fff",
   },
 });

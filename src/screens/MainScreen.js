@@ -8,231 +8,92 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  Platform,
 } from "react-native";
+
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
 
 import Card from "../components/Card";
 
 import { GetExchangeMinors, MyContext, info } from "../context/controller";
 
-// export default class MainScreen extends React.Component {
-// static contextType = MyContext;
+class MainScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       minors: [
-//         {
-//           city: "Москва",
-//           year: "2020",
-//           title: "Театр с нуля",
-//           adres: "Старая Басманная 11",
-//           credits: "5",
-//           handleBack: () => this.props.changePage(8),
-//           exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
-//         },
-//         {
-//           city: "Москва",
-//           year: "2020",
-//           title: "Биоинформатика",
-//           adres: "Старая Басманная 11",
-//           credits: "5",
-//           handleBack: () => this.props.changePage(3),
-//           exchangeMinors: ["Театр с нуля", "Психология", "Биология", "Азия"],
-//         },
-//         {
-//           city: "Москва",
-//           year: "2020",
-//           title: "Психология",
-//           adres: "Старая Басманная 11",
-//           credits: "5",
-//           handleBack: () => this.props.changePage(3),
-//           exchangeMinors: [
-//             "Биоинформатика",
-//             "Театр с нуля",
-//             "Биология",
-//             "Азия",
-//           ],
-//         },
-//         {
-//           city: "Москва",
-//           year: "2020",
-//           title: "Биология",
-//           adres: "Старая Басманная 11",
-//           credits: "5",
-//           handleBack: () => this.props.changePage(3),
-//           exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
-//         },
-//         {
-//           city: "Москва",
-//           year: "2020",
-//           title: "Азия",
-//           adres: "Старая Басманная 11",
-//           credits: "5",
-//           handleBack: () => this.props.changePage(3),
-//           exchangeMinors: [
-//             "Биоинформатика",
-//             "Психология",
-//             "Биология",
-//             "Театр с нуля",
-//           ],
-//         },
-//       ],
-//     };
-//   }
-//
-//   renderCards = () => {
-//     let cardsItems = [];
-//     this.state.minors.forEach((minor, i) => {
-//       cardsItems.push(
-//         <Card
-//           city={minor.city}
-//           year={minor.year}
-//           title={minor.title}
-//           adres={minor.adres}
-//           credits={minor.credits}
-//           exchangeMinors={minor.exchangeMinors}
-//           handleBack={minor.handleBack}
-//           key={i}
-//         />
-//       );
-//     });
-//     return cardsItems;
-//   };
-//
-//   render() {
-//     console.log(MyContext);
-//
-//     // <MainState />
-//     return (
-//       <View>
-//         <MainState />
-//         {console.log(MyContext.Provider)}
-//         <View style={styles.header}>
-//           <Text style={styles.h1}>Minors for you</Text>
-//           <TouchableOpacity
-//             onPress={() => this.props.changePage(1)}
-//             activeOpacity={0.5}
-//           >
-//             <Image
-//               style={styles.icon}
-//               source={require("../../assets/hamburger.png")}
-//             />
-//           </TouchableOpacity>
-//         </View>
-//         <ScrollView contentContainerStyle={styles.list}>
-//           {this.renderCards()}
-//         </ScrollView>
-//       </View>
-//     );
-//   }
-// }
+    this.state = {
+      loading: true,
+    };
+  }
 
-const renderCards = (minorsList) => {
-  let cardsItems = [];
-  minorsList.forEach((minor, i) => {
-    cardsItems.push(
-      <Card
-        city={minor.city}
-        year={minor.year}
-        title={minor.title}
-        adres={minor.adres}
-        credits={minor.credits}
-        exchangeMinors={minor.exchangeMinors}
-        handleBack={minor.handleBack}
-        key={i}
-      />
-    );
-  });
-  return cardsItems;
-};
+  async componentDidMount() {
+    const url = "http://localhost:3000/api/v1/exchange_minors";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+  }
 
-const MainScreen = (props) => {
-  const [minors] = useState([
-    {
-      city: "Москва",
-      year: "2020",
-      title: "Театр с нуля",
-      adres: "Старая Басманная 11",
-      credits: "5",
-      handleBack: () => props.changePage(8),
-      exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
-    },
-    {
-      city: "Москва",
-      year: "2020",
-      title: "Биоинформатика",
-      adres: "Старая Басманная 11",
-      credits: "5",
-      handleBack: () => props.changePage(3),
-      exchangeMinors: ["Театр с нуля", "Психология", "Биология", "Азия"],
-    },
-    {
-      city: "Москва",
-      year: "2020",
-      title: "Психология",
-      adres: "Старая Басманная 11",
-      credits: "5",
-      handleBack: () => props.changePage(3),
-      exchangeMinors: ["Биоинформатика", "Театр с нуля", "Биология", "Азия"],
-    },
-    {
-      city: "Москва",
-      year: "2020",
-      title: "Биология",
-      adres: "Старая Басманная 11",
-      credits: "5",
-      handleBack: () => props.changePage(3),
-      exchangeMinors: ["Биоинформатика", "Психология", "Биология", "Азия"],
-    },
-    {
-      city: "Москва",
-      year: "2020",
-      title: "Азия",
-      adres: "Старая Басманная 11",
-      credits: "5",
-      handleBack: () => props.changePage(3),
-      exchangeMinors: [
-        "Биоинформатика",
-        "Психология",
-        "Биология",
-        "Театр с нуля",
-      ],
-    },
-  ]);
-  const { provider } = useContext(MyContext);
+  renderCards = (minorsList) => {
+    let cardsItems = [];
+    minorsList.forEach((minor, i) => {
+      cardsItems.push(
+        <Card
+          city={minor.city}
+          year={minor.year}
+          title={minor.minor}
+          adres={minor.adress}
+          credits={minor.credits}
+          exchangeMinors={minor.whishedMinors}
+          handleBack={() =>
+            this.props.navigation.navigate("ExchangeCard", {
+              url: minor.url,
+            })
+          }
+          key={i}
+        />
+      );
+    });
+    return cardsItems;
+  };
 
-  return (
-    <View>
-      <GetExchangeMinors />
-      <View style={styles.header}>
-        <Text style={styles.h1}>Minors for you</Text>
-        <TouchableOpacity
-          onPress={() => props.changePage(1)}
-          activeOpacity={0.5}
-        >
-          <Image
-            style={styles.icon}
-            source={require("../../assets/hamburger.png")}
-          />
-        </TouchableOpacity>
-      </View>
-      {console.log(MyContext)}
+  render() {
+    return this.state.loading ? (
+      <Text> Loading ...</Text>
+    ) : (
       <ScrollView contentContainerStyle={styles.list}>
-        {renderCards(minors)}
+        {this.renderCards(this.state.data)}
       </ScrollView>
-    </View>
-  );
-};
+    );
+  }
+}
+
+MainScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Все объявления",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"menu"}
+        onPress={() => navigation.push("Settings")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 export default MainScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingRight: 20,
+    marginTop: 20,
+    marginLeft: 20,
+  },
   icon: {
     width: 30,
     height: 30,
   },
   list: {
-    backgroundColor: "#fff",
     alignItems: "center",
     paddingTop: 20,
     paddingBottom: 60,

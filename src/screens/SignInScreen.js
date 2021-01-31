@@ -19,11 +19,6 @@ const SignInScreen = (props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.safeAreaContainer}>
-        <Navbar
-          style={styles.navbarAdd}
-          title={"Регистрация"}
-          handleBack={() => props.changePage(3)}
-        />
         <View style={styles.inputContainer}>
           <LargeInput
             style={styles.signInInput}

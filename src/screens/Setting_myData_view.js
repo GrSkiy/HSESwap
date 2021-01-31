@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
 import FullInfoInput from "../components/FullInfoInput";
-import Navbar from "../components/Navbar";
 import Line from "../components/Line";
 
 export default class Setting_myData_view extends React.Component {
@@ -21,13 +23,6 @@ export default class Setting_myData_view extends React.Component {
   render() {
     return (
       <View style={styles.itemsBody}>
-        <Navbar
-          title={"Мои данные"}
-          backTitle={"Назад"}
-          changeTitle={"Изменить"}
-          handleBack={() => this.props.changePage(2)}
-          handleChange={() => this.props.changePage(2.11)}
-        />
         <View style={styles.itemsCollection}>
           <FullInfoInput title={"Фамилия"} content={"Салаватовна"} />
           <FullInfoInput title={"Имя"} content={"Валерия"} />
@@ -38,6 +33,10 @@ export default class Setting_myData_view extends React.Component {
           />
           <FullInfoInput title={"Мой кампус"} content={"Москва"} />
           <FullInfoInput title={"Мой майнор"} content={"Социология"} />
+
+          <FullInfoInput title={"VK"} content={"@lera_leo"} />
+          <FullInfoInput title={"Facebook"} content={"Лера Инсафутдинова"} />
+          <FullInfoInput title={"Telegram"} content={"@ALeo75C"} />
         </View>
         <Text style={styles.caption}>
           Ты можешь поменять информацию о себе, если при регистрации допустил
@@ -47,6 +46,19 @@ export default class Setting_myData_view extends React.Component {
     );
   }
 }
+
+Setting_myData_view.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Личные настройки",
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      <Item
+        title="Toggle Drawer"
+        iconName={"pencil"}
+        onPress={() => navigation.push("EditPersonData")}
+      />
+    </HeaderButtons>
+  ),
+});
 
 const styles = StyleSheet.create({
   itemsBody: {

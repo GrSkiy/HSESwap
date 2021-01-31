@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
 import SettingPoint from "../components/SettingPoint";
 import Navbar from "../components/Navbar";
 import Line from "../components/Line";
@@ -18,41 +21,27 @@ export default class SettingsScreen extends React.Component {
     super(props);
   }
 
+  // <SettingPoint
+  //   title={"Изменить настройки фильтров"}
+  //   changePage={() => this.props.navigation.push("Settings")}
+  // />
   render() {
     return (
       <View style={styles.settingBody}>
-        <Navbar
-          title={"Настройки"}
-          backTitle={"Назад"}
-          changeTitle={"            "}
-          handleBack={() => this.props.changePage(1)}
-        />
         <View style={styles.settingBody}>
           <View style={styles.pointsCollection}>
-            <SettingPoint
-              title={"Открыть мое объявление"}
-              changePage={this.props.changePage}
-              toggle={true}
-            />
+            <SettingPoint title={"Открыть мое объявление"} toggle={true} />
             <SettingPoint
               title={"Мои данные"}
-              changePage={() => this.props.changePage(2.1)}
-            />
-            <SettingPoint
-              title={"Социальные сети"}
-              changePage={() => this.props.changePage(2.2)}
+              changePage={() => this.props.navigation.push("PersonData")}
             />
             <SettingPoint
               title={"Список всех майноров"}
-              changePage={() => this.props.changePage(2.3)}
-            />
-            <SettingPoint
-              title={"Изменить настройки фильтров"}
-              changePage={() => this.props.changePage(2)}
+              changePage={() => this.props.navigation.push("AllMinors")}
             />
             <SettingPoint
               title={"Мои обмены"}
-              changePage={() => this.props.changePage(2)}
+              changePage={() => this.props.navigation.push("Settings")}
             />
             <Line />
           </View>
@@ -70,10 +59,13 @@ export default class SettingsScreen extends React.Component {
   }
 }
 
+SettingsScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Настройки",
+});
+
 const styles = StyleSheet.create({
   settingBody: {
     justifyContent: "space-between",
-    marginTop: 20,
     width: "100%",
     height: "100%",
   },
