@@ -9,13 +9,10 @@ import {
   Button,
   TouchableOpacity,
   Platform,
-  Alert,
 } from "react-native";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { AppHeaderIcon } from "../components/AppHeaderIcon";
-
-import { createStackNavigator } from "react-navigation-stack";
 
 import Card from "../components/Card";
 
@@ -60,45 +57,20 @@ class MainScreen extends React.Component {
     return cardsItems;
   };
 
-  createTwoButtonAlert = () =>
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ],
-      { cancelable: false }
-    );
-
   render() {
-    // <Text> Loading ...</Text>
     return this.state.loading ? (
-      <Text onPress={this.createTwoButtonAlert}>ALERT</Text>
+      <Text> Loading ...</Text>
     ) : (
       <ScrollView contentContainerStyle={styles.list}>
         {this.renderCards(this.state.data)}
-        <TouchableOpacity></TouchableOpacity>
       </ScrollView>
     );
   }
 }
 
 MainScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Все объявления",
-  headerRight: (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={"md-options-outline"}
-        onPress={() => navigation.push("Filters")}
-      />
-    </HeaderButtons>
-  ),
+  headerTitle: "Для тебя",
+
   headerLeft: (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item

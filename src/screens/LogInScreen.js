@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -15,13 +15,23 @@ import LinkButton from "../components/LinkButton";
 import MainButton from "../components/MainButton";
 import LargeInput from "../components/LargeInput";
 
-export default function LogInScreen({ mainButtonHandle }) {
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
+export default function LogInScreen({ mainButtonHandle, navigation }) {
+  const [email, setEmail] = useState("");
+
+  const login = async () => {
+    await fetch(`http://localhost:3000/api/v1/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    return navigation.push("EmailVerification");
+  };
+
   return (
     <View style={styles.safeAreaContainer}>
-      <View style={styles.navbarContainer}>
-        <Navbar title="Вход" />
-      </View>
-
       <View style={styles.containerLogIn}>
         <View style={styles.actionContainer}>
           <Text style={styles.title}>
@@ -31,21 +41,20 @@ export default function LogInScreen({ mainButtonHandle }) {
           <LargeInput
             lableText="Почта hse"
             placeholder="Почта hse"
-            setText={() => Alert.alert("Simple Button pressed")}
-          />
-
-          <LinkButton
-            title="Зарегистрироваться"
-            onPress={() => Alert.alert("Simple Button pressed")}
+            setText={setEmail}
           />
         </View>
         <View style={styles.mainButton}>
-          <MainButton title="Войти" onPress={mainButtonHandle} />
+          <MainButton title="Войти" onPress={login} />
         </View>
       </View>
     </View>
   );
 }
+
+LogInScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Вход",
+});
 
 const styles = StyleSheet.create({
   containerLogIn: {

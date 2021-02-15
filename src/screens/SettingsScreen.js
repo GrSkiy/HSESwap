@@ -13,27 +13,55 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { AppHeaderIcon } from "../components/AppHeaderIcon";
 
 import SettingPoint from "../components/SettingPoint";
-import Navbar from "../components/Navbar";
+import MainButton from "../components/MainButton";
 import Line from "../components/Line";
 
 export default class SettingsScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      loading: true,
+    };
   }
 
   // <SettingPoint
   //   title={"Изменить настройки фильтров"}
   //   changePage={() => this.props.navigation.push("Settings")}
   // />
-  render() {
+
+  async componentDidMount() {
+    const url = "http://localhost:3000/api/v1/profiles";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+  }
+
+  renderProfileData = (data) => {
+    console.log(data);
     return (
       <View style={styles.settingBody}>
+        <View>
+          <Text>{data.first_name}</Text>
+          <Text>{data.last_name}</Text>
+          <Text>{data.minor}</Text>
+          <Text>{data.year}</Text>
+          <Text>{data.whished_minors}</Text>
+          <SettingPoint
+            title={"Открыть мое объявление"}
+            toggle={data.isPublished}
+          />
+        </View>
+
         <View style={styles.settingBody}>
           <View style={styles.pointsCollection}>
-            <SettingPoint title={"Открыть мое объявление"} toggle={true} />
             <SettingPoint
               title={"Мои данные"}
-              changePage={() => this.props.navigation.push("PersonData")}
+              changePage={() =>
+                this.props.navigation.push("PersonData", {
+                  data: data,
+                })
+              }
             />
             <SettingPoint
               title={"Список всех майноров"}
@@ -41,7 +69,7 @@ export default class SettingsScreen extends React.Component {
             />
             <SettingPoint
               title={"Мои обмены"}
-              changePage={() => this.props.navigation.push("Settings")}
+              changePage={() => this.props.navigation.push("UsersExchanges")}
             />
             <Line />
           </View>
@@ -54,6 +82,23 @@ export default class SettingsScreen extends React.Component {
             <Line />
           </View>
         </View>
+      </View>
+    );
+  };
+
+  render() {
+    return this.state.loading ? (
+      <MainButton
+        onPress={() => this.props.navigation.push("login")}
+        title={"Войти"}
+      />
+    ) : (
+      <View contentContainerStyle={styles.list}>
+        <MainButton
+          onPress={() => this.props.navigation.push("login")}
+          title={"Войти"}
+        />
+        {this.renderProfileData(this.state.data)}
       </View>
     );
   }

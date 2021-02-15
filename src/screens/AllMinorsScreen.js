@@ -80,8 +80,8 @@ AllMinorsScreen.navigationOptions = ({ navigation }) => ({
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Toggle Drawer"
-        iconName={"filter"}
-        onPress={() => navigation.push("Filter")}
+        iconName={"md-options-outline"}
+        onPress={() => navigation.push("Filters")}
       />
     </HeaderButtons>
   ),

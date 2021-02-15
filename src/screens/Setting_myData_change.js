@@ -11,10 +11,19 @@ import { AppHeaderIcon } from "../components/AppHeaderIcon";
 
 import LargeInput from "../components/LargeInput___RESTILINGfromLera";
 
-export default class Setting_sosialNetworcs_view extends React.Component {
+export default class Setting_myData_view extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      data: this.props.navigation.getParam("data"),
+    };
   }
+
+  changeDate = (field, newData) => {
+    this.setState.data((field = newData));
+    console.log(this.state);
+  };
 
   render() {
     return (
@@ -22,69 +31,58 @@ export default class Setting_sosialNetworcs_view extends React.Component {
         <ScrollView style={styles.itemsCollection}>
           <LargeInput
             lableText={"Фамилия"}
-            setText={() => console.log("value")}
-            value={"Салаватовна"}
+            setText={() => this.changeState(last_name, value)}
+            value={this.state.data.last_name}
+            field={"last_name"}
+          />
+          <Line />
+          <LargeInput
+            lableText={"Имя"}
+            setText={() => this.changeState(first_name, value)}
+            value={this.state.data.first_name}
           />
           <Line />
           <LargeInput
             lableText={"Отчество"}
-            setText={() => console.log("value")}
+            setText={() => this.changeState(middle_name, value)}
+            value={this.state.data.middle_name}
           />
           <Line />
           <LargeInput
             lableText={"Почта HSE"}
-            setText={() => console.log("value")}
-            value={"vsinsafutdinova@edu.hse.ru"}
+            setText={() => this.changeState(email, value)}
+            value={this.state.data.email}
           />
           <Line />
 
-          <LargeInput
-            lableText={"Telegram"}
-            setText={() => console.log("value")}
-            value={"@ALeo75C"}
-          />
           <Line />
           <LargeInput
             lableText={"Мой кампус"}
-            setText={() => console.log("value")}
-            value={"Москва"}
+            setText={() => this.changeState(city, value)}
+            value={this.state.data.city}
           />
           <Line />
           <LargeInput
             lableText={"Мой майнор"}
-            setText={() => console.log("value")}
-            value={"Театр с нуля"}
-          />
-          <LargeInput
-            lableText={"VK"}
-            setText={() => console.log("value")}
-            value={"lera_leo"}
+            setText={() => this.changeState(minor, value)}
+            value={this.state.data.minor}
           />
           <Line />
-          <LargeInput
-            lableText={"Facebook"}
-            setText={() => console.log("value")}
-          />
-          <Line />
-          <LargeInput
-            lableText={"Telegram"}
-            setText={() => console.log("value")}
-            value={"@ALeo75C"}
-          />
         </ScrollView>
       </View>
     );
   }
 }
 
-Setting_sosialNetworcs_view.navigationOptions = ({ navigation }) => ({
+Setting_myData_view.navigationOptions = ({ navigation }) => ({
   headerTitle: "Мои данные",
   headerRight: (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Toggle Drawer"
         iconName={"checkmark-sharp"}
-        onPress={() => navigation.navigate("PersonData")}
+        // onPress={() => navigation.navigate("PersonData")}
+        onPress={() => console.log(Setting_myData_view.state)}
       />
     </HeaderButtons>
   ),

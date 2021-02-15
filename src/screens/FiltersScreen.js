@@ -17,6 +17,25 @@ import MediumSelect from "../components/MediumSelect";
 import LargeSelect from "../components/LargeSelect";
 
 export default function FiltersScreen() {
+  // <View style={styles.changeMinor}>
+  //   <LargeSelect
+  //     lableText="Твой майнор"
+  //     placeholder="Твой майнор"
+  //     handlePress={() => {
+  //       console.log(1);
+  //     }}
+  //   />
+  // </View>
+
+  // <View style={styles.changeMinor}>
+  //   <LargeSelect
+  //     lableText="Куда хочешь?"
+  //     placeholder="Выбери свой майнор"
+  //     handlePress={() => {
+  //       console.log(1);
+  //     }}
+  //   />
+  // </View>
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.safeAreaContainer}>
@@ -27,7 +46,6 @@ export default function FiltersScreen() {
           />
         </View>
 
-        <Text style={styles.pageTag}>Фильтры</Text>
         <View style={styles.filterMainContainer}>
           <View style={styles.filterSubContainer}>
             <View style={styles.viewContainer}>
@@ -48,25 +66,6 @@ export default function FiltersScreen() {
                 />
               </View>
             </View>
-            <View style={styles.changeMinor}>
-              <LargeSelect
-                lableText="Твой майнор"
-                placeholder="Твой майнор"
-                handlePress={() => {
-                  console.log(1);
-                }}
-              />
-            </View>
-
-            <View style={styles.changeMinor}>
-              <LargeSelect
-                lableText="Куда хочешь?"
-                placeholder="Выбери свой майнор"
-                handlePress={() => {
-                  console.log(1);
-                }}
-              />
-            </View>
           </View>
 
           <View style={styles.mainButton}>
@@ -83,16 +82,16 @@ export default function FiltersScreen() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    marginTop: Constants.statusBarHeight,
-    height: "100%",
+    // marginTop: Constants.statusBarHeight,
+    // height: "100%",
   },
   safeAreaContainer: {
     paddingLeft: 20,
     paddingRight: 20,
-    height: "100%",
+    // height: "100%",
     // display: "flex",
     // alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "flex-end",
     paddingBottom: Platform.OS === "ios" ? 80 : 44,
   },
 

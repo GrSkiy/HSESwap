@@ -2,9 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
 import ExchangeCard from "../components/ExchangeCard";
 import MainButton from "../components/MainButton";
-import Navbar from "../components/Navbar";
 
 export default class SuccessExchangeScreen extends React.Component {
   constructor(props) {
@@ -43,12 +45,6 @@ export default class SuccessExchangeScreen extends React.Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Navbar
-          title={"Успешный обмен"}
-          backTitle={"Назад"}
-          changeTitle={"         "}
-          handleBack={() => this.props.changePage(0)}
-        />
         <View style={styles.cardsCollection}>
           <ExchangeCard
             title="Текущий манор"
@@ -91,7 +87,9 @@ export default class SuccessExchangeScreen extends React.Component {
           </View>
         </View>
         <MainButton
-          onPress={() => this.unSucsessExchange(this.props.changePage)}
+          onPress={() =>
+            this.props.navigation.push("SucsessExchangeDescription")
+          }
           title={"Обменяться"}
         />
       </View>
@@ -99,6 +97,10 @@ export default class SuccessExchangeScreen extends React.Component {
   }
 }
 // <MainButton onPress={this.sucsessExchange} title={"Обменяться"} />
+
+SuccessExchangeScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Успешный обмен",
+});
 
 const styles = StyleSheet.create({
   cardsCollection: {

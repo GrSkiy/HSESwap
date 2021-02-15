@@ -121,7 +121,7 @@ class ExchangeDescriptionScreen extends React.Component {
         <View style={styles.mainButton}>
           <MainButton
             title="Обменяться"
-            onPress={() => showAlert(changePage)}
+            onPress={() => this.props.navigation.push("SuccessExchange")}
           />
         </View>
       </SafeAreaView>
@@ -130,16 +130,7 @@ class ExchangeDescriptionScreen extends React.Component {
 }
 
 ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Все объявления",
-  headerRight: (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={"menu"}
-        onPress={() => navigation.push("Settings")}
-      />
-    </HeaderButtons>
-  ),
+  headerTitle: "Объявление обмена",
 });
 
 const styles = StyleSheet.create({

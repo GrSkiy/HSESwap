@@ -21,11 +21,18 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 
-export default function EmailVerificationScreen({
+const getdata = async () => {
+  const url = "http://localhost:3000/api/v1/login";
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data);
+};
+
+const EmailVerificationScreen = ({
   mainButtonHandle,
   handleSendAgain,
-  changePage,
-}) {
+  navigation,
+}) => {
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -33,18 +40,13 @@ export default function EmailVerificationScreen({
     setValue,
   });
 
+  getdata();
+
   const CELL_COUNT = 4;
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.safeAreaContainer}>
-        <View style={styles.navbarContainer}>
-          <Navbar
-            style={styles.navbarAdd}
-            title={"Регистрация"}
-            handleBack={() => changePage(6)}
-          />
-        </View>
         <View style={styles.mainContainer}>
           <Text style={styles.title}>
             Мы отправили код на твою корпоративную почту
@@ -72,7 +74,9 @@ export default function EmailVerificationScreen({
             )}
           />
           <TouchableOpacity
-            onPress={handleSendAgain}
+            onPress={() =>
+              console.log("отправка на сервер запроса еще раз выслать код")
+            }
             style={styles.sendAgainContainer}
           >
             <Text style={styles.sendAgainTitle}>Отправить код еще раз</Text>
@@ -80,11 +84,15 @@ export default function EmailVerificationScreen({
         </View>
       </View>
       <View style={styles.mainButton}>
-        <MainButton title="Далее" onPress={() => changePage(0)} />
+        <MainButton title="Далее" onPress={() => navigation.navigate("Main")} />
       </View>
     </SafeAreaView>
   );
-}
+};
+
+EmailVerificationScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "Вход",
+});
 
 const styles = StyleSheet.create({
   root: { padding: 20, minHeight: 300 },
@@ -143,3 +151,5 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
 });
+
+export default EmailVerificationScreen;

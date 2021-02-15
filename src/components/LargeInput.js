@@ -7,6 +7,7 @@ export default function SmallNumberInput({
   placeholder,
   setText,
   style,
+  field,
 }) {
   return (
     <View style={(styles.container, style)}>
@@ -14,7 +15,7 @@ export default function SmallNumberInput({
       <View style={styles.componentsWhisIcon}>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => setText(value)}
+          onChangeText={(value) => setText(field, value)}
           // value={}
           placeholder={placeholder}
           placeholderTextColor="#979797"
