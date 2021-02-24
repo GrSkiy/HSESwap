@@ -25,6 +25,49 @@ export default function SmallNumberInput({
   );
 }
 
+// export default class Container extends Component {
+//   constructor(props) {
+//     super(props)
+//   }
+//
+//   handleOnChangeText (id, value) => {
+//     let nextSettings = []
+//
+//     this.state.settings.forEach(setting => {
+//       if (setting.name == id) {
+//         let nextSetting = {
+//           name: setting.name,
+//           value: value
+//         }
+//
+//         nextSettings.push(nextSetting)
+//       } else {
+//         nextSettings.push(setting)
+//       }
+//     })
+//
+//     this.setState({
+//       setting: nextSettings
+//     })
+//   }
+//
+//   render() {
+//     return <Button id={id} handleClick={this.handleClick} />
+//   }
+// }
+//
+// export default class Input extends PureComponent {
+//   constructor(props) {
+//     super(props)
+//   }
+//
+//   render() {
+//     const { id, text, handleOnChangeText } = this.props
+//
+//     return <input onChangeText={() => handleOnChangeText(id, value)} value={text} />
+//   }
+// }
+
 const styles = StyleSheet.create({
   input: {
     color: "#000",

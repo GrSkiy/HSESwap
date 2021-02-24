@@ -31,7 +31,7 @@ export default class SettingsScreen extends React.Component {
   // />
 
   async componentDidMount() {
-    const url = "http://localhost:3000/api/v1/profiles";
+    const url = "http://127.0.0.1:3000/api/v1/profiles";
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ data: data, loading: false });
