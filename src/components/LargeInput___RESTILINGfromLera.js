@@ -1,40 +1,30 @@
 import React from "react";
 import { StyleSheet, TextInput, Text, View } from "react-native";
 
-export default class SmallNumberInput extends React.Component {
+export default class LargeInput extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      value: props.value,
-    };
+    // this.state = {
+    //   value: props.value,
+    // };
   }
 
-  changeValue = (text) => {
-    this.setState({ value: text });
-  };
+  // changeValue = (text) => {
+  //   this.setState({ value: text });
+  // };
 
   isHeHaveInputValue = (props, value) => {
     let input;
     if (props.value) {
-      return (
-        <TextInput
-          style={styles.input}
-          // onChangeText={(value) => setText(value)}
-          onChangeText={this.changeValue}
-          value={value}
-          placeholder={props.placeholder}
-          placeholderTextColor="#979797"
-        />
-      );
     } else {
       return (
         <TextInput
           style={styles.input}
           // onChangeText={(value) => setText(value)}
-          onChangeText={this.changeValue}
+          onChangeText={this.props.setText}
           value={value}
-          placeholder={props.lableText}
+          placeholder={props.placeholder}
           placeholderTextColor="#979797"
         />
       );
@@ -43,11 +33,21 @@ export default class SmallNumberInput extends React.Component {
 
   //связать с данными, мол если что-то есть, то выводим значение
   render() {
+    // {this.isHeHaveInputValue(this.props, this.state.value)}
     return (
       <View style={styles.container}>
         <Text style={styles.lable}>{this.props.lableText}</Text>
         <View style={styles.componentsWhisIcon}>
-          {this.isHeHaveInputValue(this.props, this.state.value)}
+          <TextInput
+            style={styles.input}
+            // onChangeText={(value) => setText(value)}
+            onChangeText={(value) =>
+              this.props.setText(this.props.field, value)
+            }
+            value={this.props.value}
+            placeholder={this.props.placeholder}
+            placeholderTextColor="#979797"
+          />
         </View>
       </View>
     );
