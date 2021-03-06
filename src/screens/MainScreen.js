@@ -33,7 +33,7 @@ class MainScreen extends React.Component {
   }
 
   async componentDidMount() {
-    const url = 'http://127.0.0.1:3000/api/v1/exchange_minors'
+    const url = `http://127.0.0.1:3000/api/v1/exchange_minors?${authenticity_token}`
     const response = await fetch(url)
     const data = await response.json()
 
