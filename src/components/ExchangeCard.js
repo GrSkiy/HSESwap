@@ -11,7 +11,7 @@ export default class ExchangeCardCurrent extends React.Component {
       minorName,
       educationYear,
       credits,
-      minorAdress,
+      minorAddresss,
       title,
       isNewMinor,
     } = this.props;
@@ -30,7 +30,7 @@ export default class ExchangeCardCurrent extends React.Component {
           <Text style={styles.text}>{educationYear}</Text>
           <Text style={styles.text}>{credits}</Text>
         </View>
-        <Text style={styles.text}>{minorAdress}</Text>
+        <Text style={styles.text}>{minorAddresss}</Text>
       </View>
     );
   }

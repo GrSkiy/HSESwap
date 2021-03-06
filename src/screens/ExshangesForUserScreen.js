@@ -42,7 +42,7 @@ class MainScreen extends React.Component {
           city={minor.city}
           year={minor.year}
           title={minor.minor}
-          adres={minor.adress}
+          address={minor.address}
           credits={minor.credits}
           exchangeMinors={minor.whishedMinors}
           handleBack={() =>

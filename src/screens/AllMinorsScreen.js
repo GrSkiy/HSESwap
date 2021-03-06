@@ -46,7 +46,7 @@ export default class AllMinorsScreen extends React.Component {
             city={city.city}
             year={minor.year}
             title={minor.name}
-            adres={minor.adress}
+            address={minor.address}
             credits={minor.credits}
             handleBack={() =>
               this.props.navigation.navigate("Minor", {

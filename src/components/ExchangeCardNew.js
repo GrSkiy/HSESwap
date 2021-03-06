@@ -7,7 +7,7 @@ export default class ExchangeCardCurrent extends React.Component {
   }
 
   render() {
-    let { minorName, educationYear, credits, minorAdress } = this.props;
+    let { minorName, educationYear, credits, minorAddresss } = this.props;
 
     return (
       <View>
@@ -15,7 +15,7 @@ export default class ExchangeCardCurrent extends React.Component {
         <Text>{minorName}</Text>
         <Text>{educationYear}</Text>
         <Text>{credits}</Text>
-        <Text>{minorAdress}</Text>
+        <Text>{minorAddresss}</Text>
       </View>
     );
   }

@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  creditAdressContainer: {
+  creditAddresssContainer: {
     display: "flex",
     flexDirection: "row",
     marginBottom: 20,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
-  adressContainer: {
+  addressContainer: {
     marginLeft: 36,
   },
 });

@@ -33,7 +33,7 @@ export default class MinorScreen extends React.Component {
       handleReadMore,
       name,
       credits,
-      adress,
+      address,
       responsible,
       minorDescription,
     } = this.state.data;
@@ -43,14 +43,14 @@ export default class MinorScreen extends React.Component {
           <Text style={styles.headerMinor}>Название майнора</Text>
           <Text style={styles.minorName}>{name}</Text>
         </View>
-        <View style={styles.creditAdressContainer}>
+        <View style={styles.creditAddresssContainer}>
           <View style={styles.creditsContainer}>
             <Text style={styles.headerCredits}>Кредиты</Text>
             <Text style={styles.credits}>{credits}</Text>
           </View>
-          <View style={styles.adressContainer}>
+          <View style={styles.addressContainer}>
             <Text style={styles.header}>Адрес</Text>
-            <Text style={styles.adress}>{adress}</Text>
+            <Text style={styles.address}>{address}</Text>
           </View>
         </View>
         <View style={styles.container}>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  creditAdressContainer: {
+  creditAddresssContainer: {
     display: "flex",
     flexDirection: "row",
     marginBottom: 20,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
-  adressContainer: {
+  addressContainer: {
     marginLeft: 36,
   },
 });

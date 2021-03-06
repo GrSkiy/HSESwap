@@ -51,7 +51,7 @@ export default class SuccessExchangeScreen extends React.Component {
             minorName="Советская и постсоветская культура: политики, практики, конфликты"
             educationYear="2020 год набора"
             credits="25 кредитов"
-            minorAdress="Москва, ул. Старая Басманная д. 21/4, стр. 3"
+            minorAddresss="Москва, ул. Старая Басманная д. 21/4, стр. 3"
           />
           <View style={styles.arrowCollect}>
             <Image
@@ -68,7 +68,7 @@ export default class SuccessExchangeScreen extends React.Component {
             minorName="Биология"
             educationYear="2020 год набора"
             credits="25 кредитов"
-            minorAdress="Москва, ул. Старая Басманная д. 21/4, стр. 3"
+            minorAddresss="Москва, ул. Старая Басманная д. 21/4, стр. 3"
             isNewMinor={true}
           />
           <View style={styles.captionBody}>

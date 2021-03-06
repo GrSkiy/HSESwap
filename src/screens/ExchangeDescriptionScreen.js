@@ -77,14 +77,14 @@ class ExchangeDescriptionScreen extends React.Component {
           <Text style={styles.headerMinor}>Название майнора</Text>
           <Text style={styles.minorName}>{minor}</Text>
         </View>
-        <View style={styles.creditAdressContainer}>
+        <View style={styles.creditAddresssContainer}>
           <View style={styles.creditsContainer}>
             <Text style={styles.headerCredits}>Кредиты</Text>
             <Text style={styles.credits}>{credits}</Text>
           </View>
-          <View style={styles.adressContainer}>
+          <View style={styles.addressContainer}>
             <Text style={styles.header}>Адрес</Text>
-            <Text style={styles.adress}>{address}</Text>
+            <Text style={styles.address}>{address}</Text>
           </View>
         </View>
         <View style={styles.headerContainer}>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  creditAdressContainer: {
+  creditAddresssContainer: {
     display: "flex",
     flexDirection: "row",
     marginBottom: 20,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
-  adressContainer: {
+  addressContainer: {
     marginLeft: 36,
   },
 });

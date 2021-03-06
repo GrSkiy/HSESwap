@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,62 +7,85 @@ import {
   View,
   Alert,
   Platform,
-  Image,
-} from "react-native";
-import SmallNumberInput from "../components/SmallNumberInput";
-import MainButton from "../components/MainButton";
-import Constants from "expo-constants";
-import LargeSelect from "../components/LargeSelect";
+  Image
+} from 'react-native'
+import SmallNumberInput from '../components/SmallNumberInput'
+import MainButton from '../components/MainButton'
+import Constants from 'expo-constants'
+import LargeSelect from '../components/LargeSelect'
 
-import PickerDesign from "../components/Picker";
-import LargeInput from "../components/LargeInput";
+import PickerDesign from '../components/Picker'
+import LargeInput from '../components/LargeInput'
 
 export default class FiltersScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      loading: true,
-    };
+      loading: true
+    }
   }
 
   async componentDidMount() {
-    const url = "http://localhost:3000/api/v1/filters";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ data: data, loading: false });
-    console.log(this.state);
+    const url = 'http://localhost:3000/api/v1/filters'
+    const response = await fetch(url)
+    const data = await response.json()
+    this.setState({ data: data, loading: false })
+    console.log(this.state)
   }
 
   handleChange = (id, name, field) => {
-    let data = this.state;
-    console.log(id, name, field);
-    if (field == "year") {
-      data.data.filters_data.year = parseInt(name);
-    } else if (field == "city") {
-      data.data.filters_data.city_id = id + 1;
-      data.data.filters_data.city_name = name;
+    let data = this.state
+
+    console.log(id, name, field)
+
+    if (field == 'year') {
+      data.data.filters_data.year = parseInt(name)
+    } else if (field == 'city') {
+      data.data.filters_data.city_id = id + 1
+      data.data.filters_data.city_name = name
     }
-    this.setState(data);
-  };
+
+    this.setState(data)
+  }
 
   confirmation = async () => {
+    console.log(this.state)
+    const { filters_data, authenticity_token } = this.state.data
+    const { action, city_id, year, profile_id, url } = filters_data
+
+    console.log(filters_data)
+
     let data = {
-      action: this.state.data.filters_data.action,
+      action: action,
       filters_data: {
-        city_id: this.state.data.filters_data.city_id,
-        year: this.state.data.filters_data.year,
-        profile_id: this.state.data.filters_data.profile_id,
+        city_id: city_id,
+        year: year,
+        profile_id: profile_id
       },
-    };
-    console.log(data);
-    await fetch(this.state.data.filters_data.url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data }),
-    });
-    this.props.navigation.goBack();
-  };
+      authenticity_token: authenticity_token
+    }
+
+    console.log(data)
+
+    const myHeaders = new Headers()
+    myHeaders.append('Access-Control-Request-Method', 'POST')
+
+    await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': ''
+      },
+      body: JSON.stringify(data)
+    })
+
+    this.props.navigation.goBack()
+  }
 
   renderInputs = () => {
     return (
@@ -95,75 +118,75 @@ export default class FiltersScreen extends React.Component {
           </View>
         </View>
       </SafeAreaView>
-    );
-  };
+    )
+  }
 
   render() {
     return this.state.loading ? (
       <Text>Loading...</Text>
     ) : (
       <View style={styles.opacityLayer}>{this.renderInputs()}</View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   opacityLayer: {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    height: "100%",
-    justifyContent: "flex-end",
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    height: '100%',
+    justifyContent: 'flex-end'
   },
   safeAreaContainer: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     paddingLeft: 20,
     paddingRight: 20,
     // height: "100%",
     // display: "flex",
     // alignItems: "center",
-    justifyContent: "flex-end",
-    paddingBottom: Platform.OS === "ios" ? 80 : 44,
+    justifyContent: 'flex-end',
+    paddingBottom: Platform.OS === 'ios' ? 80 : 44
   },
 
   viewContainer: {
     marginTop: 20,
-    flexDirection: "row",
-    marginBottom: 20,
+    flexDirection: 'row',
+    marginBottom: 20
   },
 
   myCourse: {},
   pageTag: {
     fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
 
   myBuilding: {
     marginLeft: 12,
-    width: "90.3%",
+    width: '90.3%'
   },
 
   homeIndicator: {
     width: 36,
-    height: 4,
+    height: 4
   },
 
   imgContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
   },
 
   changeMinor: {
-    marginBottom: Platform.OS === "ios" ? 10 : 20,
+    marginBottom: Platform.OS === 'ios' ? 10 : 20
   },
 
   mainButton: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center'
   },
   filterMainContainer: {
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-});
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
+})
