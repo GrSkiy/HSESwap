@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
-  ScrollView,
   Icon,
   View,
   Alert,
@@ -13,79 +12,109 @@ import {
 import SmallNumberInput from "../components/SmallNumberInput";
 import MainButton from "../components/MainButton";
 import Constants from "expo-constants";
-import MediumSelect from "../components/MediumSelect";
 import LargeSelect from "../components/LargeSelect";
 
-export default function FiltersScreen() {
-  // <View style={styles.changeMinor}>
-  //   <LargeSelect
-  //     lableText="Твой майнор"
-  //     placeholder="Твой майнор"
-  //     handlePress={() => {
-  //       console.log(1);
-  //     }}
-  //   />
-  // </View>
+import PickerDesign from "../components/Picker";
+import LargeInput from "../components/LargeInput";
 
-  // <View style={styles.changeMinor}>
-  //   <LargeSelect
-  //     lableText="Куда хочешь?"
-  //     placeholder="Выбери свой майнор"
-  //     handlePress={() => {
-  //       console.log(1);
-  //     }}
-  //   />
-  // </View>
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.safeAreaContainer}>
-        <View style={styles.imgContainer}>
-          <Image
-            style={styles.homeIndicator}
-            source={require("../../assets/svg/homeIndicator.svg")}
-          />
-        </View>
+export default class FiltersScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-        <View style={styles.filterMainContainer}>
-          <View style={styles.filterSubContainer}>
-            <View style={styles.viewContainer}>
-              <View style={styles.myCourse}>
-                <SmallNumberInput
-                  lableText="Курс"
-                  placeholder="Курс"
-                  setText={() => Alert.alert("Simple Button pressed")}
-                />
-              </View>
-              <View style={styles.myBuilding}>
-                <MediumSelect
-                  lableText="Кампус"
-                  placeholder="Кампус"
-                  handlePress={() => {
-                    console.log(1);
-                  }}
-                />
+    this.state = {
+      loading: true,
+    };
+  }
+
+  async componentDidMount() {
+    const url = "http://localhost:3000/api/v1/filters";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({ data: data, loading: false });
+    console.log(this.state);
+  }
+
+  handleChange = (id, name, field) => {
+    let data = this.state;
+    console.log(id, name, field);
+    if (field == "year") {
+      data.data.filters_data.year = parseInt(name);
+    } else if (field == "city") {
+      data.data.filters_data.city_id = id + 1;
+      data.data.filters_data.city_name = name;
+    }
+    this.setState(data);
+  };
+
+  confirmation = async () => {
+    let data = {
+      action: this.state.data.filters_data.action,
+      filters_data: {
+        city_id: this.state.data.filters_data.city_id,
+        year: this.state.data.filters_data.year,
+        profile_id: this.state.data.filters_data.profile_id,
+      },
+    };
+    console.log(data);
+    await fetch(this.state.data.filters_data.url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data }),
+    });
+    this.props.navigation.goBack();
+  };
+
+  renderInputs = () => {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.safeAreaContainer}>
+          <View style={styles.filterMainContainer}>
+            <View style={styles.filterSubContainer}>
+              <View style={styles.viewContainer}>
+                <View style={styles.myCourse}></View>
+                <View style={styles.myBuilding}>
+                  <PickerDesign
+                    items={[{ city_name: 2 }, { city_name: 3 }]}
+                    current={this.state.data.filters_data.year}
+                    field="year"
+                    handleChange={this.handleChange}
+                  />
+                  <PickerDesign
+                    items={this.state.data.all_cities}
+                    current={this.state.data.filters_data.city_name}
+                    field="city"
+                    handleChange={this.handleChange}
+                  />
+                </View>
               </View>
             </View>
-          </View>
 
-          <View style={styles.mainButton}>
-            <MainButton
-              title="Применить"
-              onPress={() => Alert.alert("Simple Button pressed")}
-            />
+            <View style={styles.mainButton}>
+              <MainButton title="Применить" onPress={this.confirmation} />
+            </View>
           </View>
         </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  };
+
+  render() {
+    return this.state.loading ? (
+      <Text>Loading...</Text>
+    ) : (
+      <View style={styles.opacityLayer}>{this.renderInputs()}</View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    // marginTop: Constants.statusBarHeight,
-    // height: "100%",
+  opacityLayer: {
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    height: "100%",
+    justifyContent: "flex-end",
   },
   safeAreaContainer: {
+    backgroundColor: "red",
     paddingLeft: 20,
     paddingRight: 20,
     // height: "100%",

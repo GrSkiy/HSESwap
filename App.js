@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, Image } from "react-native";
+import { View, Text, Button, StyleSheet, Image, TextInput } from "react-native";
 import { AppLoading } from "expo";
 import { AppNavigation } from "./src/navigation/AppNavigation";
 

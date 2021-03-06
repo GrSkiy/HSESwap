@@ -12,10 +12,15 @@ import {
   TextInput,
 } from "react-native";
 
+import { ActionCable, Cable } from "@kesha-antonov/react-native-action-cable";
+
 import MainButton from "../components/MainButton";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { AppHeaderIcon } from "../components/AppHeaderIcon";
+
+const actionCable = ActionCable.createConsumer("ws://localhost:3000/cable");
+const cable = new Cable({});
 
 let EXSHANGE = "name";
 
@@ -40,7 +45,29 @@ class ChatScreen extends React.Component {
     });
     EXSHANGE = this.state;
     // console.log(EXSHANGE);
+    const channel = cable.setChannel(
+      `room_channel_${this.state.data.data.id}`, // channel name to which we will pass data from Rails app with `stream_from`
+      actionCable.subscriptions.create({
+        channel: "RoomChannel",
+        room_id: this.state.data.data.id,
+      })
+    );
+    channel.on("received", this.sentMessage);
   }
+
+  sentMessage = (data) => {
+    console.log(this.state);
+    console.log(data.message.content);
+
+    let state = this.state;
+    const newMessage = {
+      content: data.message.content,
+    };
+    state.data.messages.push(data.message);
+
+    this.setState(state);
+    console.log(this.state);
+  };
 
   changeTetx = (text) => {
     let data = this.state;
@@ -55,11 +82,21 @@ class ChatScreen extends React.Component {
       content: this.state.message,
     };
 
+    // cable
+    //   .channel(`room_channel_${this.state.data.data.id}`)
+    //   .perform("send_message", { text: "Hey" });
+
     await fetch(`http://127.0.0.1:3000/api/v1/messages`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
+
+    // await fetch(`ws://localhost:3000/cable`, {
+    //   command: "message",
+    //   identifier: { channel: "RoomChannel" },
+    //   data: { action: "some_method", args: "11111" },
+    // });
 
     console.log(message);
     this.setState({ message: "" });

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  TextInput,
 } from "react-native";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -82,7 +83,6 @@ class MainScreen extends React.Component {
     ) : (
       <ScrollView contentContainerStyle={styles.list}>
         {this.renderCards(this.state.data)}
-        <TouchableOpacity></TouchableOpacity>
       </ScrollView>
     );
   }

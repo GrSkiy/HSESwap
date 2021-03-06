@@ -58,7 +58,7 @@ export default class SettingsScreen extends React.Component {
             <SettingPoint
               title={"Мои данные"}
               changePage={() =>
-                this.props.navigation.push("PersonData", {
+                this.props.navigation.push("Settings", {
                   data: data,
                 })
               }

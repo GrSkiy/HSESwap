@@ -104,7 +104,7 @@ export default class Setting_myData_view extends React.Component {
   }
 }
 
-const confirmation = async () => {
+const confirmation = async (navigation) => {
   let data = {
     action: "update",
     update_data: {
@@ -117,10 +117,11 @@ const confirmation = async () => {
   };
   console.log(data);
   await fetch("http://127.0.0.1:3000/api/v1/profiles", {
-    method: "PUT",
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ data }),
   });
+  navigation.push("Profile");
 };
 
 Setting_myData_view.navigationOptions = ({ navigation }) => ({
@@ -131,7 +132,7 @@ Setting_myData_view.navigationOptions = ({ navigation }) => ({
         title="Toggle Drawer"
         iconName={"checkmark-sharp"}
         // onPress={() => navigation.navigate("PersonData")}
-        onPress={confirmation}
+        onPress={() => confirmation(navigation)}
       />
     </HeaderButtons>
   ),

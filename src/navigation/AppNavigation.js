@@ -9,7 +9,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 import MainScreen from "../screens/MainScreen";
 import ExshangesForUserScreen from "../screens/ExshangesForUserScreen";
-import MenuScreen from "../screens/MenuScreen";
 
 import LogInScreen from "../screens/LogInScreen";
 import SignInScreen from "../screens/SignInScreen";
@@ -44,44 +43,54 @@ const MainStack = createStackNavigator(
     Main: {
       screen: MainScreen,
     },
-    Filters: {
-      screen: FiltersScreen,
+  },
+  {
+    mode: "modal",
+  }
+);
+
+const SettinsStack = createStackNavigator({
+  PersonData: {
+    screen: Setting_myData_view,
+  },
+  EditPersonData: {
+    screen: Setting_myData_change,
+  },
+});
+const AllMinorsStack = createStackNavigator({
+  AllMinors: {
+    screen: AllMinorsScreen,
+  },
+});
+
+const ForUserStack = createStackNavigator(
+  {
+    ForUserMain: {
+      screen: MainScreen,
     },
   },
   {
     mode: "modal",
   }
 );
-// const ForUserMainStack = createStackNavigator(
-//   {
-//     ForUserMain: {
-//       screen: MainScreen,
-//     },
-//     Filters: {
-//       screen: FiltersScreen,
-//     },
-//   },
-//   {
-//     mode: "modal",
-//   }
-// );
 
 const AllExchangesStack = createStackNavigator(
   {
     Main: {
       screen: MainStack,
     },
+    Filters: {
+      screen: FiltersScreen,
+      mode: "modal",
+    },
     Profile: {
       screen: SettingsScreen,
     },
-    PersonData: {
-      screen: Setting_myData_view,
-    },
-    EditPersonData: {
-      screen: Setting_myData_change,
+    Settings: {
+      screen: SettinsStack,
     },
     AllMinors: {
-      screen: AllMinorsScreen,
+      screen: AllMinorsStack,
     },
     ExchangeCard: {
       screen: ExchangeDescriptionScreen,
@@ -108,47 +117,47 @@ const AllExchangesStack = createStackNavigator(
   { headerMode: "none" }
 );
 
-const ForUserStack = createStackNavigator({
-  ForUser: {
-    screen: MainScreen,
+const ForUserMainStack = createStackNavigator(
+  {
+    ForUser: {
+      screen: MainStack,
+    },
+    Filters: {
+      screen: FiltersScreen,
+    },
+    Profile: {
+      screen: SettingsScreen,
+    },
+    Settings: {
+      screen: SettinsStack,
+    },
+    Filters: {
+      screen: FiltersScreen,
+    },
+    ExchangeCard: {
+      screen: ExchangeDescriptionScreen,
+    },
+    SuccessExchange: {
+      screen: SuccessExchangeScreen,
+    },
+    SucsessExchangeDescription: {
+      screen: SucsessExchangeDescriptionScreen,
+    },
+    Information: {
+      screen: InformationOfExchangeScreen,
+    },
+    Minor: {
+      screen: MinorScreen,
+    },
+    login: {
+      screen: LogInScreen,
+    },
+    EmailVerification: {
+      screen: EmailVerificationScreen,
+    },
   },
-  Profile: {
-    screen: SettingsScreen,
-  },
-  PersonData: {
-    screen: Setting_myData_view,
-  },
-  EditPersonData: {
-    screen: Setting_myData_change,
-  },
-  AllMinors: {
-    screen: AllMinorsScreen,
-  },
-  Filters: {
-    screen: FiltersScreen,
-  },
-  ExchangeCard: {
-    screen: ExchangeDescriptionScreen,
-  },
-  SuccessExchange: {
-    screen: SuccessExchangeScreen,
-  },
-  SucsessExchangeDescription: {
-    screen: SucsessExchangeDescriptionScreen,
-  },
-  Information: {
-    screen: InformationOfExchangeScreen,
-  },
-  Minor: {
-    screen: MinorScreen,
-  },
-  login: {
-    screen: LogInScreen,
-  },
-  EmailVerification: {
-    screen: EmailVerificationScreen,
-  },
-});
+  { headerMode: "none" }
+);
 
 const UsersExchangesStack = createStackNavigator({
   UsersExchanges: {
@@ -176,7 +185,7 @@ const bottomTabsConfig = {
     },
   },
   ForUser: {
-    screen: ForUserStack,
+    screen: ForUserMainStack,
     navigationOptions: {
       tabBarLabel: "Для тебя",
       tabBarIcon: (info) => (
