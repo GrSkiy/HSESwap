@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useContext } from 'react'
+import { connect } from 'react-redux'
+
 import {
   ScrollView,
   StyleSheet,
@@ -21,58 +23,53 @@ import { createStackNavigator } from 'react-navigation-stack'
 import Card from '../components/Card'
 
 import { AppContext } from '../context/appContext'
-import { connect } from 'react-redux'
 
-import { getTokens } from '../store/actions/token'
+import { getToken, createToken } from '../store/actions/token'
 
-const mapStateToProps = (store) => {
-  // console.log(store)
-  if (store.guest_token != null) {
-    console.log(store.guest_token.resolve())
-  }
-  return {
-    store: store
-  }
+function select(state) {
+  return { token: state.token }
 }
 
 class MainScreen extends React.Component {
   static contextType = AppContext
+
   constructor(props) {
     super(props)
 
     this.state = {
-      exchange_minors: [],
       loading: true,
-      guest_token: this.props.store.guest_token
+      exchange_minors: []
     }
-    // console.log(this.props)
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    console.log('context', this.context)
+    const { devise_token, authenticity_token } = this.state
+
     if (!this.context.loading) {
-      if (!this.props.store.guest_token) {
-        // this.props.getTokensAction()
-        // console.log(this.props.store)
-      }
+      const url = `http://127.0.0.1:3000/api/v1/exchange_minors?devise_token=${devise_token}&authenticity_token=${authenticity_token}`
+      console.log('URL', url)
 
-      // console.log(this.state)
-      // if (this.context.authenticity_token) {
-      // } else {
-      //   console.log('token is null')
-      //   this.context.tokenFilling('TestState')
-      //   console.log(this.context.authenticity_token)
-      // }
-      const url = `http://127.0.0.1:3000/api/v1/exchange_minors`
-      const response = await fetch(url)
-      const data = await response.json()
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Response from the server', data)
 
-      this.setState({
-        // authenticity_token: data.authenticity_token,
-        exchange_minors: data.exchange_minors,
-        loading: false
-      })
+          this.setState({
+            devise_token: data.devise_token,
+            authenticity_token: data.authenticity_token,
+            exchange_minors: data.exchange_minors,
+            loading: false
+          })
+
+          if (!this.props.store.devise_token) {
+            this.props.createTokensAction(
+              data.devise_token,
+              data.authenticity_token
+            )
+          }
+        })
     }
-    // const url = `http://127.0.0.1:3000/api/v1/exchange_minors?${authenticity_token}`
   }
 
   renderCards = () => {
@@ -124,7 +121,9 @@ class MainScreen extends React.Component {
     // <Text> Loading ...</Text>
 
     return loading ? (
-      <Text onPress={this.createTwoButtonAlert}>ALERT</Text>
+      <Text onPress={this.createTwoButtonAlert}>
+        {this.props.token.devise_token} {this.props.token.authenticity_token}
+      </Text>
     ) : (
       <ScrollView contentContainerStyle={styles.list}>
         {this.renderCards()}
@@ -155,13 +154,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
   )
 })
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getTokensAction: () => dispatch(getTokens())
-    // getTokensAction: async () => dispatch(await getTokens())
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)
+export default connect(select)(MainScreen)
 
 const styles = StyleSheet.create({
   wrapper: {

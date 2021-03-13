@@ -1,34 +1,22 @@
-import { DB } from './db'
-
 import * as SQLite from 'expo-sqlite'
+import DB from './db'
 
 export function bootstrap() {
   try {
+    // DB.removeDB()
+
     DB.init()
     console.log('Database started...')
 
-    const data = { deviseToken: 'testToken' }
+    DB.getToken((result) => {
+      console.log('Bootstrap getTokensFromDB', result)
 
-    let full_tokens
-    const getTokensFromDB = (tokens) => {
-      // tokens.forEach((token, i) => {
-      //   console.log(token)
-      // })
-
-      console.log(tokens)
-    }
-
-    DB.getTokens((result) => {
-      getTokensFromDB(result)
+      if (result === undefined) {
+        DB.createToken().then(() => {
+          console.log('Bootstrap DB.createToken')
+        })
+      }
     })
-
-    // DB.createToken(data).then(() => {
-    //   DB.getTokens((result) => {
-    //     tokens = result
-    //     console.log('Got tokens:', tokens)
-    //   })
-    // })
-    // console.log(DB.getTokens())
   } catch (e) {
     console.log('Error: ', e)
   }

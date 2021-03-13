@@ -1,0 +1,2 @@
+export const GET_TOKEN_FROM_DB = 'GET_TOKEN_FROM_DB'
+export const UPDATE_TOKEN_IN_DB = 'UPDATE_TOKEN_IN_DB'

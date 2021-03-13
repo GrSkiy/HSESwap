@@ -1,10 +1,11 @@
 import { createContext } from 'react'
 
-export let data = {
-  authenticity_token: null,
-  pageState: null,
-  getRequest: null,
+const data = {
+  devise_token: '',
+  authenticity_token: '',
   loading: true
 }
 
-export const AppContext = createContext()
+const AppContext = createContext(data)
+
+export { AppContext }

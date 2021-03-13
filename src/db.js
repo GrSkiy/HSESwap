@@ -2,12 +2,14 @@ import * as SQLite from 'expo-sqlite'
 
 const db = SQLite.openDatabase('phoneToken.db')
 
-export class DB {
+class DB {
   static init() {
     return new Promise((resolve, reject) => {
+      console.log('DB Init')
+
       db.transaction((tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY NOT NULL, devise_token TEXT NOT NULL, authenticity_token TEXT)',
+          'CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY NOT NULL, devise_token TEXT, authenticity_token TEXT)',
           [],
           resolve,
           (_, error) => reject(error)
@@ -16,19 +18,44 @@ export class DB {
     })
   }
 
-  static createToken({ deviseToken }) {
+  static getToken(callback) {
+    return db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM tokens', [], (trans, result) => {
+        console.log('DB Get Tokens', result)
+        callback(result.rows[result.rows.length - 1])
+      })
+    })
+  }
+
+  static createToken() {
     return new Promise((resolve, reject) => {
-      console.log(deviseToken)
+      console.log('DB Create Token')
+
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO tokens (devise_token) VALUES (?)`,
-          [deviseToken],
+          `INSERT INTO tokens (devise_token, authenticity_token) VALUES (?, ?)`,
+          ['', ''],
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )
       })
     })
   }
+
+  // static updateToken(devise_token, authenticity_token) {
+  //   return new Promise((resolve, reject) => {
+  //     console.log('DB Create Token', devise_token, authenticity_token)
+  //
+  //     db.transaction((tx) => {
+  //       tx.executeSql(
+  //         `INSERT INTO tokens (devise_token) VALUES (?)`,
+  //         [devise_token],
+  //         (_, result) => resolve(result.insertId),
+  //         (_, error) => reject(error)
+  //       )
+  //     })
+  //   })
+  // }
 
   // static getTokens() {
   //   return new Promise((resolve, reject) => {
@@ -51,14 +78,6 @@ export class DB {
   //     })
   //   })
   // }
-
-  static getTokens(cb) {
-    return db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM tokens', [], (trans, result) => {
-        cb(result.rows._array)
-      })
-    })
-  }
 
   // static countOfElements() {
   //   return new Promise((resolve, reject) => {
@@ -113,16 +132,21 @@ export class DB {
   //   })
   // }
 
-  static removeDB(id) {
+  static removeDB() {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
-        tx.executeSql(
-          'DELETE FROM posts WHERE id = ?',
-          [id],
-          resolve,
-          (_, error) => reject(error)
+        tx.executeSql('DROP TABLE tokens', [], resolve, (_, error) =>
+          reject(error)
         )
+        // tx.executeSql(
+        // 'DELETE FROM posts WHERE id = ?',
+        // [id],
+        // resolve,
+        // (_, error) => reject(error)
+        // )
       })
     })
   }
 }
+
+export default DB
