@@ -9,7 +9,7 @@ class DB {
 
       db.transaction((tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY NOT NULL, devise_token TEXT, authenticity_token TEXT)',
+          'CREATE TABLE IF NOT EXISTS tokens (id INTEGER PRIMARY KEY NOT NULL, device_token TEXT, authenticity_token TEXT)',
           [],
           resolve,
           (_, error) => reject(error)
@@ -33,7 +33,7 @@ class DB {
 
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO tokens (devise_token, authenticity_token) VALUES (?, ?)`,
+          `INSERT INTO tokens (device_token, authenticity_token) VALUES (?, ?)`,
           ['', ''],
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
@@ -42,76 +42,14 @@ class DB {
     })
   }
 
-  // static updateToken(devise_token, authenticity_token) {
-  //   return new Promise((resolve, reject) => {
-  //     console.log('DB Create Token', devise_token, authenticity_token)
-  //
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         `INSERT INTO tokens (devise_token) VALUES (?)`,
-  //         [devise_token],
-  //         (_, result) => resolve(result.insertId),
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   })
-  // }
-
-  // static getTokens() {
-  //   return new Promise((resolve, reject) => {
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         'SELECT * FROM tokens',
-  //         [],
-  //         (_, result) => {
-  //           return resolve(result.rows._array)
-  //         },
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   })
-  // }
-  // static getTokens() {
-  //   return db.transaction((tx) => {
-  //     tx.executeSql('SELECT * FROM tokens', [], (trans, result) => {
-  //       console.log(result)
-  //     })
-  //   })
-  // }
-
-  // static countOfElements() {
-  //   return new Promise((resolve, reject) => {
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         'COUNT(*)',
-  //         [],
-  //         (_, result) => resolve(result.rows._array),
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   })
-  // }
-
-  // static createToken({ deviseToken }) {
-  //   return
-  //   {
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         `INSERT INTO tokens (devise_token) VALUES (?)`,
-  //         [deviseToken],
-  //         (_, result) => console.log(result.insertId),
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   }
-  // }
-
-  static fillinDeviseToken(token) {
+  static updateToken(device_token, authenticity_token) {
     return new Promise((resolve, reject) => {
+      console.log('DB Update Token', device_token, authenticity_token)
+
       db.transaction((tx) => {
         tx.executeSql(
-          'UPDATE tokens SET devise_token = ? WHERE id = 1',
-          [token],
+          'UPDATE tokens SET device_token = ?, authenticity_token = ? WHERE id = 1',
+          [device_token, authenticity_token],
           resolve,
           (_, error) => reject(error)
         )
@@ -119,18 +57,20 @@ class DB {
     })
   }
 
-  // static updateToken(token, authenticity_token) {
-  //   return new Promise((resolve, reject) => {
-  //     db.transaction((tx) => {
-  //       tx.executeSql(
-  //         'UPDATE posts SET authenticity_token = ? WHERE id = ?',
-  //         [authenticity_token, token.id],
-  //         resolve,
-  //         (_, error) => reject(error)
-  //       )
-  //     })
-  //   })
-  // }
+  static updateAuthToken(authenticity_token) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Update Auth Token', authenticity_token)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          'UPDATE tokens SET authenticity_token = ? WHERE id = 1',
+          [authenticity_token],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
 
   static removeDB() {
     return new Promise((resolve, reject) => {
@@ -138,12 +78,6 @@ class DB {
         tx.executeSql('DROP TABLE tokens', [], resolve, (_, error) =>
           reject(error)
         )
-        // tx.executeSql(
-        // 'DELETE FROM posts WHERE id = ?',
-        // [id],
-        // resolve,
-        // (_, error) => reject(error)
-        // )
       })
     })
   }

@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
 const data = {
-  devise_token: '',
+  device_token: '',
   authenticity_token: '',
   loading: true
 }

@@ -22,62 +22,24 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 import Card from '../components/Card'
 
-import { AppContext } from '../context/appContext'
-
-import { getToken, createToken } from '../store/actions/token'
-
 function select(state) {
-  return { token: state.token }
+  return {
+    tokens: state.tokens,
+    exchangeMinors: state.exchangeMinors.entities
+  }
 }
 
 class MainScreen extends React.Component {
-  static contextType = AppContext
-
   constructor(props) {
     super(props)
-
-    this.state = {
-      loading: true,
-      exchange_minors: []
-    }
-  }
-
-  componentDidMount() {
-    console.log('context', this.context)
-    const { devise_token, authenticity_token } = this.state
-
-    if (!this.context.loading) {
-      const url = `http://127.0.0.1:3000/api/v1/exchange_minors?devise_token=${devise_token}&authenticity_token=${authenticity_token}`
-      console.log('URL', url)
-
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Response from the server', data)
-
-          this.setState({
-            devise_token: data.devise_token,
-            authenticity_token: data.authenticity_token,
-            exchange_minors: data.exchange_minors,
-            loading: false
-          })
-
-          if (!this.props.store.devise_token) {
-            this.props.createTokensAction(
-              data.devise_token,
-              data.authenticity_token
-            )
-          }
-        })
-    }
   }
 
   renderCards = () => {
     const { navigate } = this.props.navigation
-    const { exchange_minors } = this.state
+    const { exchangeMinors } = this.props
     let cardItems = []
 
-    exchange_minors.forEach((minor, i) => {
+    exchangeMinors.forEach((minor, i) => {
       const { city, year, address, credits, whishedMinors, url } = minor
 
       cardItems.push(
@@ -117,12 +79,14 @@ class MainScreen extends React.Component {
     )
 
   render() {
-    const { exchange_minors, loading } = this.state
-    // <Text> Loading ...</Text>
+    const { exchangeMinors } = this.props
 
-    return loading ? (
+    console.log('MainScreen', exchangeMinors)
+
+    return exchangeMinors === undefined ||
+      exchangeMinors.length === undefined ? (
       <Text onPress={this.createTwoButtonAlert}>
-        {this.props.token.devise_token} {this.props.token.authenticity_token}
+        {this.props.token.device_token} {this.props.token.authenticity_token}
       </Text>
     ) : (
       <ScrollView contentContainerStyle={styles.list}>

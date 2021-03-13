@@ -1,4 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { updateAuthToken } from '../store/actions/tokens'
+import { updateFilters } from '../store/actions/filters'
+import { updateExchangeMinors } from '../store/actions/exchangeMinors'
+
 import {
   StyleSheet,
   Text,
@@ -9,30 +16,40 @@ import {
   Platform,
   Image
 } from 'react-native'
+
 import SmallNumberInput from '../components/SmallNumberInput'
 import MainButton from '../components/MainButton'
 import Constants from 'expo-constants'
 import LargeSelect from '../components/LargeSelect'
 
-import PickerDesign from '../components/Picker'
+import Select from '../components/Select'
 import LargeInput from '../components/LargeInput'
 
-export default class FiltersScreen extends React.Component {
+function select(state) {
+  return {
+    tokens: state.tokens,
+    filters: state.filters
+  }
+}
+
+class FiltersScreen extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loading: true
+      city: props.filters.city,
+      year: props.filters.year
     }
   }
 
-  async componentDidMount() {
-    const url = 'http://localhost:3000/api/v1/filters'
-    const response = await fetch(url)
-    const data = await response.json()
-    this.setState({ data: data, loading: false })
-    console.log(this.state)
-  }
+  // async componentDidMount() {
+  //   // const url = 'http://localhost:3000/api/v1/filters?'
+  //   // const response = await fetch(url)
+  //   // const data = await response.json()
+  //   // this.setState({ data: data, loading: false })
+  //   this.setState({ loading: false })
+  //   // console.log(this.state)
+  // }
 
   handleChange = (id, name, field) => {
     let data = this.state
@@ -49,40 +66,41 @@ export default class FiltersScreen extends React.Component {
     this.setState(data)
   }
 
-  confirmation = async () => {
-    console.log(this.state)
-    const { filters_data, authenticity_token } = this.state.data
-    const { action, city_id, year, profile_id, url } = filters_data
+  handleSubmit = () => {
+    const { cities, years } = this.props.filters
+    const { deviceToken, authenticityToken } = this.props.tokens
+    const url = `http://localhost:3000/api/v1/filters?device_token=${deviceToken}&authenticity_token=${authenticityToken}`
+    const { city, year } = this.state
 
-    console.log(filters_data)
-
-    let data = {
-      action: action,
-      filters_data: {
-        city_id: city_id,
-        year: year,
-        profile_id: profile_id
-      },
-      authenticity_token: authenticity_token
+    const requestData = {
+      filter: {
+        city_id: city,
+        year: year
+      }
     }
 
-    console.log(data)
-
-    const myHeaders = new Headers()
-    myHeaders.append('Access-Control-Request-Method', 'POST')
-
-    await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
+    fetch(url, {
+      method: 'POST', // or 'PUT'
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Request-Method': 'POST',
-        'Access-Control-Request-Headers': ''
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(requestData)
     })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log('Success:', responseData)
+
+        this.props.updateAuthToken(responseData.tokens)
+        this.props.updateExchangeMinors(responseData)
+
+        this.props.updateFilters({
+          city: city,
+          year: year
+        })
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
 
     this.props.navigation.goBack()
   }
@@ -96,15 +114,17 @@ export default class FiltersScreen extends React.Component {
               <View style={styles.viewContainer}>
                 <View style={styles.myCourse}></View>
                 <View style={styles.myBuilding}>
-                  <PickerDesign
+                  <Select
+                    label="Год обучения"
                     items={[{ city_name: 2 }, { city_name: 3 }]}
-                    current={this.state.data.filters_data.year}
+                    current={this.state.year}
                     field="year"
                     handleChange={this.handleChange}
                   />
-                  <PickerDesign
-                    items={this.state.data.all_cities}
-                    current={this.state.data.filters_data.city_name}
+                  <Select
+                    label="Кампус"
+                    items={this.props.filters.cities}
+                    current={this.state.city}
                     field="city"
                     handleChange={this.handleChange}
                   />
@@ -113,7 +133,7 @@ export default class FiltersScreen extends React.Component {
             </View>
 
             <View style={styles.mainButton}>
-              <MainButton title="Применить" onPress={this.confirmation} />
+              <MainButton title="Применить" onPress={this.handleSubmit} />
             </View>
           </View>
         </View>
@@ -129,6 +149,15 @@ export default class FiltersScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    { updateFilters, updateAuthToken, updateExchangeMinors },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(FiltersScreen)
 
 const styles = StyleSheet.create({
   opacityLayer: {

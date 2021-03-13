@@ -1,11 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import token from './reducers/token'
+import tokens from './reducers/tokens'
+import filters from './reducers/filters'
+import exchangeMinors from './reducers/exchangeMinors'
 
 const rootReducer = combineReducers({
-  token
+  tokens,
+  filters,
+  exchangeMinors
 })
 
 const store = createStore(rootReducer)
-console.log('Initial Store State', store.getState())
 
 export default store
