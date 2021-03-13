@@ -20,30 +20,59 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 import Card from '../components/Card'
 
-import { GetExchangeMinors, MyContext, info } from '../context/controller'
+import { AppContext } from '../context/appContext'
+import { connect } from 'react-redux'
+
+import { getTokens } from '../store/actions/token'
+
+const mapStateToProps = (store) => {
+  // console.log(store)
+  if (store.guest_token != null) {
+    console.log(store.guest_token.resolve())
+  }
+  return {
+    store: store
+  }
+}
 
 class MainScreen extends React.Component {
+  static contextType = AppContext
   constructor(props) {
     super(props)
 
     this.state = {
       exchange_minors: [],
-      loading: true
+      loading: true,
+      guest_token: this.props.store.guest_token
     }
+    // console.log(this.props)
   }
 
   async componentDidMount() {
-    const url = `http://127.0.0.1:3000/api/v1/exchange_minors?${authenticity_token}`
-    const response = await fetch(url)
-    const data = await response.json()
+    if (!this.context.loading) {
+      if (!this.props.store.guest_token) {
+        // this.props.getTokensAction()
+        // console.log(this.props.store)
+      }
 
-    console.log(data.exchange_minors)
+      // console.log(this.state)
+      // if (this.context.authenticity_token) {
+      // } else {
+      //   console.log('token is null')
+      //   this.context.tokenFilling('TestState')
+      //   console.log(this.context.authenticity_token)
+      // }
+      const url = `http://127.0.0.1:3000/api/v1/exchange_minors`
+      const response = await fetch(url)
+      const data = await response.json()
 
-    this.setState({
-      authenticity_token: data.authenticity_token,
-      exchange_minors: data.exchange_minors,
-      loading: false
-    })
+      this.setState({
+        // authenticity_token: data.authenticity_token,
+        exchange_minors: data.exchange_minors,
+        loading: false
+      })
+    }
+    // const url = `http://127.0.0.1:3000/api/v1/exchange_minors?${authenticity_token}`
   }
 
   renderCards = () => {
@@ -106,7 +135,7 @@ class MainScreen extends React.Component {
 
 MainScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Все объявления',
-  headerRight: (
+  headerRight: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Toggle Drawer"
@@ -115,7 +144,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
       />
     </HeaderButtons>
   ),
-  headerLeft: (
+  headerLeft: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Toggle Drawer"
@@ -126,7 +155,13 @@ MainScreen.navigationOptions = ({ navigation }) => ({
   )
 })
 
-export default MainScreen
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getTokensAction: () => dispatch(getTokens())
+    // getTokensAction: async () => dispatch(await getTokens())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen)
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -20,8 +20,6 @@ const renderExchangeMinors = (minors) => {
 }
 
 export default function Card(props) {
-  console.log('props', props)
-
   return (
     <TouchableOpacity style={styles.cardContainer} onPress={props.handleBack}>
       <View style={styles.cardHeader}>
