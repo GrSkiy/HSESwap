@@ -1,5 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { linkFromAllMinors, fetchData } from '../store/actions/api'
+
 import {
   ScrollView,
   StyleSheet,
@@ -7,38 +11,57 @@ import {
   View,
   Image,
   Button,
-  TouchableOpacity,
-} from "react-native";
+  TouchableOpacity
+} from 'react-native'
 
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { AppHeaderIcon } from "../components/AppHeaderIcon";
+import styles from '../stylesheets/main'
 
-import Card from "../components/Card";
-import Navbar from "../components/Navbar";
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
-// import { AppContext } from "../context/appContext";
-// import { GetAllMinors } from "../context/controller";
+import Card from '../components/Card'
 
-export default class AllMinorsScreen extends React.Component {
+function select(state) {
+  return {
+    tokens: state.tokens,
+    exchangeMinors: state.exchangeMinors.entities,
+    data_from_api: state.data_from_api
+  }
+}
+
+class AllMinorsScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      loading: true,
-    };
+      loading: true
+    }
   }
 
-  async componentDidMount() {
-    const url = "http://localhost:3000/api/v1/minors";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ data: data, loading: false });
+  componentDidMount() {
+    this.props.linkFromAllMinors()
+  }
+
+  componentDidUpdate() {
+    if (this.state.loading) {
+      const { url } = this.props.data_from_api
+      if (url.search('minors') != -1) {
+        this.props.fetchData(url, this.changeState)
+      }
+    }
+  }
+
+  changeState = (data) => {
+    const newState = this.state
+    newState.data = data
+    newState.loading = false
+    this.setState(newState)
   }
 
   renderCards = () => {
-    const cities = this.state.data;
-    let bloks = [];
-    let minors = [];
+    const cities = this.state.data
+    let bloks = []
+    let minors = []
     cities.forEach((city, i) => {
       city.minors.forEach((minor, y) => {
         minors.push(
@@ -49,65 +72,50 @@ export default class AllMinorsScreen extends React.Component {
             address={minor.address}
             credits={minor.credits}
             handleBack={() =>
-              this.props.navigation.navigate("Minor", {
-                url: minor.url,
+              this.props.navigation.navigate('Minor', {
+                url: minor.url
               })
             }
             exchangeMinors={[]}
-            key={i + "_" + y}
+            key={i + '_' + y}
           />
-        );
-      });
-    });
+        )
+      })
+    })
 
-    return (
-      <ScrollView contentContainerStyle={styles.list}>{minors}</ScrollView>
-    );
-  };
+    return <ScrollView contentContainerStyle={styles.list}>{minors}</ScrollView>
+  }
 
   render() {
     return this.state.loading ? (
       <Text>Loading.....</Text>
     ) : (
       <View>{this.renderCards()}</View>
-    );
+    )
   }
 }
 
 AllMinorsScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Все майноры",
-  headerRight: (
+  headerTitle: 'Все майноры',
+  headerRight: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item
         title="Toggle Drawer"
-        iconName={"md-options-outline"}
-        onPress={() => navigation.push("Filters")}
+        iconName={'md-options-outline'}
+        // onPress={() => navigation.push("Filters")}
       />
     </HeaderButtons>
-  ),
-});
+  )
+})
 
-const styles = StyleSheet.create({
-  icon: {
-    width: 30,
-    height: 30,
-  },
-  list: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    paddingTop: 20,
-    paddingBottom: 60,
-  },
-  header: {
-    zIndex: 1,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 31,
-  },
-  h1: {
-    fontSize: 22,
-    fontWeight: "bold",
-    justifyContent: "space-between",
-  },
-});
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      linkFromAllMinors,
+      fetchData
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(AllMinorsScreen)

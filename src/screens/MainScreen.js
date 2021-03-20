@@ -14,9 +14,11 @@ import {
   Alert,
   TextInput
 } from 'react-native'
+import styles from '../stylesheets/main.js'
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
+import FiltersScreen from './FiltersScreen'
 
 import { createStackNavigator } from 'react-navigation-stack'
 
@@ -32,6 +34,11 @@ function select(state) {
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
+    console.log(this.props)
+    const { deviceToken } = this.props.tokens
   }
 
   renderCards = () => {
@@ -63,37 +70,33 @@ class MainScreen extends React.Component {
     return cardItems
   }
 
-  createTwoButtonAlert = () =>
-    Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel'
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') }
-      ],
-      { cancelable: false }
-    )
-
   render() {
     const { exchangeMinors } = this.props
 
     console.log('MainScreen', exchangeMinors)
 
+    //начало всплывающиз инпутов
+    // let filtersRef = React.forwardRef()
+    // <FiltersScreen ref={(target) => (filtersRef = target)} />
+    // <FiltersScreen />
+
+    // {this.props.token.device_token} {this.props.token.authenticity_token}
     return exchangeMinors === undefined ||
       exchangeMinors.length === undefined ? (
-      <Text onPress={this.createTwoButtonAlert}>
-        {this.props.token.device_token} {this.props.token.authenticity_token}
-      </Text>
+      <Text> l,kmskmak</Text>
     ) : (
-      <ScrollView contentContainerStyle={styles.list}>
-        {this.renderCards()}
-      </ScrollView>
+      <View>
+        <ScrollView contentContainerStyle={styles.mainWrapper}>
+          {this.renderCards()}
+        </ScrollView>
+      </View>
     )
   }
+}
+
+const openPopUp = () => {
+  console.log('open filters pop up')
+  // filtersRef.show()
 }
 
 MainScreen.navigationOptions = ({ navigation }) => ({
@@ -103,7 +106,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
       <Item
         title="Toggle Drawer"
         iconName={'md-options-outline'}
-        onPress={() => navigation.push('Filters')}
+        onPress={openPopUp}
       />
     </HeaderButtons>
   ),
@@ -119,32 +122,3 @@ MainScreen.navigationOptions = ({ navigation }) => ({
 })
 
 export default connect(select)(MainScreen)
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingRight: 20,
-    marginTop: 20,
-    marginLeft: 20
-  },
-  icon: {
-    width: 30,
-    height: 30
-  },
-  list: {
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 60
-  },
-  header: {
-    zIndex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 31
-  },
-  h1: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    justifyContent: 'space-between'
-  }
-})

@@ -14,13 +14,13 @@ import LogInScreen from '../screens/LogInScreen'
 import SignInScreen from '../screens/SignInScreen'
 import EmailVerificationScreen from '../screens/EmailVerificationScreen'
 
-import FiltersScreen from '../screens/FiltersScreen'
+// import FiltersScreen from '../screens/FiltersScreen'
 import UsersExchangesScreens from '../screens/UsersExchangesScreens'
 import ChatScreen from '../screens/ChatScreen'
 
-import SettingsScreen from '../screens/SettingsScreen'
-import Setting_myData_view from '../screens/Setting_myData_view'
-import Setting_myData_change from '../screens/Setting_myData_change'
+import Burger from '../screens/Burger'
+import Setting_view from '../screens/Setting_view'
+import Setting_change from '../screens/Setting_change'
 import AllMinorsScreen from '../screens/AllMinorsScreen'
 
 import MinorScreen from '../screens/MinorScreen'
@@ -51,10 +51,10 @@ const MainStack = createStackNavigator(
 
 const SettinsStack = createStackNavigator({
   PersonData: {
-    screen: Setting_myData_view
+    screen: Setting_view
   },
   EditPersonData: {
-    screen: Setting_myData_change
+    screen: Setting_change
   }
 })
 
@@ -80,12 +80,12 @@ const AllExchangesStack = createStackNavigator(
     Main: {
       screen: MainStack
     },
-    Filters: {
-      screen: FiltersScreen,
-      mode: 'modal'
-    },
+    // Filters: {
+    //   screen: FiltersScreen,
+    //   mode: 'modal'
+    // },
     Profile: {
-      screen: SettingsScreen
+      screen: Burger
     },
     Settings: {
       screen: SettinsStack
@@ -123,18 +123,18 @@ const ForUserMainStack = createStackNavigator(
     ForUser: {
       screen: MainStack
     },
-    Filters: {
-      screen: FiltersScreen
-    },
+    // Filters: {
+    //   screen: FiltersScreen
+    // },
     Profile: {
-      screen: SettingsScreen
+      screen: Burger
     },
     Settings: {
       screen: SettinsStack
     },
-    Filters: {
-      screen: FiltersScreen
-    },
+    // Filters: {
+    //   screen: FiltersScreen
+    // },
     ExchangeCard: {
       screen: ExchangeDescriptionScreen
     },

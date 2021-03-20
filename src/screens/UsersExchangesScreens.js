@@ -1,5 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { linkFromUsersExchangeMinors, fetchData } from '../store/actions/api'
+
 import {
   StyleSheet,
   Text,
@@ -8,40 +12,61 @@ import {
   Platform,
   TouchableOpacity,
   Image,
-  Alert,
-} from "react-native";
-import MainButton from "../components/MainButton";
+  Alert
+} from 'react-native'
 
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { AppHeaderIcon } from "../components/AppHeaderIcon";
+import styles from '../stylesheets/main'
+
+import MainButton from '../components/MainButton'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { AppHeaderIcon } from '../components/AppHeaderIcon'
+
+function select(state) {
+  return {
+    tokens: state.tokens,
+    exchangeMinors: state.exchangeMinors.entities,
+    data_from_api: state.data_from_api
+  }
+}
 
 class UsersExchangesScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      loading: true,
-    };
+      loading: true
+    }
   }
 
-  async componentDidMount() {
-    const url = "http://localhost:3000/api/v1/exchange_requests";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ data: data, loading: false });
-    console.log(this.state.data.profile_id);
+  componentDidMount() {
+    this.props.linkFromUsersExchangeMinors()
+  }
+
+  componentDidUpdate() {
+    if (this.state.loading) {
+      const { url } = this.props.data_from_api
+      if (url.search('exchange_requests') != -1) {
+        this.props.fetchData(url, this.changeState)
+      }
+    }
+  }
+
+  changeState = (data) => {
+    const newState = this.state
+    newState.data = data
+    newState.loading = false
+    this.setState(newState)
   }
 
   render_exshanges = (exshanges) => {
-    let items = [];
-    console.log(exshanges);
+    let items = []
     exshanges.forEach((exshange, i) => {
       items.push(
         <TouchableOpacity
           onPress={() =>
-            this.props.navigation.navigate("Chat", {
+            this.props.navigation.navigate('Chat', {
               url: exshange.url,
-              profile_id: this.state.data.profile_id,
+              profile_id: this.state.data.profile_id
             })
           }
           key={i}
@@ -49,11 +74,11 @@ class UsersExchangesScreen extends React.Component {
           <Text>{exshange.responder_minor_name}</Text>
           <Text>{exshange.responder_name}</Text>
         </TouchableOpacity>
-      );
-    });
+      )
+    })
 
-    return items;
-  };
+    return items
+  }
 
   render() {
     return this.state.loading ? (
@@ -63,20 +88,22 @@ class UsersExchangesScreen extends React.Component {
         {this.render_exshanges(this.state.data.requests_for_profile_data)}
         {this.render_exshanges(this.state.data.requests_from_profile_data)}
       </ScrollView>
-    );
+    )
   }
 }
 
 UsersExchangesScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Мои обмены",
-});
+  headerTitle: 'Мои обмены'
+})
 
-export default UsersExchangesScreen;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      linkFromUsersExchangeMinors,
+      fetchData
+    },
+    dispatch
+  )
+}
 
-const styles = StyleSheet.create({
-  list: {
-    alignItems: "center",
-    paddingTop: 20,
-    paddingBottom: 60,
-  },
-});
+export default connect(select, mapDispatchToProps)(UsersExchangesScreen)

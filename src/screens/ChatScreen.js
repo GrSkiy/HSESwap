@@ -1,5 +1,11 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { fetchData } from '../store/actions/api'
+
+import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable'
+
 import {
   StyleSheet,
   Text,
@@ -12,15 +18,22 @@ import {
   TextInput
 } from 'react-native'
 
-import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable'
+import styles from '../stylesheets/main'
 
 import MainButton from '../components/MainButton'
-
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 const actionCable = ActionCable.createConsumer('ws://localhost:3000/cable')
 const cable = new Cable({})
+
+function select(state) {
+  return {
+    tokens: state.tokens,
+    exchangeMinors: state.exchangeMinors.entities,
+    url: state.url
+  }
+}
 
 let EXSHANGE = 'name'
 
@@ -34,19 +47,21 @@ class ChatScreen extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const url = this.props.navigation.getParam('url')
-    const response = await fetch(url)
-    const data = await response.json()
+    this.props.fetchData(url, this.changeState)
+  }
+
+  changeState = (data) => {
     this.setState({
       data: data,
       loading: false,
       profile_id: this.props.navigation.getParam('profile_id')
     })
+
     EXSHANGE = this.state
-    // console.log(EXSHANGE);
     const channel = cable.setChannel(
-      `room_channel_${this.state.data.data.id}`, // channel name to which we will pass data from Rails app with `stream_from`
+      `room_channel_${this.state.data.data.id}`,
       actionCable.subscriptions.create({
         channel: 'RoomChannel',
         room_id: this.state.data.data.id
@@ -82,21 +97,11 @@ class ChatScreen extends React.Component {
       content: this.state.message
     }
 
-    // cable
-    //   .channel(`room_channel_${this.state.data.data.id}`)
-    //   .perform("send_message", { text: "Hey" });
-
     await fetch(`http://127.0.0.1:3000/api/v1/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message })
     })
-
-    // await fetch(`ws://localhost:3000/cable`, {
-    //   command: "message",
-    //   identifier: { channel: "RoomChannel" },
-    //   data: { action: "some_method", args: "11111" },
-    // });
 
     console.log(message)
     this.setState({ message: '' })
@@ -140,57 +145,19 @@ class ChatScreen extends React.Component {
       </SafeAreaView>
     )
   }
-
-  // render() {
-  //   return (
-  //     <SafeAreaView>
-  //       <TextInput />
-  //     </SafeAreaView>
-  //   )
-  // }
 }
 
 ChatScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'EXSHANGE'
 })
 
-export default ChatScreen
-
-const styles = StyleSheet.create({
-  input: {
-    color: '#000',
-    width: '90%',
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: 48,
-    fontSize: 16,
-    marginBottom: 12,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      fetchData
     },
-    shadowOpacity: 0.09,
-    shadowRadius: 20,
+    dispatch
+  )
+}
 
-    elevation: 11,
-    borderRadius: 10
-  },
-  newMessage: {
-    flexDirection: 'row'
-  },
-  bottom: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 100,
-    height: 48,
-    marginLeft: 20,
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
-    backgroundColor: '#0488FF',
-    borderRadius: 20
-  }
-})
+export default connect(select, mapDispatchToProps)(ChatScreen)

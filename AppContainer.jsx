@@ -4,6 +4,11 @@ import { connect } from 'react-redux'
 
 import DB from './src/db'
 
+import {
+  linkFromTokens,
+  linkFromExchangeMinors,
+  fetchData
+} from './src/store/actions/api'
 import { getToken, updateToken } from './src/store/actions/tokens'
 import { getFilters } from './src/store/actions/filters'
 import { updateExchangeMinors } from './src/store/actions/exchangeMinors'
@@ -14,7 +19,10 @@ import { PreloaderScreen } from './src/screens/PreloaderScreen'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities
+    exchangeMinors: state.exchangeMinors.entities,
+    data_from_api: state.data_from_api
+    // url: state.data_from_api.url,
+    // pageData: state.data_from_api.pageData
   }
 }
 
@@ -37,41 +45,43 @@ class AppContainer extends Component {
   componentDidUpdate() {
     const { deviceToken, loaded } = this.props.tokens
     const { exchangeMinors } = this.props
+    // const url = this.props.data_from_api.url
+    // let { pageData } = this.props.data_from_api
 
     console.log('AppContainer PROPS', this.props)
-    console.log('TOKEN AND LOAD STATE', deviceToken === '', loaded === false)
+    console.log(
+      'TOKEN AND LOAD STATE',
+      deviceToken === '',
+      loaded === this.state.loaded
+    )
 
     if (deviceToken === '' && loaded === false) {
       console.log('FIRST IF')
     } else if (deviceToken === '' && loaded === true) {
       console.log('SECOND IF')
-      const url = 'http://127.0.0.1:3000/api/v1/login/guest'
 
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Response from the server', data)
+      this.props.linkFromTokens()
+      console.log('000000000000000000000000000')
+      console.log(this.props.data_from_api.url)
+      if (this.props.data_from_api.url !== '') {
+        fetch(this.props.data_from_api.url)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Response from the server', data)
 
-          this.props.updateToken(data.tokens)
-          this.props.getFilters(data.filters)
-        })
+            this.props.updateToken(data.tokens)
+            this.props.getFilters(data.filters)
+          })
+      }
     } else if (deviceToken != '' && this.state.loaded === false) {
-      const url = `http://127.0.0.1:3000/api/v1/exchange_minors?device_token=${deviceToken}`
-
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(
-            'Response from the server on Exchange Minor request',
-            data
-          )
-
-          // this.props.updateAuthToken(data)
-          this.props.updateExchangeMinors(data)
-
-          // Это нужно на время, чтобы случайно не было инфинити лупа
-          this.setState({ loaded: true })
-        })
+      this.props.linkFromExchangeMinors(deviceToken)
+      if (this.props.data_from_api.url !== '') {
+        this.props.fetchData(
+          this.props.data_from_api.url,
+          this.props.updateExchangeMinors
+        )
+        this.setState({ loaded: true })
+      }
     }
   }
 
@@ -85,9 +95,12 @@ class AppContainer extends Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
+      linkFromTokens,
+      linkFromExchangeMinors,
       getToken,
       updateToken,
       getFilters,
+      fetchData,
       updateExchangeMinors
     },
     dispatch

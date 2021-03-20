@@ -6,24 +6,17 @@ import { updateAuthToken } from '../store/actions/tokens'
 import { updateFilters } from '../store/actions/filters'
 import { updateExchangeMinors } from '../store/actions/exchangeMinors'
 
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  Icon,
-  View,
-  Alert,
-  Platform,
-  Image
-} from 'react-native'
+import styles from '../stylesheets/main'
 
-import SmallNumberInput from '../components/SmallNumberInput'
+import { Modal, Text, SafeAreaView, View } from 'react-native'
+
 import MainButton from '../components/MainButton'
-import Constants from 'expo-constants'
-import LargeSelect from '../components/LargeSelect'
-
 import Select from '../components/Select'
-import LargeInput from '../components/LargeInput'
+
+// import SmallNumberInput from '../components/SmallNumberInput'
+// import Constants from 'expo-constants'
+// import LargeSelect from '../components/LargeSelect'
+// import LargeInput from '../components/LargeInput'
 
 function select(state) {
   return {
@@ -38,7 +31,8 @@ class FiltersScreen extends Component {
 
     this.state = {
       city: props.filters.city,
-      year: props.filters.year
+      year: props.filters.year,
+      show: false
     }
   }
 
@@ -105,39 +99,41 @@ class FiltersScreen extends Component {
     this.props.navigation.goBack()
   }
 
-  renderInputs = () => {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.safeAreaContainer}>
-          <View style={styles.filterMainContainer}>
-            <View style={styles.filterSubContainer}>
-              <View style={styles.viewContainer}>
-                <View style={styles.myCourse}></View>
-                <View style={styles.myBuilding}>
-                  <Select
-                    label="Год обучения"
-                    items={[{ city_name: 2 }, { city_name: 3 }]}
-                    current={this.state.year}
-                    field="year"
-                    handleChange={this.handleChange}
-                  />
-                  <Select
-                    label="Кампус"
-                    items={this.props.filters.cities}
-                    current={this.state.city}
-                    field="city"
-                    handleChange={this.handleChange}
-                  />
-                </View>
-              </View>
-            </View>
+  show = () => {
+    this.setState({ show: true })
+  }
+  close = () => {
+    this.setState({ show: false })
+  }
 
-            <View style={styles.mainButton}>
-              <MainButton title="Применить" onPress={this.handleSubmit} />
-            </View>
-          </View>
+  renderInputs = () => {
+    let { show } = this.state
+    console.log('00000000000000000000')
+    console.log(show)
+    return (
+      <View style={styles.filterMainContainer}>
+        <Text>Фильтры</Text>
+        <View>
+          <Select
+            label="Год обучения"
+            items={[{ city_name: 2 }, { city_name: 3 }]}
+            current={this.state.year}
+            field="year"
+            handleChange={this.handleChange}
+          />
+          <Select
+            label="Кампус"
+            items={this.props.filters.cities}
+            current={this.state.city}
+            field="city"
+            handleChange={this.handleChange}
+          />
         </View>
-      </SafeAreaView>
+
+        <View style={styles.mainButton}>
+          <MainButton title="Применить" onPress={this.handleSubmit} />
+        </View>
+      </View>
     )
   }
 
@@ -145,7 +141,15 @@ class FiltersScreen extends Component {
     return this.state.loading ? (
       <Text>Loading...</Text>
     ) : (
-      <View style={styles.opacityLayer}>{this.renderInputs()}</View>
+      <Modal
+        animationType={'fade'}
+        transparent={false}
+        visible={false}
+        onRequestClose={this.close}
+        style={styles.popUpContainer}
+      >
+        {this.renderInputs()}
+      </Modal>
     )
   }
 }
@@ -158,64 +162,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(select, mapDispatchToProps)(FiltersScreen)
-
-const styles = StyleSheet.create({
-  opacityLayer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    height: '100%',
-    justifyContent: 'flex-end'
-  },
-  safeAreaContainer: {
-    backgroundColor: 'red',
-    paddingLeft: 20,
-    paddingRight: 20,
-    // height: "100%",
-    // display: "flex",
-    // alignItems: "center",
-    justifyContent: 'flex-end',
-    paddingBottom: Platform.OS === 'ios' ? 80 : 44
-  },
-
-  viewContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    marginBottom: 20
-  },
-
-  myCourse: {},
-  pageTag: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-
-  myBuilding: {
-    marginLeft: 12,
-    width: '90.3%'
-  },
-
-  homeIndicator: {
-    width: 36,
-    height: 4
-  },
-
-  imgContainer: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center'
-  },
-
-  changeMinor: {
-    marginBottom: Platform.OS === 'ios' ? 10 : 20
-  },
-
-  mainButton: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  filterMainContainer: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
-})

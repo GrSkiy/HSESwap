@@ -19,19 +19,17 @@ const renderExchangeMinors = (minors) => {
   }
 }
 
+// <View style={styles.cardHeader}>
+// </View>
 export default function Card(props) {
   return (
     <TouchableOpacity style={styles.cardContainer} onPress={props.handleBack}>
-      <View style={styles.cardHeader}>
-        <Text style={styles.h4}>
-          {props.city} • {props.year}
-        </Text>
-      </View>
-
+      <Text style={styles.cardHeader}>
+        {props.city} • {props.year}
+      </Text>
       <Text style={styles.h1}>{props.title}</Text>
-      <Text style={styles.h4}>{props.address}</Text>
-      <Text style={styles.h4}>{props.credits} кредитов</Text>
-
+      <Text style={styles.h4}>адрес: {props.address}</Text>
+      <Text style={styles.h4}>25{props.credits} кредитов</Text>
       <View style={styles.minorList}>
         {renderExchangeMinors(props.exchangeMinors)}
       </View>
@@ -41,13 +39,13 @@ export default function Card(props) {
 
 const styles = StyleSheet.create({
   cardContainer: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
     marginBottom: 20,
     width: '100%',
     backgroundColor: '#FFF',
-    paddingTop: 20,
-    paddingLeft: 18,
-    paddingRight: 18,
-    paddingBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -59,38 +57,36 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   cardHeader: {
-    marginBottom: 13,
-
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  h4: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#8C8C8C',
-    marginBottom: 5
+    marginBottom: 12
   },
+
+  h4: { fontSize: 14, color: '#000', marginBottom: 5 },
   h1: {
     fontSize: 18,
     marginBottom: 5,
 
-    fontWeight: 'bold',
-    color: '#000'
+    fontWeight: '600',
+    color: '#005AAB'
   },
+
   minorList: {
     width: '100%',
     flexWrap: 'wrap',
-    marginTop: 16,
+    marginTop: 15,
     // flex: 1,
     flexDirection: 'row'
   },
   minorChips: {
-    color: '#005AAB',
+    color: '#000',
     paddingTop: 6,
     paddingBottom: 6,
     paddingLeft: 15,
     paddingRight: 15,
     marginBottom: 9,
     height: 'auto',
+    fontSize: 17,
 
     backgroundColor: '#F2F2F2',
     borderRadius: 36,
