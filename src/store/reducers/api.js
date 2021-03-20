@@ -4,6 +4,23 @@ const host_root = 'http://127.0.0.1:3000/api/'
 const api_version = 'v1/'
 const devise_token = '?device_token='
 
+// 1. Route to auth
+//    - With device token
+//    - Without token
+//
+// Можем при аутентификации передавать Exchange Minors
+//    - Ссылка на Exchange Minors не нужна
+//    - Нужно добавлять внутрь каждого Exchange Minor ссылку
+//      по которой можно отправить запрос на Exchange Request
+//    - Информацию о состоянии чата (о новых сообщениях)
+//    - Информацию о состоянии экрана «Для тебя» (выдавать пустой
+//      массив Exchange Minors, если не заполнен Exchange Minor)
+//    - Роуты к элементам меню в бургере
+//      * Ссылка на апдейт
+//      * Ссылка на страницу всех майноров
+
+// 2. Route to Minor List
+
 const login_guest_url_v1 = 'login/guest'
 const exchange_minors_index_url_v1 = 'exchange_minors'
 const exchange_requests_index_url_v1 = 'exchange_requests'
