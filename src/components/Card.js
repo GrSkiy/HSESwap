@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
 
-  h4: { fontSize: 14, color: '#000', marginBottom: 5 },
   h1: {
     fontSize: 18,
     marginBottom: 5,
@@ -70,6 +69,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#005AAB'
   },
+  h4: { fontSize: 14, color: '#000', marginBottom: 5 },
 
   minorList: {
     width: '100%',

@@ -7,12 +7,18 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import { Platform, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
+import AppContainer from '../screens/AppContainer'
+
 import MainScreen from '../screens/MainScreen'
+import MainForGuestScreen from '../screens/MainForGuestScreen'
 import ExshangesForUserScreen from '../screens/ExshangesForUserScreen'
 
 import LogInScreen from '../screens/LogInScreen'
-import SignInScreen from '../screens/SignInScreen'
 import EmailVerificationScreen from '../screens/EmailVerificationScreen'
+import BaseInfoSkreen from '../screens/REGBaseInfoSkreen'
+import YouMinorSkreen from '../screens/REGYouMinorSkreen'
+import YourWishedMinorsSkreen from '../screens/REGWhishedMinorsSkreen'
+import PublishingSkreen from '../screens/REGPublishedSkreen'
 
 // import FiltersScreen from '../screens/FiltersScreen'
 import UsersExchangesScreens from '../screens/UsersExchangesScreens'
@@ -31,38 +37,92 @@ import InformationOfExchangeScreen from '../screens/InformationOfExchangeScreen'
 
 const navigatorOptions = {
   defaultNavigationOptions: {
+    headerTitleAlign: 'center',
     headerStyle: {
-      backgroundColor: '#005aab'
+      backgroundColor: '#FAFAFA'
     },
-    headerTintColor: '#000'
+    headerTitleStyle: {
+      fontSize: 16,
+      fontWeight: '700'
+    }
   }
 }
 
-const MainStack = createStackNavigator(
+const MainForUserStack = createStackNavigator(
   {
     Main: {
       screen: MainScreen
     }
   },
-  {
-    mode: 'modal'
-  }
+  navigatorOptions
 )
 
-const SettinsStack = createStackNavigator({
-  PersonData: {
-    screen: Setting_view
+const MainForGuestStack = createStackNavigator(
+  {
+    MainForGuest: {
+      screen: MainForGuestScreen
+    }
   },
-  EditPersonData: {
-    screen: Setting_change
-  }
-})
+  navigatorOptions
+)
 
-const AllMinorsStack = createStackNavigator({
-  AllMinors: {
-    screen: AllMinorsScreen
-  }
-})
+const LogInStack = createStackNavigator(
+  {
+    login: {
+      screen: LogInScreen
+    },
+    EmailVerification: {
+      screen: EmailVerificationScreen
+    },
+    Base: {
+      screen: BaseInfoSkreen
+    },
+    YourMinor: {
+      screen: YouMinorSkreen
+    },
+    Whished: {
+      screen: YourWishedMinorsSkreen
+    },
+    Publishing: {
+      screen: PublishingSkreen
+    }
+  },
+  navigatorOptions
+)
+
+const SettinsStack = createStackNavigator(
+  {
+    PersonData: {
+      screen: Setting_view
+    },
+    EditPersonData: {
+      screen: Setting_change
+    }
+  },
+  navigatorOptions
+)
+
+const UsersExchangesStack = createStackNavigator(
+  {
+    UsersExchanges: {
+      screen: UsersExchangesScreens
+    },
+    Chat: {
+      screen: ChatScreen
+    }
+  },
+  navigatorOptions
+  // { bottomTabsMode: 'none' }
+)
+
+const AllMinorsStack = createStackNavigator(
+  {
+    AllMinors: {
+      screen: AllMinorsScreen
+    }
+  },
+  navigatorOptions
+)
 
 const ForUserStack = createStackNavigator(
   {
@@ -70,20 +130,26 @@ const ForUserStack = createStackNavigator(
       screen: MainScreen
     }
   },
+  navigatorOptions
+)
+
+const ExchangeCardStack = createStackNavigator(
   {
-    mode: 'modal'
-  }
+    ExchangeCard: {
+      screen: ExchangeDescriptionScreen
+    }
+  },
+  navigatorOptions
 )
 
 const AllExchangesStack = createStackNavigator(
   {
     Main: {
-      screen: MainStack
+      screen: MainForUserStack
     },
-    // Filters: {
-    //   screen: FiltersScreen,
-    //   mode: 'modal'
-    // },
+    Chat: {
+      screen: UsersExchangesStack
+    },
     Profile: {
       screen: Burger
     },
@@ -94,7 +160,7 @@ const AllExchangesStack = createStackNavigator(
       screen: AllMinorsStack
     },
     ExchangeCard: {
-      screen: ExchangeDescriptionScreen
+      screen: ExchangeCardStack
     },
     SuccessExchange: {
       screen: SuccessExchangeScreen
@@ -109,10 +175,7 @@ const AllExchangesStack = createStackNavigator(
       screen: MinorScreen
     },
     login: {
-      screen: LogInScreen
-    },
-    EmailVerification: {
-      screen: EmailVerificationScreen
+      screen: LogInStack
     }
   },
   { headerMode: 'none' }
@@ -121,22 +184,19 @@ const AllExchangesStack = createStackNavigator(
 const ForUserMainStack = createStackNavigator(
   {
     ForUser: {
-      screen: MainStack
+      screen: MainForUserStack
     },
-    // Filters: {
-    //   screen: FiltersScreen
-    // },
+    Chat: {
+      screen: UsersExchangesStack
+    },
     Profile: {
       screen: Burger
     },
     Settings: {
       screen: SettinsStack
     },
-    // Filters: {
-    //   screen: FiltersScreen
-    // },
     ExchangeCard: {
-      screen: ExchangeDescriptionScreen
+      screen: ExchangeCardStack
     },
     SuccessExchange: {
       screen: SuccessExchangeScreen
@@ -151,29 +211,11 @@ const ForUserMainStack = createStackNavigator(
       screen: MinorScreen
     },
     login: {
-      screen: LogInScreen
-    },
-    EmailVerification: {
-      screen: EmailVerificationScreen
+      screen: LogInStack
     }
   },
   { headerMode: 'none' }
 )
-
-const UsersExchangesStack = createStackNavigator({
-  UsersExchanges: {
-    screen: UsersExchangesScreens,
-    navigationOptions: {
-      tabBarLabel: 'Твои обмены (Чат)',
-      tabBarIcon: (info) => (
-        <Ionicons name="repeat" size={25} color={info.tintColor} />
-      )
-    }
-  },
-  Chat: {
-    screen: ChatScreen
-  }
-})
 
 const bottomTabsConfig = {
   Main: {
@@ -193,15 +235,6 @@ const bottomTabsConfig = {
         <Ionicons name="home" size={25} color={info.tintColor} />
       )
     }
-  },
-  UsersExchanges: {
-    screen: UsersExchangesStack,
-    navigationOptions: {
-      tabBarLabel: 'Твои обмены (Чат)',
-      tabBarIcon: (info) => (
-        <Ionicons name="repeat" size={25} color={info.tintColor} />
-      )
-    }
   }
 }
 
@@ -214,18 +247,64 @@ const BottomNavigator = createBottomTabNavigator(bottomTabsConfig, {
   }
 })
 
-const AppNavigator = createStackNavigator(
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// const AppContainerStack = createStackNavigator(
+//   {
+//     Container: {
+//       screen: AppContainer
+//     }
+//   },
+//   { headerMode: null }
+// )
+
+const UserMainStack = createStackNavigator(
   {
-    PostTabs: {
+    Tabs: {
       screen: BottomNavigator,
       tabBarVisible: false,
 
       swipeEnabled: true
     }
+    // Container: {
+    //   screen: AppContainerStack
+    // }
   },
   { headerMode: null }
 )
 
-const AppNavigation = createAppContainer(AppNavigator)
+const GuestMainStack = createStackNavigator(
+  {
+    GuestMain: {
+      screen: MainForGuestStack
+    },
+    ExchangeCard: {
+      screen: ExchangeCardStack
+    },
+    Login: {
+      screen: LogInStack
+    }
+    // Container: {
+    //   screen: AppContainerStack
+    // }
+  },
+  { headerMode: null }
+)
 
-export { AppNavigation }
+// const AppNavigator = createStackNavigator(
+//   {
+//     UserPart: {
+//       screen: UserMainStack
+//     },
+//     GuestPart: {
+//       screen: GuestMainStack
+//     }
+//   },
+//   { headerMode: null }
+// )
+// const AppNavigation = createAppContainer(AppNavigator)
+
+const UserNavigation = createAppContainer(UserMainStack)
+const GuestNavigation = createAppContainer(GuestMainStack)
+
+// export { AppNavigation }
+export { UserNavigation, GuestNavigation }

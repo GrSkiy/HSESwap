@@ -30,6 +30,17 @@ const getdata = async () => {
   console.log(data)
 }
 
+const renderMainButton = (navigation, registrate) => {
+  return registrate ? (
+    <MainButton
+      title="Далее"
+      onPress={() => navigation.navigate('GuestMain')}
+    />
+  ) : (
+    <MainButton title="Далее" onPress={() => navigation.navigate('Base')} />
+  )
+}
+
 const EmailVerificationScreen = ({
   mainButtonHandle,
   handleSendAgain,
@@ -47,10 +58,11 @@ const EmailVerificationScreen = ({
   const CELL_COUNT = 4
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.safeAreaContainer}>
-        <View style={styles.mainContainer}>
-          <Text style={styles.title}>
+    <SafeAreaView style={styles.mainWrapper}>
+      <View style={styles.screenWithButtonOnBottom}>
+        <View></View>
+        <View style={styles.centredContainer}>
+          <Text style={styles.h1InVerification}>
             Мы отправили код на твою корпоративную почту
           </Text>
           <CodeField
@@ -81,12 +93,10 @@ const EmailVerificationScreen = ({
             }
             style={styles.sendAgainContainer}
           >
-            <Text style={styles.sendAgainTitle}>Отправить код еще раз</Text>
+            <Text style={styles.link}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.mainButton}>
-        <MainButton title="Далее" onPress={() => navigation.navigate('Main')} />
+        {renderMainButton(navigation, false)}
       </View>
     </SafeAreaView>
   )

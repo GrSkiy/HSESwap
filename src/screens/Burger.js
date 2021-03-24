@@ -19,7 +19,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 import SettingPoint from '../components/SettingPoint'
-import MainButton from '../components/MainButton'
+// import MainButton from '../components/MainButton'
 import Line from '../components/Line'
 
 function select(state) {
@@ -109,16 +109,9 @@ class Burger extends React.Component {
 
   render() {
     return this.state.loading ? (
-      <MainButton
-        onPress={() => this.props.navigation.push('login')}
-        title={'Войти'}
-      />
+      <Text>Loading...</Text>
     ) : (
       <View contentContainerStyle={styles.list}>
-        <MainButton
-          onPress={() => this.props.navigation.push('login')}
-          title={'Войти'}
-        />
         {this.renderProfileData(this.state.data)}
       </View>
     )

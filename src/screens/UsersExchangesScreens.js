@@ -4,22 +4,18 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromUsersExchangeMinors, fetchData } from '../store/actions/api'
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Platform,
-  TouchableOpacity,
-  Image,
-  Alert
-} from 'react-native'
+import { Text, ScrollView, TouchableOpacity } from 'react-native'
 
 import styles from '../stylesheets/main'
 
-import MainButton from '../components/MainButton'
+import ExchangeCard from '../components/ExchangeCard'
+import { MaterialIcons } from '@expo/vector-icons'
+
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
+
+//Брать статус чата
+//брать и выводить время последнего сообщения
 
 function select(state) {
   return {
@@ -62,18 +58,21 @@ class UsersExchangesScreen extends React.Component {
     let items = []
     exshanges.forEach((exshange, i) => {
       items.push(
-        <TouchableOpacity
-          onPress={() =>
+        <ExchangeCard
+          minorName={exshange.responder_minor_name}
+          result="Студент написал вам"
+          time="15.55"
+          handleClick={() =>
             this.props.navigation.navigate('Chat', {
               url: exshange.url,
+              minorId: exshange.responder_minor_id,
+              minorName: exshange.responder_minor_name,
+              name: exshange.student_name,
               profile_id: this.state.data.profile_id
             })
           }
           key={i}
-        >
-          <Text>{exshange.responder_minor_name}</Text>
-          <Text>{exshange.responder_name}</Text>
-        </TouchableOpacity>
+        />
       )
     })
 
@@ -84,7 +83,7 @@ class UsersExchangesScreen extends React.Component {
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
-      <ScrollView contentContainerStyle={styles.list}>
+      <ScrollView contentContainerStyle={styles.mainWrapper}>
         {this.render_exshanges(this.state.data.requests_for_profile_data)}
         {this.render_exshanges(this.state.data.requests_from_profile_data)}
       </ScrollView>
@@ -93,7 +92,15 @@ class UsersExchangesScreen extends React.Component {
 }
 
 UsersExchangesScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'Мои обмены'
+  headerTitle: 'Обмены',
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  )
 })
 
 function mapDispatchToProps(dispatch) {

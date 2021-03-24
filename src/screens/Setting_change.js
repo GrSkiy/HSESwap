@@ -9,7 +9,7 @@ import Line from '../components/Line'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
-import LargeInput from '../components/LargeInput___RESTILINGfromLera'
+import LargeInput from '../components/LargeInput'
 
 let CONFIRMATION_DATA = { data: '' }
 

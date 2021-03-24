@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AppContainer from './AppContainer'
+import AppContainer from './src/screens/AppContainer'
 
 import { bindActionCreators } from 'redux'
 import { Provider, connect } from 'react-redux'

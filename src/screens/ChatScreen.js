@@ -21,6 +21,8 @@ import {
 import styles from '../stylesheets/main'
 
 import MainButton from '../components/MainButton'
+import { MaterialIcons } from '@expo/vector-icons'
+
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
@@ -34,8 +36,6 @@ function select(state) {
     url: state.url
   }
 }
-
-let EXSHANGE = 'name'
 
 class ChatScreen extends React.Component {
   constructor(props) {
@@ -59,7 +59,6 @@ class ChatScreen extends React.Component {
       profile_id: this.props.navigation.getParam('profile_id')
     })
 
-    EXSHANGE = this.state
     const channel = cable.setChannel(
       `room_channel_${this.state.data.data.id}`,
       actionCable.subscriptions.create({
@@ -121,26 +120,42 @@ class ChatScreen extends React.Component {
     return messages_items
   }
 
+  getState = () => {
+    return this.state
+  }
+
   render() {
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
-      <SafeAreaView>
-        {this.renderMessages(this.state.data.messages)}
-        <View style={styles.newMessage}>
-          <TouchableOpacity style={styles.bottom} onPress={this.confirmation}>
-            <View>
-              <TextInput
-                style={styles.input}
-                // onChangeText={(value) => setText(value)}
-                onChangeText={this.changeTetx}
-                value={this.state.message}
-                placeholder="Введите сообщение"
-                placeholderTextColor="#979797"
-              />
-              <Text>Отправить</Text>
+      <SafeAreaView style={styles.mainWrapper}>
+        <View style={styles.screenWithButtonOnBottom}>
+          <Text style={styles.pinMinor}>
+            {this.props.navigation.getParam('minorName')}
+          </Text>
+          <View style={styles.chatWrapper}>
+            <View style={styles.messagesList}>
+              {this.renderMessages(this.state.data.messages)}
             </View>
-          </TouchableOpacity>
+            <View style={styles.newMessage}>
+              <View style={styles.newMessage}>
+                <TextInput
+                  style={styles.input}
+                  // onChangeText={(value) => setText(value)}
+                  onChangeText={this.changeTetx}
+                  value={this.state.message}
+                  placeholder="Введите сообщение"
+                  placeholderTextColor="#979797"
+                />
+                <TouchableOpacity
+                  style={styles.bottom}
+                  onPress={this.confirmation}
+                >
+                  <Text>Отправить</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </View>
       </SafeAreaView>
     )
@@ -148,7 +163,15 @@ class ChatScreen extends React.Component {
 }
 
 ChatScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'EXSHANGE'
+  headerTitle: navigation.getParam('name'),
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  )
 })
 
 function mapDispatchToProps(dispatch) {

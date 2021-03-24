@@ -2,19 +2,21 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import DB from './src/db'
+import DB from '../db'
 
 import {
   linkFromTokens,
   linkFromExchangeMinors,
   fetchData
-} from './src/store/actions/api'
-import { getToken, updateToken } from './src/store/actions/tokens'
-import { getFilters } from './src/store/actions/filters'
-import { updateExchangeMinors } from './src/store/actions/exchangeMinors'
+} from '../store/actions/api'
 
-import { AppNavigation } from './src/navigation/AppNavigation'
-import { PreloaderScreen } from './src/screens/PreloaderScreen'
+import { getToken, updateToken } from '../store/actions/tokens'
+import { getFilters } from '../store/actions/filters'
+import { updateExchangeMinors } from '../store/actions/exchangeMinors'
+
+import { UserNavigation, GuestNavigation } from '../navigation/AppNavigation'
+import { PreloaderScreen } from './PreloaderScreen'
+import MainForGuestScreen from './MainForGuestScreen'
 
 function select(state) {
   return {
@@ -61,8 +63,6 @@ class AppContainer extends Component {
       console.log('SECOND IF')
 
       this.props.linkFromTokens()
-      console.log('000000000000000000000000000')
-      console.log(this.props.data_from_api.url)
       if (this.props.data_from_api.url !== '') {
         fetch(this.props.data_from_api.url)
           .then((response) => response.json())
@@ -87,8 +87,16 @@ class AppContainer extends Component {
 
   render() {
     console.log('AppContainer', this.props)
+    // const login = false
+    const login = true
     const { deviceToken } = this.props.tokens
-    return deviceToken === '' ? <PreloaderScreen /> : <AppNavigation />
+    return deviceToken === '' ? (
+      <PreloaderScreen />
+    ) : login ? (
+      <UserNavigation />
+    ) : (
+      <GuestNavigation />
+    )
   }
 }
 

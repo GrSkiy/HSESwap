@@ -1,92 +1,55 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import React from 'react'
+
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 export default class ExchangeCardCurrent extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
-    let {
-      minorName,
-      educationYear,
-      credits,
-      minorAddresss,
-      title,
-      isNewMinor,
-    } = this.props;
-
-    let styleSadow = styles.cardContainerCurrent;
-
-    if (isNewMinor) {
-      styleSadow = styles.cardContainerNew;
-    }
+    let { minorName, result, time, handleClick } = this.props
 
     return (
-      <View style={styleSadow}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.minorName}>{minorName}</Text>
-        <View style={styles.yearAndCredits}>
-          <Text style={styles.text}>{educationYear}</Text>
-          <Text style={styles.text}>{credits}</Text>
+      <TouchableOpacity style={styles.cardContainer} onPress={handleClick}>
+        <View style={styles.main}>
+          <Text style={styles.title}>{minorName}</Text>
+          <Text style={styles.text}>{result}</Text>
         </View>
-        <Text style={styles.text}>{minorAddresss}</Text>
-      </View>
-    );
+        <Text style={styles.span}>{time}</Text>
+      </TouchableOpacity>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  cardContainerCurrent: {
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingBottom: 20,
-    paddingRight: 20,
-    backgroundColor: "#FFF",
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.09,
-    shadowRadius: 20,
-    borderRadius: 20,
-    elevation: 5,
+  cardContainer: {
+    paddingTop: 11,
+    paddingLeft: 18,
+    paddingBottom: 11,
+    paddingRight: 12,
+    borderRadius: 15,
+    backgroundColor: '#F1F1F1',
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
   },
-  cardContainerNew: {
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingBottom: 20,
-    paddingRight: 20,
-    backgroundColor: "#FFF",
-
-    shadowColor: "#005AAB", //цвет тени не меняется, но условие работает
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.09,
-    shadowRadius: 20,
-    borderRadius: 20,
-    elevation: 5,
+  main: {
+    width: '76%'
   },
   title: {
-    fontSize: 14,
-    color: "#9D9D9D",
-    marginBottom: 13,
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 10
   },
-  minorName: {
-    fontSize: 18,
-    color: "#005AAB",
-    fontWeight: "bold", //Изменить на semiBold
-    marginBottom: 5,
-  },
-  yearAndCredits: {
-    flexDirection: "row",
-    marginBottom: 5,
+  span: {
+    fontSize: 12,
+    color: '#979797',
+    marginBottom: 30
   },
   text: {
-    fontSize: 14,
-  },
-});
+    fontSize: 16,
+    color: '#0086FF'
+  }
+})

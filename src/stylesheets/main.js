@@ -2,9 +2,189 @@ import { StyleSheet, Platform } from 'react-native'
 
 const styles = StyleSheet.create({
   mainWrapper: {
-    paddingRight: 20,
     paddingTop: 30,
-    paddingLeft: 20
+    paddingRight: 20,
+    paddingLeft: 20,
+    backgroundColor: '#fff',
+    minWidth: '100%',
+    height: '100%'
+  },
+
+  screenWithButtonOnBottom: {
+    height: '100%',
+    justifyContent: 'space-between'
+  },
+
+  sentredWrepper: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  scrollList: {
+    width: '100%'
+  },
+
+  centredContainer: {
+    alignItems: 'center'
+  },
+
+  h1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    lineHeight: 26
+  },
+  h2: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 12
+  },
+
+  span: {
+    fontSize: 12,
+    color: '#979797',
+    marginBottom: 30
+  },
+
+  paragraph: {
+    fontSize: 14
+  },
+
+  link: {
+    fontSize: 14,
+    color: '#0488FF'
+  },
+
+  border: {
+    backgroundColor: '#F8F8F8',
+    marginLeft: -20,
+    width: 'calc(100% + 40px)',
+    height: 10,
+    marginTop: 20,
+    marginBottom: 20
+  },
+
+  creditAddresssContainer: {
+    flexDirection: 'row',
+    marginBottom: 30,
+    marginTop: 20
+  },
+
+  chipsContainer: {
+    marginRight: 20
+  },
+
+  chips: {
+    backgroundColor: '#F3F3F3',
+    borderRadius: 36,
+    minWidth: 69,
+    textAlign: 'center',
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontSize: 14,
+    marginTop: 14
+  },
+
+  responsibleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 6
+  },
+
+  descriptionheader: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 12
+  },
+
+  loginContainer: {
+    alignItems: 'flex-start'
+  },
+
+  liginPadding: {
+    height: 20
+  },
+
+  h1InVerification: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    lineHeight: 26,
+    textAlign: 'center'
+  },
+
+  cellRoot: {
+    backgroundColor: '#F1F1F1',
+    width: 55,
+    height: 63,
+    marginTop: 28,
+    marginBottom: 20,
+    justifyContent: 'center',
+    borderRadius: 15,
+    alignItems: 'center',
+    borderBottomColor: '#CACACA',
+    borderBottomWidth: 1
+  },
+
+  cellText: {
+    color: '#000',
+    fontSize: 20,
+    textAlign: 'center'
+  },
+
+  focusCell: {
+    borderBottomColor: '#0488FF',
+    borderBottomWidth: 2
+  },
+
+  selectWrapper: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+
+  pinMinor: {
+    width: 'calc(100% + 40px)',
+    zIndex: 3,
+    paddingTop: 14,
+    paddingBottom: 14,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginLeft: -20,
+    marginTop: -30,
+    backgroundColor: '#fff',
+    fontSize: 16,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowOpacity: 0.09,
+    shadowRadius: 20,
+    elevation: 5
+  },
+
+  chatWrapper: {
+    width: '100%'
+  },
+  messagesList: {
+    marginBottom: 20
+  },
+
+  newMessage: {
+    width: 'calc(100% + 40px)',
+    flexDirection: 'row',
+    marginLeft: -20,
+    paddingLeft: 20,
+    paddingRight: 11,
+    paddingTop: 8,
+    paddingBottom: 8,
+    justifyContent: 'space-between'
   },
 
   icon: {
@@ -12,39 +192,22 @@ const styles = StyleSheet.create({
     height: 30
   },
 
-  list: {
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 60
-  },
-  header: {
-    zIndex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 31
-  },
-  h1: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    justifyContent: 'space-between'
-  },
-
   opacityLayer: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     height: '100%',
     justifyContent: 'flex-end'
   },
-  safeAreaContainer: {
-    backgroundColor: 'red',
-    paddingLeft: 20,
-    paddingRight: 20,
-    // height: "100%",
-    // display: "flex",
-    // alignItems: "center",
-    justifyContent: 'flex-end',
-    paddingBottom: Platform.OS === 'ios' ? 80 : 44
-  },
+
+  // safeAreaContainer: {
+  //   backgroundColor: 'red',
+  //   paddingLeft: 20,
+  //   paddingRight: 20,
+  //   // height: "100%",
+  //   // display: "flex",
+  //   // alignItems: "center",
+  //   justifyContent: 'flex-end',
+  //   paddingBottom: Platform.OS === 'ios' ? 80 : 44
+  // },
 
   viewContainer: {
     marginTop: 20,
@@ -85,39 +248,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
-  // changeMinor: {
-  //   marginBottom: Platform.OS === 'ios' ? 10 : 20
-  // },
-
   mainButton: {
     display: 'flex',
     alignItems: 'center',
     marginBottom: 40
   },
 
-  input: {
-    color: '#000',
-    width: '90%',
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: 48,
-    fontSize: 16,
-    marginBottom: 12,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.09,
-    shadowRadius: 20,
-
-    elevation: 11,
-    borderRadius: 10
-  },
-  newMessage: {
-    flexDirection: 'row'
-  },
   bottom: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -211,12 +347,6 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
 
-  creditAddresssContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 20
-  },
-
   credits: {
     fontSize: 22
   },
@@ -248,33 +378,6 @@ const styles = StyleSheet.create({
     width: 280,
     marginLeft: 'auto',
     marginRight: 'auto'
-  },
-  cellRoot: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
-  },
-  cellText: {
-    color: '#000',
-    fontSize: 36,
-    textAlign: 'center'
-  },
-  focusCell: {
-    borderBottomColor: '#0488FF',
-    borderBottomWidth: 2
-  },
-  safeAreaContainer: {
-    paddingLeft: 20,
-    paddingRight: 20
-
-    // paddingBottom: Platform.OS === "ios" ? 180 : 44,
-  },
-
-  mainContainer: {
-    marginTop: 100
   }
 })
 

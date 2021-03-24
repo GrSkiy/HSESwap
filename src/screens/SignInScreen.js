@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,13 @@ import {
   SafeAreaView,
   Platform,
   TouchableOpacity,
-  Image,
-} from "react-native";
+  Image
+} from 'react-native'
 
-import Navbar from "../components/Navbar";
-import MainButton from "../components/MainButton";
-import LargeInput from "../components/LargeInput___RESTILINGfromLera";
-import LargeSelect from "../components/LargeSelect";
+import Navbar from '../components/Navbar'
+import MainButton from '../components/MainButton'
+import LargeInput from '../components/LargeInput'
+import LargeSelect from '../components/LargeSelect'
 
 const SignInScreen = (props) => {
   return (
@@ -24,32 +24,32 @@ const SignInScreen = (props) => {
             style={styles.signInInput}
             lableText="Фамилия"
             placeholder="Введите вашу фамилию"
-            setText={() => Alert.alert("Simple Button pressed")}
+            setText={() => Alert.alert('Simple Button pressed')}
           />
           <LargeInput
             style={styles.signInInput}
             lableText="Имя"
             placeholder="Введите ваше имя"
-            setText={() => Alert.alert("Simple Button pressed")}
+            setText={() => Alert.alert('Simple Button pressed')}
           />
           <LargeInput
             style={styles.signInInput}
             lableText="Отчество"
             placeholder="Введите ваше отчество, если имеется "
-            setText={() => Alert.alert("Simple Button pressed")}
+            setText={() => Alert.alert('Simple Button pressed')}
           />
           <LargeInput
             style={styles.signInInput}
             lableText="Корпоративная почта hse"
             placeholder="Введите адрес почты"
-            setText={() => Alert.alert("Simple Button pressed")}
+            setText={() => Alert.alert('Simple Button pressed')}
           />
           <LargeInput
             style={styles.signInInput}
             lableText="Ваш кампус"
             placeholder="Выберите свой кампус"
             handlePress={() => {
-              console.log(1);
+              console.log(1)
             }}
           />
           <LargeInput
@@ -57,7 +57,7 @@ const SignInScreen = (props) => {
             lableText="Ваш майнор"
             placeholder="Выберите свой текущий майнор"
             handlePress={() => {
-              console.log(1);
+              console.log(1)
             }}
           />
         </View>
@@ -66,29 +66,29 @@ const SignInScreen = (props) => {
         <MainButton title="Далее" onPress={() => props.changePage(7)} />
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   safeArea: {
-    height: "100%",
+    height: '100%',
 
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between'
     // paddingBottom: Platform.OS === "ios" ? 180 : 44,
   },
   signInInput: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   mainButton: {
-    alignItems: "center",
-    marginBottom: 30,
+    alignItems: 'center',
+    marginBottom: 30
   },
   inputContainer: {},
 
   navbarAdd: {
-    marginBottom: 20,
-  },
-});
+    marginBottom: 20
+  }
+})
 
-export default SignInScreen;
+export default SignInScreen

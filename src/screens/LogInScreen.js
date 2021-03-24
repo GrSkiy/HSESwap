@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,95 +7,54 @@ import {
   Button,
   Alert,
   TouchableOpacity,
-  Platform,
-} from "react-native";
-import SmallNumberInput from "../components/SmallNumberInput";
-import Navbar from "../components/Navbar";
-import LinkButton from "../components/LinkButton";
-import MainButton from "../components/MainButton";
-import LargeInput from "../components/LargeInput";
+  Platform
+} from 'react-native'
+import styles from '../stylesheets/main.js'
 
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { AppHeaderIcon } from "../components/AppHeaderIcon";
+import { MaterialIcons } from '@expo/vector-icons'
+
+import LinkButton from '../components/LinkButton'
+import MainButton from '../components/MainButton'
+import LargeInput from '../components/LargeInput'
+
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 export default function LogInScreen({ mainButtonHandle, navigation }) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('')
 
   const login = async () => {
     await fetch(`http://127.0.0.1:3000/api/v1/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    return navigation.push("EmailVerification");
-  };
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    })
+    return navigation.push('EmailVerification')
+  }
 
   return (
-    <View style={styles.safeAreaContainer}>
-      <View style={styles.containerLogIn}>
-        <View style={styles.actionContainer}>
-          <Text style={styles.title}>
-            Введите свою корпоративную почту чтобы войти
-          </Text>
-
+    <View style={styles.mainWrapper}>
+      <View style={styles.screenWithButtonOnBottom}>
+        <View style={styles.loginContainer}>
+          <Text style={styles.h1}>Вход по почте HSE</Text>
+          <View style={styles.liginPadding}></View>
           <LargeInput
-            lableText="Почта hse"
-            placeholder="Почта hse"
+            lableText="Корпоративная почта hse"
+            placeholder="youe@edu.hse.ru"
             setText={setEmail}
           />
         </View>
-        <View style={styles.mainButton}>
-          <MainButton title="Войти" onPress={login} />
-        </View>
+        <MainButton title="Далее" onPress={login} />
       </View>
     </View>
-  );
+  )
 }
 
 LogInScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Вход",
-});
-
-const styles = StyleSheet.create({
-  containerLogIn: {
-    height: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-
-  title: {
-    marginBottom: 40,
-    marginTop: 200,
-    color: "#015EB1",
-    fontWeight: "bold",
-    fontSize: 24,
-    width: 240,
-  },
-
-  gradientImage: {
-    resizeMode: "contain",
-    height: 400,
-  },
-
-  navbarContainer: {},
-
-  safeAreaContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: "100%",
-    // display: "flex",
-    // alignItems: "center",
-    // justifyContent: "center",
-    paddingBottom: Platform.OS === "ios" ? 180 : 44,
-  },
-
-  mainButton: {
-    display: "flex",
-    alignItems: "center",
-  },
-
-  button: {
-    marginTop: 20,
-    fontSize: 12,
-  },
-});
+  headerTitle: 'Вход',
+  headerLeft: () => (
+    <TouchableOpacity onPress={() => navigation.navigate('GuestMain')}>
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  )
+})

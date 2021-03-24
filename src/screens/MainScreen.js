@@ -18,6 +18,7 @@ import styles from '../stylesheets/main.js'
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
+import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import FiltersScreen from './FiltersScreen'
 
 import { createStackNavigator } from 'react-navigation-stack'
@@ -37,7 +38,6 @@ class MainScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     const { deviceToken } = this.props.tokens
   }
 
@@ -85,11 +85,7 @@ class MainScreen extends React.Component {
       exchangeMinors.length === undefined ? (
       <Text> l,kmskmak</Text>
     ) : (
-      <View>
-        <ScrollView contentContainerStyle={styles.mainWrapper}>
-          {this.renderCards()}
-        </ScrollView>
-      </View>
+      <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
   }
 }
@@ -102,22 +98,27 @@ const openPopUp = () => {
 MainScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Все объявления',
   headerRight: () => (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={'md-options-outline'}
-        onPress={openPopUp}
-      />
-    </HeaderButtons>
+    // <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+    //   <Item
+    //     title="Toggle Drawer"
+    //     iconName={'md-options-outline'}
+    //     onPress={openPopUp}
+    //   />
+    // </HeaderButtons>
+    <TouchableOpacity
+      style={{ paddingRight: 20 }}
+      onPress={() => navigation.navigate('Chat')}
+    >
+      <Ionicons name="chatbubble-outline" size={24} color="#005AAB" />
+    </TouchableOpacity>
   ),
   headerLeft: () => (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={'menu'}
-        onPress={() => navigation.push('Profile')}
-      />
-    </HeaderButtons>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.navigate('Profile')}
+    >
+      <MaterialIcons name="menu" size={25} color="#005AAB" />
+    </TouchableOpacity>
   )
 })
 

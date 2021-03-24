@@ -1,54 +1,44 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Platform,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from "react-native";
-import MainButton from "../components/MainButton";
+import React from 'react'
 
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { AppHeaderIcon } from "../components/AppHeaderIcon";
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { linkFromAllMinors, fetchData } from '../store/actions/api'
 
-const showAlert = (changePage) => {
-  return Alert.alert(
-    "Открой все возможности",
-    "Чтобы иметь возможность обмениваться и изменять настройки фильтров войди или зарегестрируйся",
-    [
-      {
-        text: "Вход",
-        onPress: () => changePage(5),
-        style: "cancel",
-      },
-      {
-        text: "Регистрация",
-        onPress: () => changePage(6),
-        style: "cancel",
-      },
-    ],
-    { cancelable: false }
-  );
-};
+import { Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import styles from '../stylesheets/main.js'
+
+import { MaterialIcons, Ionicons } from '@expo/vector-icons'
+import MainButton from '../components/MainButton'
+
+function select(state) {
+  return {
+    tokens: state.tokens,
+    exchangeMinors: state.exchangeMinors.entities,
+    data_from_api: state.data_from_api
+  }
+}
 
 class ExchangeDescriptionScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      loading: true,
-    };
+      loading: true
+    }
   }
 
-  async componentDidMount() {
-    const url = this.props.navigation.getParam("url");
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ data: data, loading: false });
+  componentDidMount() {
+    if (this.state.loading) {
+      const url = this.props.navigation.getParam('url')
+      this.props.fetchData(url, this.changeState)
+    }
+  }
+
+  changeState = (data) => {
+    const newState = this.state
+    newState.data = data
+    newState.loading = false
+    this.setState(newState)
   }
 
   // let suitsText = "";
@@ -69,169 +59,104 @@ class ExchangeDescriptionScreen extends React.Component {
       description,
       suits,
       mainButtonHandle,
-      url,
-    } = this.state.data;
+      url
+    } = this.state.data
+    // <Text style={styles.credits}>{credits}</Text>
+    // <Text style={styles.address}>{address}</Text>
     return (
-      <View style={styles.safeAreaContainer}>
-        <View style={styles.container}>
-          <Text style={styles.headerMinor}>Название майнора</Text>
-          <Text style={styles.minorName}>{minor}</Text>
-        </View>
-        <View style={styles.creditAddresssContainer}>
-          <View style={styles.creditsContainer}>
-            <Text style={styles.headerCredits}>Кредиты</Text>
-            <Text style={styles.credits}>{credits}</Text>
+      <View>
+        <View style={styles.exchanheMinorHeader}>
+          <Text style={styles.h1}>{minor}</Text>
+          <View style={styles.creditAddresssContainer}>
+            <View style={styles.chipsContainer}>
+              <Text style={styles.h2}>Кредиты</Text>
+              <Text style={styles.chips}>45</Text>
+            </View>
+            <View style={styles.chipsContainer}>
+              <Text style={styles.h2}>Адрес</Text>
+              <Text style={styles.chips}>
+                Ул. Стараная Басманная, д.24/1, стр. 3
+              </Text>
+            </View>
           </View>
-          <View style={styles.addressContainer}>
-            <Text style={styles.header}>Адрес</Text>
-            <Text style={styles.address}>{address}</Text>
+          <View>
+            <Text style={styles.h2}>Ответственный за майнор</Text>
+            <View style={styles.responsibleContainer}>
+              <Text style={styles.link}>{responsible}</Text>
+              <Ionicons name="mail-outline" size={18} color="#0488FF" />
+            </View>
           </View>
         </View>
-        <View style={styles.headerContainer}>
-          <Text style={styles.header}>Ответственный за майнор</Text>
-          <Text style={styles.head}>{responsible}</Text>
+
+        <View style={styles.border}></View>
+
+        <View style={styles.exchanheMinorDescription}>
+          <View style={styles.descriptionheader}>
+            <Text style={styles.h2}>Описание майнора</Text>
+            <TouchableOpacity onPress={() => console.log(url)}>
+              <Text style={styles.link}>Подробнее</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.paragraph}>{description}</Text>
         </View>
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.header}>Описание майнора</Text>
-          <Text style={styles.description}>{description}</Text>
-        </View>
-        <TouchableOpacity
-          onPress={handleReadMore}
-          style={styles.reedMoreContainer}
-        >
-          <Text style={styles.readMoreText}>Читать дальше</Text>
-          <Image
-            style={styles.readMoreLink}
-            source={require("../../assets/png/readMoreLink2x.png")}
-          />
-        </TouchableOpacity>
       </View>
-    );
-  };
+    )
+  }
+
+  renderMainButton = (login) => {
+    if (login) {
+      return (
+        <MainButton
+          title="Предложить обмен"
+          onPress={() => this.props.navigation.push('SuccessExchange')}
+        />
+      )
+    } else {
+      return (
+        <MainButton
+          title="Предложить обмен"
+          onPress={() => this.props.navigation.push('Login')}
+        />
+      )
+    }
+  }
 
   render() {
+    const login = this.props.navigation.getParam('login')
     // <View style={styles.suitsContainer}>
     //   <Text style={styles.suitsText}>{suitsText}</Text>
     // </View>
+    // <SafeAreaView>
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
-      <SafeAreaView style={styles.safeArea}>
-        {this.renderContent()}
-        <View style={styles.mainButton}>
-          <MainButton
-            title="Обменяться"
-            onPress={() => this.props.navigation.push("SuccessExchange")}
-          />
+      <SafeAreaView style={styles.mainWrapper}>
+        <View style={styles.screenWithButtonOnBottom}>
+          {this.renderContent()}
+          {this.renderMainButton(login)}
         </View>
       </SafeAreaView>
-    );
+    )
   }
 }
 
 ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: "Объявление обмена",
-});
+  headerTitle: 'Объявление обмена',
+  headerLeft: () => (
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  )
+})
 
-const styles = StyleSheet.create({
-  safeArea: {
-    height: "100%",
-    justifyContent: "space-between",
-  },
-  container: {
-    backgroundColor: "#fff",
-    marginBottom: 20,
-  },
-  reedMoreContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  readMoreText: {
-    color: "#0488FF",
-  },
-  readMoreLink: {
-    width: 9,
-    height: 8,
-    marginLeft: 6,
-  },
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      linkFromAllMinors,
+      fetchData
+    },
+    dispatch
+  )
+}
 
-  headerContainer: {
-    marginBottom: 20,
-  },
-
-  descriptionContainer: {
-    marginBottom: 12,
-  },
-
-  header: {
-    color: "#005AAB",
-    fontWeight: "bold",
-    fontSize: 12,
-    marginBottom: 12,
-  },
-
-  mainButton: {
-    // alignItems: "center",
-    // justifyContent: "center",
-    // position: "absolute",
-    marginBottom: 30,
-    // left: Platform.OS === "ios" ? 134 : 100,
-  },
-
-  headerMinor: {
-    color: "#005AAB",
-    fontWeight: "bold",
-    fontSize: 12,
-    marginBottom: 12,
-    marginTop: 20,
-  },
-
-  headerCredits: {
-    marginBottom: 4,
-    color: "#005AAB",
-    fontWeight: "bold",
-    fontSize: 12,
-  },
-  colorArea: {
-    backgroundColor: "#fff",
-  },
-
-  safeAreaContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    // display: "flex",
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-
-  minorName: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-  suitsText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#005AAB",
-  },
-
-  suitsContainer: {
-    marginTop: 4,
-    marginBottom: 10,
-  },
-
-  creditAddresssContainer: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 20,
-  },
-
-  credits: {
-    fontSize: 22,
-  },
-
-  addressContainer: {
-    marginLeft: 36,
-  },
-});
-
-export default ExchangeDescriptionScreen;
+export default connect(select, mapDispatchToProps)(ExchangeDescriptionScreen)
