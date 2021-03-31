@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import DB from '../db'
+import DB from './src/db'
 
 import {
   linkFromTokens,
   linkFromExchangeMinors,
   fetchData
-} from '../store/actions/api'
+} from './src/store/actions/api'
 
-import { getToken, updateToken } from '../store/actions/tokens'
-import { getFilters } from '../store/actions/filters'
-import { updateExchangeMinors } from '../store/actions/exchangeMinors'
+import { getToken, updateToken } from './src/store/actions/tokens'
+import { getFilters } from './src/store/actions/filters'
+import { updateExchangeMinors } from './src/store/actions/exchangeMinors'
 
-import { UserNavigation, GuestNavigation } from '../navigation/AppNavigation'
-import { PreloaderScreen } from './PreloaderScreen'
-import MainForGuestScreen from './MainForGuestScreen'
+import { UserNavigation, GuestNavigation } from './src/navigation/AppNavigation'
+import { PreloaderScreen } from './src/screens/PreloaderScreen'
+import MainForGuestScreen from './src/screens/MainForGuestScreen'
 
 function select(state) {
   return {

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    marginBootom: 14
+    marginBottom: 14
   },
 
   lable: {

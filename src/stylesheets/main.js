@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
-  pinMinor: {
+  pinMinorWrapper: {
     width: 'calc(100% + 40px)',
     zIndex: 3,
     paddingTop: 14,
@@ -156,8 +156,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginLeft: -20,
     marginTop: -30,
-    backgroundColor: '#fff',
-    fontSize: 16,
 
     shadowColor: '#000',
     shadowOffset: {
@@ -167,6 +165,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.09,
     shadowRadius: 20,
     elevation: 5
+  },
+
+  pinMinorText: {
+    backgroundColor: '#fff',
+    fontSize: 16
   },
 
   chatWrapper: {

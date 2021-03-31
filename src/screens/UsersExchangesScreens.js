@@ -57,16 +57,45 @@ class UsersExchangesScreen extends React.Component {
   render_exshanges = (exshanges) => {
     let items = []
     exshanges.forEach((exshange, i) => {
+      let status = exshange.status
+      if (status == 'process') {
+        status = 'Процесс обмена'
+      } else if (status == 'start') {
+        if (exshange.responder_id == this.state.data.profile_id) {
+          status = 'Вам отправили запрос на обмен'
+        } else {
+          status = 'Ждем ответа от студента'
+        }
+      } else if (status == 'reqected') {
+        status = 'Студент отклонил ваш запрос'
+      } else if (status == 'impossible to complete') {
+        status = 'Невозможно завершить обен'
+      } else if (status == 'complete') {
+        status = 'Обмен состоялся'
+      }
+
       items.push(
         <ExchangeCard
           minorName={exshange.responder_minor_name}
-          result="Студент написал вам"
+          result={status}
           time="15.55"
           handleClick={() =>
             this.props.navigation.navigate('Chat', {
+              id: exshange.id,
               url: exshange.url,
+              exchange_status: status,
+              responder_id: exshange.responder_id,
+              requester_id: exshange.requester_id,
               minorId: exshange.responder_minor_id,
               minorName: exshange.responder_minor_name,
+              user_status:
+                this.state.data.profile_id == exshange.requester_id
+                  ? exshange.requester_status
+                  : exshange.responder_status,
+              student_status:
+                exshange.responder_status == exshange.responder_id
+                  ? exshange.responder_status
+                  : exshange.requester_id,
               name: exshange.student_name,
               profile_id: this.state.data.profile_id
             })

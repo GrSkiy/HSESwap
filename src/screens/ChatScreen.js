@@ -21,6 +21,7 @@ import {
 import styles from '../stylesheets/main'
 
 import MainButton from '../components/MainButton'
+import StatusCard from '../components/StatusCard'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -124,15 +125,50 @@ class ChatScreen extends React.Component {
     return this.state
   }
 
+  chanheUserStatus = async (i) => {
+    const userStatus = this.props.navigation.getParam('user_status')
+    const studentStatus = this.props.navigation.getParam('student_status')
+    const userID = this.state.profile_id
+    const responder_id = this.props.navigation.getParam('responder_id')
+    const requester_id = this.props.navigation.getParam('requester_id')
+    const newUserStatus = userStatus + i
+    const userRole = userID == responder_id ? 'responder' : 'requester'
+    const exchangeId = this.props.navigation.getParam('id')
+
+    let newExchangeData = {
+      action: 'update',
+      id: exchangeId,
+      role: userRole,
+      newStatus: newUserStatus,
+      studentStatus: studentStatus
+    }
+
+    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newExchangeData)
+    })
+    console.log(newUserStatus, exchangeId)
+  }
+
   render() {
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
       <SafeAreaView style={styles.mainWrapper}>
         <View style={styles.screenWithButtonOnBottom}>
-          <Text style={styles.pinMinor}>
-            {this.props.navigation.getParam('minorName')}
-          </Text>
+          <View style={styles.pinMinorWrapper}>
+            <Text style={styles.pinMinorText}>
+              {this.props.navigation.getParam('minorName')}
+            </Text>
+            <StatusCard
+              user_status={this.props.navigation.getParam('user_status')}
+              exchange_status={this.props.navigation.getParam(
+                'exchange_status'
+              )}
+              handleStatusChange={this.chanheUserStatus}
+            />
+          </View>
           <View style={styles.chatWrapper}>
             <View style={styles.messagesList}>
               {this.renderMessages(this.state.data.messages)}

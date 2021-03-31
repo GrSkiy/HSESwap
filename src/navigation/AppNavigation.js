@@ -7,7 +7,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import { Platform, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-import AppContainer from '../screens/AppContainer'
+import AppContainer from '../../AppContainer'
 
 import MainScreen from '../screens/MainScreen'
 import MainForGuestScreen from '../screens/MainForGuestScreen'
@@ -247,27 +247,20 @@ const BottomNavigator = createBottomTabNavigator(bottomTabsConfig, {
   }
 })
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// const AppContainerStack = createStackNavigator(
-//   {
-//     Container: {
-//       screen: AppContainer
-//     }
-//   },
-//   { headerMode: null }
-// )
-
 const UserMainStack = createStackNavigator(
   {
-    Tabs: {
-      screen: BottomNavigator,
-      tabBarVisible: false,
-
-      swipeEnabled: true
-    }
-    // Container: {
-    //   screen: AppContainerStack
+    // Tabs: {
+    //   screen: BottomNavigator,
+    //   tabBarVisible: false,
+    //
+    //   swipeEnabled: true
     // }
+    AllExchanges: {
+      screen: AllExchangesStack
+    },
+    ForUser: {
+      screen: ForUserStack
+    }
   },
   { headerMode: null }
 )
