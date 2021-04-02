@@ -39,7 +39,9 @@ class BaseInfoSkreen extends React.Component {
 
   handleSubmit = () => {
     console.log(this.state)
-    this.props.navigation.navigate('YourMinor')
+    this.props.navigation.navigate('YourMinor', {
+      city_id: this.state.city_id
+    })
   }
 
   render() {
@@ -47,6 +49,7 @@ class BaseInfoSkreen extends React.Component {
     return (
       <SafeAreaView style={styles.mainWrapper}>
         <View style={styles.screenWithButtonOnBottom}>
+          <View></View>
           <View>
             <Text style={styles.h2}>Подтверди базовую информацию</Text>
             <Text style={styles.span}>
@@ -79,11 +82,6 @@ class BaseInfoSkreen extends React.Component {
                 handleChange={this.handleChange}
               />
             </View>
-            <LargeInput
-              lableText="Имя"
-              placeholder="Можешь указать ник"
-              setText={this.changeName}
-            />
           </View>
           <MainButton title="Далее" onPress={this.handleSubmit} />
         </View>
@@ -91,11 +89,19 @@ class BaseInfoSkreen extends React.Component {
     )
   }
 }
+// <LargeInput
+//   lableText="Имя"
+//   placeholder="Можешь указать ник"
+//   setText={this.changeName}
+// />
 
 BaseInfoSkreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Общая информация',
   headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.goBack()}>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
   )

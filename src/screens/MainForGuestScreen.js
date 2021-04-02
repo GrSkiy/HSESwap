@@ -5,6 +5,7 @@ import { ScrollView, View } from 'react-native'
 
 import styles from '../stylesheets/main.js'
 
+import Banner from '../components/Banner'
 import Card from '../components/Card'
 import { createStackNavigator } from 'react-navigation-stack'
 
@@ -54,6 +55,10 @@ class MainForGuestScreen extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.mainWrapper}>
+        <Banner
+          className="reg"
+          handleClick={() => this.props.navigation.navigate('Login')}
+        />
         {this.renderCards()}
       </ScrollView>
     )

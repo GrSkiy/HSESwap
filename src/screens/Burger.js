@@ -97,7 +97,9 @@ class Burger extends React.Component {
 
           <View style={styles.logOut}>
             <Line />
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack(null)}
+            >
               <Text style={styles.logOutTitle}>Выйти</Text>
             </TouchableOpacity>
             <Line />

@@ -9,6 +9,7 @@ import styles from '../stylesheets/main.js'
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
+import Banner from '../components/Banner'
 
 function select(state) {
   return {
@@ -103,22 +104,41 @@ class ExchangeDescriptionScreen extends React.Component {
     )
   }
 
+  createExchangeMinor = async () => {
+    console.log(this.state)
+
+    let data = {
+      process: 'create',
+      id: this.state.data.id,
+      userID: 1,
+      student_id: this.state.data.student_id
+
+      // approved: approved
+    }
+
+    console.log(data)
+    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+
+    this.props.navigation.navigate('Login')
+  }
+
   renderMainButton = (login) => {
     if (login) {
       return (
         <MainButton
           title="Предложить обмен"
-          onPress={() => this.props.navigation.push('SuccessExchange')}
-        />
-      )
-    } else {
-      return (
-        <MainButton
-          title="Предложить обмен"
-          onPress={() => this.props.navigation.push('Login')}
+          onPress={this.createExchangeMinor}
         />
       )
     }
+  }
+
+  renderBanner = () => {
+    return <Banner className="reg" handleClick={'Login'} />
   }
 
   render() {
@@ -127,13 +147,14 @@ class ExchangeDescriptionScreen extends React.Component {
     //   <Text style={styles.suitsText}>{suitsText}</Text>
     // </View>
     // <SafeAreaView>
+    // {this.renderBanner()}
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
       <SafeAreaView style={styles.mainWrapper}>
         <View style={styles.screenWithButtonOnBottom}>
-          {this.renderContent()}
-          {this.renderMainButton(login)}
+          <View>{this.renderContent()}</View>
+          {this.renderMainButton(true)}
         </View>
       </SafeAreaView>
     )
@@ -143,7 +164,10 @@ class ExchangeDescriptionScreen extends React.Component {
 ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Объявление обмена',
   headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.goBack()}>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack(null)}
+    >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
   )

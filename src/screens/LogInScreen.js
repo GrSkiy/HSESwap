@@ -53,7 +53,10 @@ export default function LogInScreen({ mainButtonHandle, navigation }) {
 LogInScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Вход',
   headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.navigate('GuestMain')}>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack(null)}
+    >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
   )

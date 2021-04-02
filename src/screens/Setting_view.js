@@ -12,6 +12,7 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
+import { MaterialIcons } from '@expo/vector-icons'
 import FullInfoInput from '../components/FullInfoInput'
 import Line from '../components/Line'
 
@@ -28,15 +29,6 @@ export default class Setting_view extends React.Component {
     return (
       <View style={styles.itemsBody}>
         <View style={styles.itemsCollection}>
-          <FullInfoInput
-            title={'Фамилия'}
-            content={this.state.data.last_name}
-          />
-          <FullInfoInput title={'Имя'} content={this.state.data.first_name} />
-          <FullInfoInput
-            title={'Отчество'}
-            content={this.state.data.middle_name}
-          />
           <FullInfoInput
             title={'Почта HSE'}
             content={'vsinsafutdinova@edu.hse.ru'}
@@ -55,6 +47,14 @@ export default class Setting_view extends React.Component {
 
 Setting_view.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Личные настройки',
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack(null)}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  ),
   headerRight: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item

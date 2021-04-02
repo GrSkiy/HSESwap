@@ -19,7 +19,8 @@ const renderExchangeMinors = (minors) => {
   }
 }
 
-// <View style={styles.cardHeader}>
+// <View style={styles.minorList}>
+//   {renderExchangeMinors(props.exchangeMinors)}
 // </View>
 export default function Card(props) {
   return (
@@ -28,24 +29,23 @@ export default function Card(props) {
         {props.city} • {props.year}
       </Text>
       <Text style={styles.h1}>{props.title}</Text>
-      <Text style={styles.h4}>адрес: {props.address}</Text>
-      <Text style={styles.h4}>25{props.credits} кредитов</Text>
-      <View style={styles.minorList}>
-        {renderExchangeMinors(props.exchangeMinors)}
-      </View>
+      <Text style={styles.p}>адрес: {props.address}</Text>
+      <Text style={styles.p}>25{props.credits} кредитов</Text>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   cardContainer: {
-    paddingTop: 20,
+    paddingTop: 18,
+    paddingBottom: 18,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 20,
+
     marginBottom: 20,
     width: '100%',
     backgroundColor: '#FFF',
+
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 5
   },
+
   cardHeader: {
     fontSize: 14,
     color: '#8C8C8C',
@@ -64,12 +65,13 @@ const styles = StyleSheet.create({
 
   h1: {
     fontSize: 18,
-    marginBottom: 5,
+    marginBottom: 12,
 
     fontWeight: '600',
-    color: '#005AAB'
+    color: '#0488FF'
   },
-  h4: { fontSize: 14, color: '#000', marginBottom: 5 },
+
+  p: { fontSize: 14, color: '#000', marginBottom: 5 },
 
   minorList: {
     width: '100%',

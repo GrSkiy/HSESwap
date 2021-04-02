@@ -28,10 +28,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
+  zBorder: {
+    height: 50
+  },
+
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
     lineHeight: 26
+  },
+  h1Log: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    lineHeight: 26,
+    marginBottom: 12
   },
   h2: {
     fontSize: 16,
@@ -47,6 +57,10 @@ const styles = StyleSheet.create({
 
   paragraph: {
     fontSize: 14
+  },
+  paragraphLog: {
+    fontSize: 14,
+    marginBottom: 20
   },
 
   link: {
@@ -147,6 +161,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
+  minorPoint: {
+    flexDirection: 'row',
+    height: 44,
+    alignItems: 'center'
+  },
+  minorPointActive: {
+    backgroundColor: '#E6F6FF',
+    flexDirection: 'row',
+    height: 44,
+    alignItems: 'center'
+  },
+
+  minorTitle: {
+    fontSize: 16,
+    lineHeight: 22,
+    maxWidth: '90%'
+  },
+
   pinMinorWrapper: {
     width: 'calc(100% + 40px)',
     zIndex: 3,
@@ -176,7 +208,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   messagesList: {
-    marginBottom: 20
+    marginBottom: 12
   },
 
   newMessage: {
@@ -184,10 +216,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: -20,
     paddingLeft: 20,
-    paddingRight: 11,
+    paddingRight: 10,
     paddingTop: 8,
     paddingBottom: 8,
     justifyContent: 'space-between'
+  },
+
+  input: {
+    marginRight: 13,
+    paddingLeft: 10,
+    paddingTop: 7,
+    paddingBottom: 7,
+    width: '100%',
+    borderRadius: 15,
+    backgroundColor: '#F1F1F1'
   },
 
   icon: {
@@ -287,6 +329,7 @@ const styles = StyleSheet.create({
   logOutTitle: {
     color: '#BF0C0C',
     fontSize: 17,
+    marginTop: 12,
     marginBottom: 12
   },
   container: {

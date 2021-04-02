@@ -12,21 +12,27 @@ export default function PublishingSkreen(props) {
       <View style={styles.screenWithButtonOnBottom}>
         <View></View>
         <View>
-          <View style={styles.sentredWrepper}>
-            <Text style={styles.h1}>Опубликуй своё объявление</Text>
-            <Text style={styles.span}>
-              По твоим данным мы можем создать объявление, которое может
-              отображаться у других студентов, которые хотят перевестись на твой
-              майнор.
+          <View>
+            <Text style={styles.h1Log}>Опубликуй своё объявление</Text>
+            <Text style={styles.paragraphLog}>
+              Используя указанные тобой данные, мы создадим объявление, которое
+              будет отображаться у других студентов. Ты можешь опубликовать его
+              и тогда тебе будут приходить уведомления о смене майнора.
+            </Text>
+            <Text style={styles.link}>
+              Не опубликовав свое объявление, ты не сможешь обмениваться
+              майнорами.
             </Text>
           </View>
+        </View>
+        <View style={styles.centredContainer}>
           <MainButton
             title="Открыть объявление"
             onPress={() => props.navigation.navigate('Main')}
           />
-          <Text style={styles.span}>Пропустить</Text>
+          <Text style={styles.link}>Сделть это позже</Text>
+          <View style={styles.zBorder}></View>
         </View>
-        <View></View>
       </View>
     </SafeAreaView>
   )
@@ -35,7 +41,10 @@ export default function PublishingSkreen(props) {
 PublishingSkreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Публикация объявления',
   headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.navigate('Container')}>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
   )

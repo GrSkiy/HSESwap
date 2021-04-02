@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Button, Text, View, TouchableOpacity } from 'react-native'
 
-const renderMes = (user_status, handleStatusChange) => {
+const renderMes = (user_status, handleStatusChange, res) => {
   if (user_status == 1) {
     return (
       <View style={styles.cardWrapper}>
@@ -12,9 +12,7 @@ const renderMes = (user_status, handleStatusChange) => {
           майнором.
         </Text>
         <View style={styles.mainWrapper}>
-          <TouchableOpacity style={styles.smalBut}>
-            <Text style={styles.butText}>Вернуться назад</Text>
-          </TouchableOpacity>
+          <Text></Text>
           <TouchableOpacity
             onPress={() => handleStatusChange(1)}
             style={styles.bigBut}
@@ -22,6 +20,9 @@ const renderMes = (user_status, handleStatusChange) => {
             <Text style={styles.butText}>Следующий шаг</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.span}>
+          {res ? 'Студент уже выполнил этото шаг' : ''}
+        </Text>
       </View>
     )
   } else if (user_status == 2) {
@@ -38,7 +39,7 @@ const renderMes = (user_status, handleStatusChange) => {
             onPress={() => handleStatusChange(-1)}
             style={styles.smalBut}
           >
-            <Text style={styles.butText}>Вернуться назад</Text>
+            <Text style={styles.samlButText}>Вернуться назад</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleStatusChange(1)}
@@ -47,6 +48,9 @@ const renderMes = (user_status, handleStatusChange) => {
             <Text style={styles.butText}>Следующий шаг</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.span}>
+          {res ? 'Студент уже выполнил этото шаг' : ''}
+        </Text>
       </View>
     )
   } else if (user_status == 3) {
@@ -63,15 +67,18 @@ const renderMes = (user_status, handleStatusChange) => {
             onPress={() => handleStatusChange(-1)}
             style={styles.smalBut}
           >
-            <Text style={styles.butText}>Вернуться назад</Text>
+            <Text style={styles.samlButText}>Вернуться назад</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleStatusChange(1)}
             style={styles.bigBut}
           >
-            <Text style={styles.butText}>Следующий шаг</Text>
+            <Text style={styles.butText}>Завершить обмен</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.span}>
+          {res ? 'Студент уже выполнил этото шаг' : ''}
+        </Text>
       </View>
     )
   }
@@ -80,7 +87,9 @@ const renderMes = (user_status, handleStatusChange) => {
 export default function StatusCard({
   exchange_status,
   user_status,
-  handleStatusChange
+  student_status,
+  handleStatusChange,
+  handleApprovedRequest
 }) {
   console.log(exchange_status)
   if (exchange_status == 'Обмен состоялся') {
@@ -105,17 +114,24 @@ export default function StatusCard({
       <View style={styles.cardWrapper}>
         <View style={styles.mainWrapper}>
           <Text style={styles.span}>С тобой хотят обменяться!</Text>
-          <TouchableOpacity style={styles.bigBut}>
+          <TouchableOpacity
+            onPress={() => handleApprovedRequest(true)}
+            style={styles.bigBut}
+          >
             <Text style={styles.butText}>Принять</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.bigBut}>
+          <TouchableOpacity
+            onPress={() => handleApprovedRequest(false)}
+            style={styles.bigBut}
+          >
             <Text style={styles.butText}>Отклонить</Text>
           </TouchableOpacity>
         </View>
       </View>
     )
   } else if (exchange_status == 'Процесс обмена') {
-    return renderMes(user_status, handleStatusChange)
+    let res = student_status > user_status ? true : false
+    return renderMes(user_status, handleStatusChange, res)
   } else {
     return <Text> ERROR, {exchange_status}</Text>
   }

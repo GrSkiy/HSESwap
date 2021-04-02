@@ -20,7 +20,8 @@ import {
 
 import styles from '../stylesheets/main'
 
-import MainButton from '../components/MainButton'
+import Line from '../components/Line'
+import Message from '../components/Message'
 import StatusCard from '../components/StatusCard'
 import { MaterialIcons } from '@expo/vector-icons'
 
@@ -111,11 +112,25 @@ class ChatScreen extends React.Component {
     let messages_items = []
 
     messages.forEach((message, i) => {
-      messages_items.push(
-        <View key={i}>
-          <Text>{message.content}</Text>
-        </View>
-      )
+      if (message.profile_id == this.state.profile_id) {
+        messages_items.push(
+          <Message
+            content={message.content}
+            className="my"
+            time={message.created_at}
+            key={i}
+          />
+        )
+      } else {
+        messages_items.push(
+          <Message
+            content={message.content}
+            className="their"
+            time={message.created_at}
+            key={i}
+          />
+        )
+      }
     })
 
     return messages_items
@@ -125,20 +140,36 @@ class ChatScreen extends React.Component {
     return this.state
   }
 
-  chanheUserStatus = async (i) => {
+  approvedRequest = async (approved) => {
+    const exchangeId = this.props.navigation.getParam('id')
+
+    let data = {
+      process: 'approved',
+      id: exchangeId,
+      approved: approved
+    }
+
+    console.log(data)
+    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+  }
+
+  changeUserStatus = async (i) => {
     const userStatus = this.props.navigation.getParam('user_status')
     const studentStatus = this.props.navigation.getParam('student_status')
     const userID = this.state.profile_id
     const responder_id = this.props.navigation.getParam('responder_id')
     const requester_id = this.props.navigation.getParam('requester_id')
     const newUserStatus = userStatus + i
-    const userRole = userID == responder_id ? 'responder' : 'requester'
     const exchangeId = this.props.navigation.getParam('id')
 
     let newExchangeData = {
-      action: 'update',
+      process: 'changeUSerStatus',
       id: exchangeId,
-      role: userRole,
+      userID: userID,
       newStatus: newUserStatus,
       studentStatus: studentStatus
     }
@@ -148,7 +179,6 @@ class ChatScreen extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newExchangeData)
     })
-    console.log(newUserStatus, exchangeId)
   }
 
   render() {
@@ -163,17 +193,20 @@ class ChatScreen extends React.Component {
             </Text>
             <StatusCard
               user_status={this.props.navigation.getParam('user_status')}
+              student_status={this.props.navigation.getParam('student_status')}
               exchange_status={this.props.navigation.getParam(
                 'exchange_status'
               )}
-              handleStatusChange={this.chanheUserStatus}
+              handleStatusChange={this.changeUserStatus}
+              handleApprovedRequest={this.approvedRequest}
             />
           </View>
           <View style={styles.chatWrapper}>
             <View style={styles.messagesList}>
               {this.renderMessages(this.state.data.messages)}
             </View>
-            <View style={styles.newMessage}>
+            <View>
+              <Line />
               <View style={styles.newMessage}>
                 <TextInput
                   style={styles.input}
@@ -199,11 +232,11 @@ class ChatScreen extends React.Component {
 }
 
 ChatScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: navigation.getParam('name'),
+  headerTitle: 'Чат',
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack()}
+      onPress={() => navigation.goBack(null)}
     >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>

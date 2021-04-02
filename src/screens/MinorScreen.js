@@ -106,14 +106,13 @@ class MinorScreen extends React.Component {
 
 MinorScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Все майноры',
-  headerRight: () => (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={'filter'}
-        onPress={() => navigation.push('Filter')}
-      />
-    </HeaderButtons>
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
   )
 })
 

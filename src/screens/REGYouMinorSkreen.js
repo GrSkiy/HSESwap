@@ -62,18 +62,18 @@ class YouMinorSkreen extends React.Component {
   }
 
   handleSubmit = () => {
-    console.log(this.state)
-    this.props.navigation.navigate('Whished')
+    this.props.navigation.navigate('Whished', {
+      city_id: this.props.navigation.getParam('city_id') - 1
+    })
   }
 
   getMinorsList = () => {
     const { data } = this.state
+    const city_id = this.props.navigation.getParam('city_id') - 1
 
     let allMinors = []
-    data.forEach((sity_minors, i) => {
-      sity_minors.minors.forEach((minor, y) => {
-        allMinors.push({ value: minor.id, name: minor.name })
-      })
+    data[city_id].minors.forEach((minor, i) => {
+      allMinors.push({ value: minor.id, name: minor.name })
     })
     return allMinors
   }
@@ -86,6 +86,7 @@ class YouMinorSkreen extends React.Component {
     ) : (
       <SafeAreaView style={styles.mainWrapper}>
         <View style={styles.screenWithButtonOnBottom}>
+          <View></View>
           <View>
             <Text style={styles.h2}>Укажи свой майнор</Text>
             <Text style={styles.span}>
@@ -113,7 +114,10 @@ class YouMinorSkreen extends React.Component {
 YouMinorSkreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Настройка умного поиска',
   headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.navigate('Whished')}>
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
   )

@@ -69,14 +69,13 @@ class MainScreen extends React.Component {
 MainScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Для тебя',
 
-  headerLeft: (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={'menu'}
-        onPress={() => navigation.push('Profile')}
-      />
-    </HeaderButtons>
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack()}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
   )
 })
 

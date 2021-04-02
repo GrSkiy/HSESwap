@@ -20,6 +20,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import FiltersScreen from './FiltersScreen'
+import Burger from '../components/NEWBURGER'
 
 import { createStackNavigator } from 'react-navigation-stack'
 
@@ -42,7 +43,7 @@ class MainScreen extends React.Component {
   }
 
   renderCards = () => {
-    const { navigate } = this.props.navigation
+    const { push } = this.props.navigation
     const { exchangeMinors } = this.props
     let cardItems = []
 
@@ -58,7 +59,7 @@ class MainScreen extends React.Component {
           credits={credits}
           exchangeMinors={whishedMinors}
           handleBack={() =>
-            navigate('ExchangeCard', {
+            push('ExchangeCard', {
               url: url
             })
           }
@@ -115,7 +116,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.navigate('Profile')}
+      onPress={() => navigation.push('Profile')}
     >
       <MaterialIcons name="menu" size={25} color="#005AAB" />
     </TouchableOpacity>

@@ -1,11 +1,18 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, ScrollView, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  TouchableOpacity
+} from 'react-native'
 
 import FullInfoInput from '../components/FullInfoInput'
 import Navbar from '../components/Navbar'
 import Line from '../components/Line'
 
+import { MaterialIcons } from '@expo/vector-icons'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
@@ -30,13 +37,7 @@ export default class Setting_view extends React.Component {
   changeDate = (field, newData) => {
     let data = this.state.data
 
-    if (field == 'last_name') {
-      data.last_name = newData
-    } else if (field == 'first_name') {
-      data.first_name = newData
-    } else if (field == 'middle_name') {
-      data.middle_name = newData
-    } else if (field == 'email') {
+    if (field == 'email') {
       data.email = newData
     } else if (field == 'city') {
       data.city = newData
@@ -54,27 +55,6 @@ export default class Setting_view extends React.Component {
     return (
       <View style={styles.itemsBody}>
         <ScrollView style={styles.itemsCollection}>
-          <LargeInput
-            lableText={'Фамилия'}
-            setText={this.changeDate}
-            value={this.state.data.last_name}
-            field={'last_name'}
-          />
-          <Line />
-          <LargeInput
-            lableText={'Имя'}
-            setText={this.changeDate}
-            value={this.state.data.first_name}
-            field={'first_name'}
-          />
-          <Line />
-          <LargeInput
-            lableText={'Отчество'}
-            setText={this.changeDate}
-            value={this.state.data.middle_name}
-            field={'middle_name'}
-          />
-          <Line />
           <LargeInput
             lableText={'Почта HSE'}
             setText={this.changeDate}
@@ -126,6 +106,14 @@ const confirmation = async (navigation) => {
 
 Setting_view.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Мои данные',
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack(null)}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
+  ),
   headerRight: () => (
     <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
       <Item

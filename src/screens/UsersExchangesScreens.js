@@ -96,7 +96,6 @@ class UsersExchangesScreen extends React.Component {
                 exshange.responder_status == exshange.responder_id
                   ? exshange.responder_status
                   : exshange.requester_id,
-              name: exshange.student_name,
               profile_id: this.state.data.profile_id
             })
           }
@@ -125,7 +124,7 @@ UsersExchangesScreen.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack()}
+      onPress={() => navigation.goBack(null)}
     >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>

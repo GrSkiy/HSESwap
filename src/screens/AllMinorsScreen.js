@@ -16,6 +16,7 @@ import {
 
 import styles from '../stylesheets/main'
 
+import { MaterialIcons } from '@expo/vector-icons'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
@@ -90,21 +91,20 @@ class AllMinorsScreen extends React.Component {
     return this.state.loading ? (
       <Text>Loading.....</Text>
     ) : (
-      <View>{this.renderCards()}</View>
+      <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
   }
 }
 
 AllMinorsScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Все майноры',
-  headerRight: () => (
-    <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-      <Item
-        title="Toggle Drawer"
-        iconName={'md-options-outline'}
-        // onPress={() => navigation.push("Filters")}
-      />
-    </HeaderButtons>
+  headerLeft: () => (
+    <TouchableOpacity
+      style={{ paddingLeft: 20 }}
+      onPress={() => navigation.goBack(null)}
+    >
+      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
+    </TouchableOpacity>
   )
 })
 
