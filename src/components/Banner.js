@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     borderRadius: 20,
     backgroundColor: '#fFF',
-    alignItems: ' center',
+    alignItems: 'center',
 
     width: '100%',
     flexDirection: 'row',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 14,
     marginRight: 11,
-    fontWeight: ' 700',
+    fontWeight: '700',
     lineHeight: 20
   },
   therSpan: {
@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#0488FF',
-    justifyContent: ' center',
+    justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10
   },
   butText: {
     color: '#fff',
-    fontWeight: ' 700',
+    fontWeight: '700',
     fontSize: 16
   }
 })

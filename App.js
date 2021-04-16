@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AppContainer from './AppContainer'
+import AppContainer from './src/AppContainer'
 
 import { bindActionCreators } from 'redux'
 import { Provider, connect } from 'react-redux'
@@ -15,7 +15,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log('ping')
     return (
       <Provider store={store}>
         <AppContainer />

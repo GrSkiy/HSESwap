@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, TextInput, Text, View } from "react-native";
+import React from 'react'
+import { StyleSheet, TextInput, Text, View } from 'react-native'
 
 export default function SmallNumberInput({ lableText, placeholder, setText }) {
   return (
@@ -15,41 +15,40 @@ export default function SmallNumberInput({ lableText, placeholder, setText }) {
         />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   input: {
-    color: "#000",
+    color: '#000',
     width: 75,
-    textAlign: "center",
+    textAlign: 'center',
     height: 48,
     fontSize: 16,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000",
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.09,
     shadowRadius: 20,
 
     elevation: 11,
-    borderRadius: 10,
+    borderRadius: 10
   },
   componentsWhisIcon: {
-    flexDirection: "row",
+    flexDirection: 'row'
     //  width: 150,
   },
 
   searchIcon: {
-    padding: 10,
+    padding: 10
   },
   lable: {
     marginBottom: 12,
-    color: "#005AAB",
-    fontWeight: "bold",
-    fontSize: 12,
-  },
-  container: {},
-});
+    color: '#005AAB',
+    fontWeight: 'bold',
+    fontSize: 12
+  }
+})

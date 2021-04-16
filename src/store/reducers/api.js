@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/api'
 
-// const host_root = 'http://127.0.0.1:3000/api/'
-const host_root = 'http://95.165.28.240:3000/api/'
+const host_root = 'http://127.0.0.1:3000/api/'
+// const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const devise_token = '?device_token='
 
