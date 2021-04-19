@@ -2,6 +2,16 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity
+} from 'react-native'
+
 import DB from './db'
 
 import {
@@ -12,7 +22,7 @@ import {
 
 import { getToken, updateToken } from './store/actions/tokens'
 import { getFilters } from './store/actions/filters'
-import { updateExchangeMinors } from './store/actions/exchangeMinors'
+// import { updateExchangeMinors } from './store/actions/exchangeMinors'
 
 import { UserNavigation, GuestNavigation } from './AppNavigation'
 import { PreloaderScreen } from './screens/PreloaderScreen'
@@ -33,54 +43,53 @@ class AppContainer extends Component {
     super(props)
 
     this.state = {
-      loaded: false
+      loaded: true
     }
   }
 
   componentDidMount() {
-    const token = DB.getToken((result) => {
+    DB.getToken((result) => {
       console.log('Redux Action getToken', result)
-      this.props.getToken(result)
+      if (result === undefined) {
+        console.log('App Container DB.createToken')
+        this.props.linkFromTokens()
+      } else {
+        this.props.updateToken(result)
+        console.log(result)
+      }
     })
   }
 
   componentDidUpdate() {
     const { deviceToken, loaded } = this.props.tokens
     const { exchangeMinors } = this.props
-    // const url = this.props.data_from_api.url
-    // let { pageData } = this.props.data_from_api
 
     console.log('AppContainer PROPS', this.props)
-    console.log(
-      'TOKEN AND LOAD STATE',
-      deviceToken === '',
-      loaded === this.state.loaded
-    )
+    console.log('TOKEN AND LOAD STATE', deviceToken === '', loaded)
 
-    if (deviceToken === '' && loaded === false) {
+    if (deviceToken === '' && loaded === true) {
       console.log('FIRST IF')
-    } else if (deviceToken === '' && loaded === true) {
+    } else if (deviceToken === '' && loaded === false) {
       console.log('SECOND IF')
-
-      this.props.linkFromTokens()
+      console.log(this.props.data_from_api.url)
       if (this.props.data_from_api.url !== '') {
+        console.log('Start Fetching')
         fetch(this.props.data_from_api.url)
           .then((response) => response.json())
           .then((data) => {
             console.log('Response from the server', data)
-
+            DB.createToken(
+              data.tokens.device_token,
+              data.tokens.authenticity_token
+            )
             this.props.updateToken(data.tokens)
-            this.props.getFilters(data.filters)
+            // this.props.getFilters(data.filters)
           })
       }
     } else if (deviceToken != '' && this.state.loaded === false) {
       this.props.linkFromExchangeMinors(deviceToken)
       if (this.props.data_from_api.url !== '') {
-        this.props.fetchData(
-          this.props.data_from_api.url,
-          this.props.updateExchangeMinors
-        )
-        this.setState({ loaded: true })
+        this.setState({ loaded: false })
       }
     }
   }
@@ -108,8 +117,8 @@ function mapDispatchToProps(dispatch) {
       getToken,
       updateToken,
       getFilters,
-      fetchData,
-      updateExchangeMinors
+      fetchData
+      // updateExchangeMinors
     },
     dispatch
   )

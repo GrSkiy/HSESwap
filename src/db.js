@@ -21,13 +21,13 @@ class DB {
   static getToken(callback) {
     return db.transaction((tx) => {
       tx.executeSql('SELECT * FROM tokens', [], (trans, result) => {
-        console.log('DB Get Tokens', result)
+        console.log(result)
         callback(result.rows[result.rows.length - 1])
       })
     })
   }
 
-  static createToken() {
+  static createToken(device_token, authenticity_token) {
     return new Promise((resolve, reject) => {
       console.log('DB Create Token')
 

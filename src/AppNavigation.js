@@ -2,12 +2,10 @@ import React from 'react'
 import { createAppContainer, ThemeColors } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
-import { createDrawerNavigator } from 'react-navigation-drawer'
 import { Platform, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-import AppContainer from './AppContainer'
+// import AppContainer from './AppContainer'
 
 import MainScreen from './screens/MainScreen'
 import MainForGuestScreen from './screens/MainForGuestScreen'

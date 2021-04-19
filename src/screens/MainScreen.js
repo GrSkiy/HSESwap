@@ -1,6 +1,8 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { useState, useContext } from 'react'
+
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { linkFromExchangeMinors, fetchData } from '../store/actions/api'
 
 import {
   ScrollView,
@@ -19,35 +21,55 @@ import styles from '../stylesheets/main.js'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
+
 import FiltersScreen from './FiltersScreen'
 import Burger from '../components/NEWBURGER'
-
-import { createStackNavigator } from 'react-navigation-stack'
-
 import Card from '../components/Card'
 
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities
+    exchangeMinors: state.exchangeMinors.entities,
+    data_from_api: state.data_from_api
   }
 }
 
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      loading: true
+    }
   }
 
   componentDidMount() {
     const { deviceToken } = this.props.tokens
+    this.props.linkFromExchangeMinors()
+  }
+
+  componentDidUpdate() {
+    if (this.state.loading) {
+      const { url } = this.props.data_from_api
+      if (url.search('minors') != -1) {
+        this.props.fetchData(url, this.changeState)
+      }
+    }
+  }
+
+  changeState = (data) => {
+    const newState = this.state
+    newState.data = data
+    newState.loading = false
+    this.setState(newState)
   }
 
   renderCards = () => {
     const { push } = this.props.navigation
-    const { exchangeMinors } = this.props
+    const { exchange_minors } = this.state.data
     let cardItems = []
 
-    exchangeMinors.forEach((minor, i) => {
+    exchange_minors.forEach((minor, i) => {
       const { city, year, address, credits, whishedMinors, url } = minor
 
       cardItems.push(
@@ -72,19 +94,19 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    const { exchangeMinors } = this.props
-
-    console.log('MainScreen', exchangeMinors)
-
     //начало всплывающиз инпутов
     // let filtersRef = React.forwardRef()
     // <FiltersScreen ref={(target) => (filtersRef = target)} />
     // <FiltersScreen />
+    console.log(this.state.data)
 
     // {this.props.token.device_token} {this.props.token.authenticity_token}
-    return exchangeMinors === undefined ||
-      exchangeMinors.length === undefined ? (
-      <Text> l,kmskmak</Text>
+    return this.state.loading ? (
+      <Text>Loading.....</Text>
+    ) : this.state.data.exchange_minors === undefined ? (
+      <Text>Ой, что-то пошло не так</Text>
+    ) : this.state.data.exchange_minors.length == 0 ? (
+      <Text>Майноров пока нет</Text>
     ) : (
       <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
@@ -123,4 +145,14 @@ MainScreen.navigationOptions = ({ navigation }) => ({
   )
 })
 
-export default connect(select)(MainScreen)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      linkFromExchangeMinors,
+      fetchData
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(MainScreen)
