@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
   border: {
     backgroundColor: '#F8F8F8',
     marginLeft: -20,
-    width: 'calc(100% + 40px)',
+    // width: 'calc(100% + 40px)',
+    width: '100%',
     height: 10,
     marginTop: 20,
     marginBottom: 20

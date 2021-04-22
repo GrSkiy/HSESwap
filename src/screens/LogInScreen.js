@@ -1,4 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { login } from '../store/actions/api'
+
 import {
   StyleSheet,
   View,
@@ -20,34 +25,65 @@ import LargeInput from '../components/LargeInput'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
-export default function LogInScreen({ mainButtonHandle, navigation }) {
-  const [email, setEmail] = useState('')
+function select(state) {
+  return {
+    tokens: state.tokens
+  }
+}
 
-  const login = async () => {
-    await fetch(`http://127.0.0.1:3000/api/v1/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    })
-    return navigation.push('EmailVerification')
+class LogInScreen extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      email: ''
+    }
   }
 
-  return (
-    <View style={styles.mainWrapper}>
-      <View style={styles.screenWithButtonOnBottom}>
-        <View style={styles.loginContainer}>
-          <Text style={styles.h1}>Вход по почте HSE</Text>
-          <View style={styles.liginPadding}></View>
-          <LargeInput
-            lableText="Корпоративная почта hse"
-            placeholder="youe@edu.hse.ru"
-            setText={setEmail}
-          />
+  newEmail = (data) => {
+    if (data.approved) {
+      this.props.navigation.navigate('EmailVerification', { data: data })
+    } else {
+      console.log('something happened T_T')
+    }
+  }
+
+  setEmail = (text) => {
+    this.setState({ email: text })
+  }
+
+  renderBut = () => {
+    const { email } = this.state
+
+    return email.search('@edu.hse.ru') != -1 ? (
+      <MainButton
+        title="Далее"
+        className="active"
+        onPress={() => this.props.login(this.newEmail, this.state.email)}
+      />
+    ) : (
+      <MainButton title="Далее" className="inactive" />
+    )
+  }
+
+  render() {
+    return (
+      <View style={styles.mainWrapper}>
+        <View style={styles.screenWithButtonOnBottom}>
+          <View style={styles.loginContainer}>
+            <Text style={styles.h1}>Вход по почте HSE</Text>
+            <View style={styles.liginPadding}></View>
+            <LargeInput
+              lableText="Корпоративная почта hse"
+              placeholder="youe@edu.hse.ru"
+              setText={this.setEmail}
+            />
+          </View>
+          {this.renderBut()}
         </View>
-        <MainButton title="Далее" onPress={login} />
       </View>
-    </View>
-  )
+    )
+  }
 }
 
 LogInScreen.navigationOptions = ({ navigation }) => ({
@@ -61,3 +97,14 @@ LogInScreen.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   )
 })
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      login
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(LogInScreen)

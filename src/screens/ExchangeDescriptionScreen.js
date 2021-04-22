@@ -14,8 +14,8 @@ import Banner from '../components/Banner'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
-    data_from_api: state.data_from_api
+    data_from_api: state.data_from_api,
+    userInfo: state.userInfo
   }
 }
 
@@ -103,29 +103,29 @@ class ExchangeDescriptionScreen extends React.Component {
       </View>
     )
   }
-
-  createExchangeMinor = async () => {
-    console.log(this.state)
-
-    let data = {
-      process: 'create',
-      id: this.state.data.id,
-      userID: 1,
-      student_id: this.state.data.student_id
-
-      // approved: approved
-    }
-
-    console.log(data)
-    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-
-    this.props.navigation.navigate('Login')
-  }
-
+  //
+  //   createExchangeMinor = async () => {
+  //     console.log(this.state)
+  //
+  //     let data = {
+  //       process: 'create',
+  //       id: this.state.data.id,
+  //       userID: 1,
+  //       student_id: this.state.data.student_id
+  //
+  //       // approved: approved
+  //     }
+  //
+  //     console.log(data)
+  //     await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(data)
+  //     })
+  //
+  //     this.props.navigation.navigate('Login')
+  //   }
+  //
   renderMainButton = (login) => {
     if (login) {
       return (
@@ -134,27 +134,32 @@ class ExchangeDescriptionScreen extends React.Component {
           onPress={this.createExchangeMinor}
         />
       )
+    } else {
+      return (
+        <Banner
+          className="reg"
+          handleClick={() => this.props.navigation.navigate('Login')}
+        />
+      )
     }
   }
 
-  renderBanner = () => {
-    return <Banner className="reg" handleClick={'Login'} />
-  }
-
   render() {
-    const login = this.props.navigation.getParam('login')
+    // const login = this.props.navigation.getParam('login')
+
+    const { auth } = this.props.userInfo
+
     // <View style={styles.suitsContainer}>
     //   <Text style={styles.suitsText}>{suitsText}</Text>
     // </View>
     // <SafeAreaView>
-    // {this.renderBanner()}
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
       <SafeAreaView style={styles.mainWrapper}>
         <View style={styles.screenWithButtonOnBottom}>
           <View>{this.renderContent()}</View>
-          {this.renderMainButton(true)}
+          {this.renderMainButton(auth)}
         </View>
       </SafeAreaView>
     )

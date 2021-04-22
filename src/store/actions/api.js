@@ -7,6 +7,15 @@ export function fetchData(url, callback) {
     callback: callback
   }
 }
+
+export function login(callback, email) {
+  return {
+    type: fetchTypes.LOG_IN,
+    email: email,
+    callback: callback
+  }
+}
+
 export function linkFromTokens() {
   return {
     type: fetchTypes.LINK_FOR_FETCHING_TOKENS_FROM_API
@@ -35,7 +44,14 @@ export function linkFromAllMinors() {
     // authenticityToken: data.authenticity_token
   }
 }
-export function linkFromUsersData() {
+export function linkForMainScreen() {
+  return {
+    type: fetchTypes.LINK_FOR_FETCHING_MAIN_SCREEN_DATA_FROM_API
+    // deviceToken: device_token
+    // authenticityToken: data.authenticity_token
+  }
+}
+export function linkFromUsersData(device_token) {
   return {
     type: fetchTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API
     // deviceToken: device_token

@@ -16,12 +16,12 @@ import DB from './db'
 
 import {
   linkFromTokens,
-  linkFromExchangeMinors,
+  linkFromUsersData,
   fetchData
 } from './store/actions/api'
 
 import { getToken, updateToken } from './store/actions/tokens'
-import { getFilters } from './store/actions/filters'
+import { updateUserInfo } from './store/actions/user'
 // import { updateExchangeMinors } from './store/actions/exchangeMinors'
 
 import { UserNavigation, GuestNavigation } from './AppNavigation'
@@ -31,7 +31,7 @@ import MainForGuestScreen from './screens/MainForGuestScreen'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
+    userInfo: state.userInfo,
     data_from_api: state.data_from_api
     // url: state.data_from_api.url,
     // pageData: state.data_from_api.pageData
@@ -48,30 +48,34 @@ class AppContainer extends Component {
   }
 
   componentDidMount() {
+    console.log('============================================')
     DB.getToken((result) => {
+      console.log('********************************************')
       console.log('Redux Action getToken', result)
       if (result === undefined) {
         console.log('App Container DB.createToken')
         this.props.linkFromTokens()
       } else {
         this.props.updateToken(result)
-        console.log(result)
+        console.log(result.authenticity_token)
       }
+      console.log('********************************************')
     })
   }
 
   componentDidUpdate() {
     const { deviceToken, loaded } = this.props.tokens
     const { exchangeMinors } = this.props
-
+    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
     console.log('AppContainer PROPS', this.props)
+    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
     console.log('TOKEN AND LOAD STATE', deviceToken === '', loaded)
 
     if (deviceToken === '' && loaded === true) {
       console.log('FIRST IF')
     } else if (deviceToken === '' && loaded === false) {
       console.log('SECOND IF')
-      console.log(this.props.data_from_api.url)
+      console.log('ADD NEW TOCKEN')
       if (this.props.data_from_api.url !== '') {
         console.log('Start Fetching')
         fetch(this.props.data_from_api.url)
@@ -82,26 +86,30 @@ class AppContainer extends Component {
               data.tokens.device_token,
               data.tokens.authenticity_token
             )
+            DB.createUser(0)
+
             this.props.updateToken(data.tokens)
-            // this.props.getFilters(data.filters)
+            this.props.updateUserInfo(data.user_info)
           })
       }
-    } else if (deviceToken != '' && this.state.loaded === false) {
-      this.props.linkFromExchangeMinors(deviceToken)
-      if (this.props.data_from_api.url !== '') {
-        this.setState({ loaded: false })
-      }
+    } else if (deviceToken != '' && this.state.loaded) {
+      //     // this.props.linkFromUsersData(deviceToken)
+      //     // if (this.props.data_from_api.url !== '') {
+      this.setState({ loaded: false })
+      // }
     }
   }
 
   render() {
     console.log('AppContainer', this.props)
-    // const login = false
-    const login = true
+    // console.log('=========================')
+    // console.log(this.props)
+    // console.log('=========================')
+    const { auth } = this.props.userInfo
     const { deviceToken } = this.props.tokens
     return deviceToken === '' ? (
       <PreloaderScreen />
-    ) : login ? (
+    ) : auth ? (
       <UserNavigation />
     ) : (
       <GuestNavigation />
@@ -113,12 +121,11 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       linkFromTokens,
-      linkFromExchangeMinors,
+      linkFromUsersData,
       getToken,
       updateToken,
-      getFilters,
+      updateUserInfo,
       fetchData
-      // updateExchangeMinors
     },
     dispatch
   )

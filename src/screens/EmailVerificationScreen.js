@@ -1,4 +1,9 @@
 import React, { useState, Fragment } from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { linkFromAllMinors, fetchData } from '../store/actions/api'
+
 import {
   StyleSheet,
   View,
@@ -16,6 +21,7 @@ import styles from '../stylesheets/main'
 import SmallNumberInput from '../components/SmallNumberInput'
 import LinkButton from '../components/LinkButton'
 import MainButton from '../components/MainButton'
+
 import {
   CodeField,
   Cursor,
@@ -23,37 +29,49 @@ import {
   useClearByFocusCell
 } from 'react-native-confirmation-code-field'
 
-const getdata = async () => {
-  const url = 'http://localhost:3000/api/v1/login'
-  const response = await fetch(url)
-  const data = await response.json()
-  console.log(data)
+const login = (data, value) => {
+  const url = 'http://95.165.28.240:3000/api/v1/login'
+  const email = data.email
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ type: 'verification', email: email, code: value })
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response from the server', data)
+    })
 }
 
-const renderMainButton = (navigation, registrate) => {
-  return registrate ? (
+const handleClick = (data, navigation, value) => {
+  login(data, value)
+  // navigation.navigate('GuestMain')
+}
+
+const renderMainButton = (navigation, value, data) => {
+  return value.length == 4 ? (
     <MainButton
       title="Далее"
-      onPress={() => navigation.navigate('GuestMain')}
+      className="active"
+      onPress={() => handleClick(data, navigation, value)}
     />
   ) : (
-    <MainButton title="Далее" onPress={() => navigation.navigate('Base')} />
+    <MainButton title="Далее" />
   )
 }
 
-const EmailVerificationScreen = ({
-  mainButtonHandle,
-  handleSendAgain,
-  navigation
-}) => {
+const EmailVerificationScreen = (props) => {
   const [value, setValue] = useState('')
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+  const [pr, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue
   })
 
-  getdata()
+  const data = props.navigation.getParam('data')
 
   const CELL_COUNT = 4
 
@@ -67,7 +85,7 @@ const EmailVerificationScreen = ({
           </Text>
           <CodeField
             ref={ref}
-            {...props}
+            {...pr}
             value={value}
             onChangeText={setValue}
             cellCount={CELL_COUNT}
@@ -96,7 +114,7 @@ const EmailVerificationScreen = ({
             <Text style={styles.link}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-        {renderMainButton(navigation, false)}
+        {renderMainButton(props.navigation, value, data)}
       </View>
     </SafeAreaView>
   )

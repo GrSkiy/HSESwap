@@ -27,6 +27,8 @@ const exchange_minors_index_url_v1 = 'exchange_minors'
 const exchange_requests_index_url_v1 = 'exchange_requests'
 const minors_index_url_v1 = 'minors'
 const user_url_v1 = 'profiles'
+
+const post_login = 'login'
 // const chat_room_url_v1 = 'messages'
 
 const initialState = {
@@ -36,6 +38,16 @@ const initialState = {
 
 const root = host_root + api_version
 let newState = Object.assign({}, initialState)
+
+const postData = async (url = '', data = {}) => {
+  await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ data })
+  })
+}
 
 const data_from_api = (state = initialState, action) => {
   switch (action.type) {
@@ -49,6 +61,24 @@ const data_from_api = (state = initialState, action) => {
           action.callback(newState.pageData)
         })
 
+    case actionTypes.LOG_IN:
+      fetch(root + post_login, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ type: 'email', email: action.email })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Response from the server', data)
+          newState = Object.assign({}, state)
+          newState.pageData = data
+          action.callback(newState.pageData)
+        })
+
+    // return newState
     case actionTypes.LINK_FOR_FETCHING_TOKENS_FROM_API:
       newState = Object.assign({}, state)
       newState.url = root + login_guest_url_v1
@@ -71,6 +101,11 @@ const data_from_api = (state = initialState, action) => {
     case actionTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API:
       newState = Object.assign({}, state)
       newState.url = root + user_url_v1
+      return newState
+    case actionTypes.LINK_FOR_FETCHING_MAIN_SCREEN_DATA_FROM_API:
+      newState = Object.assign({}, state)
+      newState.url =
+        root + exchange_minors_index_url_v1 + devise_token + action.deviceToken
       return newState
 
     default:

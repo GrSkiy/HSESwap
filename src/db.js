@@ -15,14 +15,21 @@ class DB {
           (_, error) => reject(error)
         )
       })
+      db.transaction((tx) => {
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, auth INTEGER, email TEXT, minor TEXT)',
+          [],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
     })
   }
 
   static getToken(callback) {
     return db.transaction((tx) => {
       tx.executeSql('SELECT * FROM tokens', [], (trans, result) => {
-        console.log(result)
-        callback(result.rows[result.rows.length - 1])
+        callback(result.rows.item(0))
       })
     })
   }
@@ -65,6 +72,48 @@ class DB {
         tx.executeSql(
           'UPDATE tokens SET authenticity_token = ? WHERE id = 1',
           [authenticity_token],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  static getUserInfo(callback) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Get User Info')
+
+      db.transaction((tx) => {
+        tx.executeSql('SELECT * FROM user', [], (trans, result) => {
+          callback(result.rows.item(0))
+        })
+      })
+    })
+  }
+
+  static createUser(auth) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Create Token')
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO user (auth) VALUES (?)`,
+          [auth],
+          (_, result) => resolve(result.insertId),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
+  static updateUserAuth(newStatus) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Update Auth Token', authenticity_token)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          'UPDATE user SET auth = ? WHERE id = 1',
+          [newStatus],
           resolve,
           (_, error) => reject(error)
         )

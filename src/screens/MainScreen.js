@@ -4,35 +4,24 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromExchangeMinors, fetchData } from '../store/actions/api'
 
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Button,
-  TouchableOpacity,
-  Platform,
-  Alert,
-  TextInput
-} from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main.js'
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
-import FiltersScreen from './FiltersScreen'
-import Burger from '../components/NEWBURGER'
+import Burger from '../components/Burger'
 import Card from '../components/Card'
 
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     data_from_api: state.data_from_api
   }
 }
+
+let burgerRef = React.createRef()
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -93,14 +82,7 @@ class MainScreen extends React.Component {
     return cardItems
   }
 
-  render() {
-    //начало всплывающиз инпутов
-    // let filtersRef = React.forwardRef()
-    // <FiltersScreen ref={(target) => (filtersRef = target)} />
-    // <FiltersScreen />
-    console.log(this.state.data)
-
-    // {this.props.token.device_token} {this.props.token.authenticity_token}
+  renderContent = () => {
     return this.state.loading ? (
       <Text>Loading.....</Text>
     ) : this.state.data.exchange_minors === undefined ? (
@@ -111,11 +93,16 @@ class MainScreen extends React.Component {
       <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
   }
-}
 
-const openPopUp = () => {
-  console.log('open filters pop up')
-  // filtersRef.show()
+  render() {
+    // {this.props.token.device_token} {this.props.token.authenticity_token}
+    return (
+      <View>
+        {this.renderContent()}
+        <Burger ref={(target) => (burgerRef = target)} />
+      </View>
+    )
+  }
 }
 
 MainScreen.navigationOptions = ({ navigation }) => ({
@@ -136,10 +123,7 @@ MainScreen.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   ),
   headerLeft: () => (
-    <TouchableOpacity
-      style={{ paddingLeft: 20 }}
-      onPress={() => navigation.push('Profile')}
-    >
+    <TouchableOpacity style={{ paddingLeft: 20 }} onPress={burgerRef.show}>
       <MaterialIcons name="menu" size={25} color="#005AAB" />
     </TouchableOpacity>
   )

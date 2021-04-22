@@ -23,7 +23,6 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     data_from_api: state.data_from_api
   }
 }
@@ -35,13 +34,14 @@ class MinorScreen extends React.Component {
   }
 
   async componentDidMount() {
+    console.log('???????????????????????????/')
     const url = this.props.navigation.getParam('url')
     this.props.fetchData(url, this.changeState)
   }
 
   changeState = (data) => {
     const newState = this.state
-    newState.data = data
+    // newState.data = data
     newState.loading = false
     this.setState(newState)
   }
