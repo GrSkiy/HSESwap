@@ -29,34 +29,43 @@ import {
   useClearByFocusCell
 } from 'react-native-confirmation-code-field'
 
-const login = (data, value) => {
-  const url = 'http://95.165.28.240:3000/api/v1/login'
+const login = (data, value, tokens, navigation) => {
   const email = data.email
+  const user = { email: email, password: value }
+  const url =
+    'http://95.165.28.240:3000/api/v1/users/sign_in?authenticity_token=' +
+    tokens.authenticityToken +
+    '&device_token=' +
+    tokens.deviceToken
   fetch(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ type: 'verification', email: email, code: value })
+    body: JSON.stringify({ user })
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log('Response from the server', data)
+      if (data.email) {
+        navigation.navigate('Container', { auth: true })
+      } else {
+        console.log('Error')
+      }
     })
 }
 
-const handleClick = (data, navigation, value) => {
-  login(data, value)
+const handleClick = (data, navigation, value, tokens) => {
+  login(data, value, tokens, navigation)
   // navigation.navigate('GuestMain')
 }
 
-const renderMainButton = (navigation, value, data) => {
+const renderMainButton = (navigation, value, data, tokens) => {
   return value.length == 4 ? (
     <MainButton
       title="Далее"
       className="active"
-      onPress={() => handleClick(data, navigation, value)}
+      onPress={() => handleClick(data, navigation, value, tokens)}
     />
   ) : (
     <MainButton title="Далее" />
@@ -71,6 +80,7 @@ const EmailVerificationScreen = (props) => {
     setValue
   })
 
+  const tokens = props.navigation.getParam('tokens')
   const data = props.navigation.getParam('data')
 
   const CELL_COUNT = 4
@@ -114,7 +124,7 @@ const EmailVerificationScreen = (props) => {
             <Text style={styles.link}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-        {renderMainButton(props.navigation, value, data)}
+        {renderMainButton(props.navigation, value, data, tokens)}
       </View>
     </SafeAreaView>
   )

@@ -42,7 +42,10 @@ class LogInScreen extends React.Component {
 
   newEmail = (data) => {
     if (data.approved) {
-      this.props.navigation.navigate('EmailVerification', { data: data })
+      this.props.navigation.navigate('EmailVerification', {
+        data: data,
+        tokens: this.props.tokens
+      })
     } else {
       console.log('something happened T_T')
     }
