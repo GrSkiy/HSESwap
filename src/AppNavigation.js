@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { Platform, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-import AppContainer from './AppContainer'
+import A from './a'
 
 import MainScreen from './screens/MainScreen'
 import MainForGuestScreen from './screens/MainForGuestScreen'
@@ -259,8 +259,8 @@ const UserMainStack = createStackNavigator(
     ForUser: {
       screen: ForUserStack
     },
-    Container: {
-      screen: AppContainer
+    App: {
+      screen: A
     }
   },
   { headerMode: null }
@@ -277,8 +277,8 @@ const GuestMainStack = createStackNavigator(
     Login: {
       screen: LogInStack
     },
-    Container: {
-      screen: AppContainer
+    App: {
+      screen: A
     }
   },
   { headerMode: null }

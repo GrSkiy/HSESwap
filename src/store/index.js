@@ -6,7 +6,7 @@ import userInfo from './reducers/user'
 
 const rootReducer = combineReducers({
   tokens,
-  filters,
+  // filters,
   userInfo,
   data_from_api
 })

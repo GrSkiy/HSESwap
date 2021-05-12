@@ -34,6 +34,7 @@ class MainScreen extends React.Component {
 
   componentDidMount() {
     const { deviceToken } = this.props.tokens
+    console.log(deviceToken)
     this.props.linkFromExchangeMinors()
   }
 

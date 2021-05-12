@@ -1,5 +1,7 @@
 import React, { useState, Fragment } from 'react'
 
+import DB from '../db'
+
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromAllMinors, fetchData } from '../store/actions/api'
@@ -29,14 +31,10 @@ import {
   useClearByFocusCell
 } from 'react-native-confirmation-code-field'
 
-const login = (data, value, tokens, navigation) => {
-  const email = data.email
+const login = (logdata, value, navigation, setCorrect) => {
+  const email = logdata.email
   const user = { email: email, password: value }
-  const url =
-    'http://95.165.28.240:3000/api/v1/users/sign_in?authenticity_token=' +
-    tokens.authenticityToken +
-    '&device_token=' +
-    tokens.deviceToken
+  const url = 'http://95.165.28.240:3000/api/v1/users/sign_in'
   fetch(url, {
     method: 'POST',
     headers: {
@@ -47,33 +45,46 @@ const login = (data, value, tokens, navigation) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.email) {
-        navigation.navigate('Container', { auth: true })
-      } else {
+      if (data.error) {
         console.log('Error')
+        setCorrect('false')
+      } else {
+        DB.createToken(data.authenticity_token)
+        if (logdata.reg) {
+          navigation.navigate('Base')
+        } else {
+          navigation.navigate('App')
+        }
       }
     })
 }
 
-const handleClick = (data, navigation, value, tokens) => {
-  login(data, value, tokens, navigation)
+const handleClick = (data, navigation, value, handleCorrectChange) => {
+  login(data, value, navigation, handleCorrectChange)
   // navigation.navigate('GuestMain')
 }
 
-const renderMainButton = (navigation, value, data, tokens) => {
+const renderMainButton = (navigation, value, data, tokens, setCorrect) => {
   return value.length == 4 ? (
     <MainButton
       title="Далее"
       className="active"
-      onPress={() => handleClick(data, navigation, value, tokens)}
+      onPress={() => handleClick(data, navigation, value, tokens, setCorrect)}
     />
   ) : (
     <MainButton title="Далее" />
   )
 }
 
+const renderMes = (cor) => {
+  if (!cor) {
+    return <Text style={styles.link}>Некорректный код</Text>
+  }
+}
+
 const EmailVerificationScreen = (props) => {
   const [value, setValue] = useState('')
+  const [correct, setCorrect] = useState('true')
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
   const [pr, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -93,6 +104,7 @@ const EmailVerificationScreen = (props) => {
           <Text style={styles.h1InVerification}>
             Мы отправили код на твою корпоративную почту
           </Text>
+          {renderMes(correct)}
           <CodeField
             ref={ref}
             {...pr}
@@ -124,7 +136,7 @@ const EmailVerificationScreen = (props) => {
             <Text style={styles.link}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-        {renderMainButton(props.navigation, value, data, tokens)}
+        {renderMainButton(props.navigation, value, data, tokens, setCorrect)}
       </View>
     </SafeAreaView>
   )

@@ -1,5 +1,7 @@
 import * as actionTypes from '../constants/user'
 
+import DB from '../../db'
+
 const initialState = {
   auth: false
 }
@@ -17,13 +19,17 @@ const userInfo = (state = initialState, action) => {
       }
     case actionTypes.UPDATE_USER_INFO:
       console.log('UPDATE USER INFO Reducer data GET_USER_INFO', action)
-      if (action.auth) {
+
+      if (action.data.auth == 1) {
         return Object.assign({}, state, {
-          auth: action.auth
+          auth: true,
+          email: action.data.email,
+          minor: action.data.minor
         })
       } else {
-        return state
+        return Object.assign({}, state, { auth: false })
       }
+      return state
     default:
       return state
   }

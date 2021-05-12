@@ -1,15 +1,15 @@
 import * as actionTypes from '../constants/user'
 
-export function getUserInfo(data) {
+export function getUserInfo(token) {
   return {
     type: actionTypes.GET_USER_INFO,
-    auth: data.auth
+    token: token
   }
 }
 
 export function updateUserInfo(data) {
   return {
     type: actionTypes.UPDATE_USER_INFO,
-    auth: data.auth
+    data: data
   }
 }

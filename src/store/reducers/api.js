@@ -1,9 +1,9 @@
 import * as actionTypes from '../constants/api'
 
-// const host_root = 'http://127.0.0.1:3000/api/'
-const host_root = 'http://95.165.28.240:3000/api/'
+const host_root = 'http://127.0.0.1:3000/api/'
+// const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
-const devise_token = '?device_token='
+const authenticity_token = '?authenticity_token='
 
 // 1. Route to auth
 //    - With device token
@@ -27,6 +27,7 @@ const exchange_minors_index_url_v1 = 'exchange_minors'
 const exchange_requests_index_url_v1 = 'exchange_requests'
 const minors_index_url_v1 = 'minors'
 const user_url_v1 = 'profiles'
+const guest = 'guests'
 
 const post_login = 'login'
 // const chat_room_url_v1 = 'messages'
@@ -56,9 +57,7 @@ const data_from_api = (state = initialState, action) => {
         .then((response) => response.json())
         .then((data) => {
           console.log('Response from the server', data)
-          newState = Object.assign({}, state)
-          newState.pageData = data
-          action.callback(newState.pageData)
+          action.callback(data)
         })
 
     case actionTypes.LOG_IN:
@@ -79,6 +78,10 @@ const data_from_api = (state = initialState, action) => {
         })
 
     // return newState
+    case actionTypes.LINK_FOR_GUEST_FROM_API:
+      newState = Object.assign({}, state)
+      newState.url = root + guest
+      return newState
     case actionTypes.LINK_FOR_FETCHING_TOKENS_FROM_API:
       newState = Object.assign({}, state)
       newState.url = root + login_guest_url_v1
@@ -86,7 +89,10 @@ const data_from_api = (state = initialState, action) => {
     case actionTypes.LINK_FOR_FETCHING_EXCHANGE_MINORS_FROM_API:
       newState = Object.assign({}, state)
       newState.url =
-        root + exchange_minors_index_url_v1 + devise_token + action.deviceToken
+        root +
+        exchange_minors_index_url_v1 +
+        authenticity_token +
+        action.deviceToken
       return newState
     case actionTypes.LINK_FOR_FETCHING_USERS_EXCHANGE_FROM_API:
       newState = Object.assign({}, state)
@@ -100,12 +106,15 @@ const data_from_api = (state = initialState, action) => {
       return newState
     case actionTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API:
       newState = Object.assign({}, state)
-      newState.url = root + user_url_v1
+      newState.url = root + user_url_v1 + authenticity_token + action.token
       return newState
     case actionTypes.LINK_FOR_FETCHING_MAIN_SCREEN_DATA_FROM_API:
       newState = Object.assign({}, state)
       newState.url =
-        root + exchange_minors_index_url_v1 + devise_token + action.deviceToken
+        root +
+        exchange_minors_index_url_v1 +
+        authenticity_token +
+        action.deviceToken
       return newState
 
     default:

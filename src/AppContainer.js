@@ -17,6 +17,7 @@ import DB from './db'
 import {
   linkFromTokens,
   linkFromUsersData,
+  linkForGuest,
   fetchData
 } from './store/actions/api'
 
@@ -48,72 +49,114 @@ class AppContainer extends Component {
   }
 
   componentDidMount() {
-    console.log('============================================')
     DB.getToken((result) => {
       console.log('********************************************')
       console.log('Redux Action getToken', result)
-      if (result === undefined) {
-        console.log('App Container DB.createToken')
-        this.props.linkFromTokens()
-      } else {
-        this.props.updateToken(result)
-        console.log(result.authenticity_token)
-      }
       console.log('********************************************')
+      if (result === undefined) {
+        console.log('App Container IT`s GUEST')
+        this.props.linkForGuest()
+      } else {
+        console.log('App Container USER SIGN IN')
+        const token = result['authenticity_token']
+        this.props.linkFromUsersData(token)
+
+        const { loaded } = this.state
+        if (loaded) {
+          const { url } = this.props.data_from_api
+          if (url) {
+            if (url.search('profiles') != -1) {
+              this.setState({ loaded: false })
+              this.props.fetchData(url, this.userDataMemorize)
+            }
+          }
+        }
+      }
     })
   }
 
+  userDataMemorize = (data) => {
+    DB.createUser(1, data).then((response) =>
+      DB.getUserInfo(this.props.updateUserInfo)
+    )
+  }
+
   componentDidUpdate() {
-    const { deviceToken, loaded } = this.props.tokens
-    const { exchangeMinors } = this.props
-    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-    console.log('AppContainer PROPS', this.props)
-    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-    console.log('TOKEN AND LOAD STATE', deviceToken === '', loaded)
+    if (this.props.data_from_api.url !== '') {
+      console.log('Start Fetching')
+      fetch(this.props.data_from_api.url)
+        .then((response) => response.json())
+        .then((data) => {
+          const { auth } = data
+          if (auth) {
+            console.log('!!!!!!!!!!!!!!!!!!!!')
+            // const user = { auth: true }
+            // this.props.updateUserInfo(user)
+            console.log('USER IS AUTH')
+            console.log('!!!!!!!!!!!!!!!!!!!!')
+          }
+        })
 
-    if (deviceToken === '' && loaded === true) {
-      console.log('FIRST IF')
-    } else if (deviceToken === '' && loaded === false) {
-      console.log('SECOND IF')
-      console.log('ADD NEW TOCKEN')
-      if (this.props.data_from_api.url !== '') {
-        console.log('Start Fetching')
-        fetch(this.props.data_from_api.url)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Response from the server', data)
-            DB.createToken(
-              data.tokens.device_token,
-              data.tokens.authenticity_token
-            )
-            DB.createUser(0)
-
-            this.props.updateToken(data.tokens)
-            this.props.updateUserInfo(data.user_info)
-          })
-      }
-    } else if (deviceToken != '' && this.state.loaded) {
-      //     // this.props.linkFromUsersData(deviceToken)
-      //     // if (this.props.data_from_api.url !== '') {
-      this.setState({ loaded: false })
+      // if (auth) {
+      //   const { deviceToken, loaded } = this.props.tokens
+      //   const { exchangeMinors } = this.props
+      //   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+      //   console.log('AppContainer PROPS', this.props)
+      //   console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+      //   console.log('TOKEN AND LOAD STATE', deviceToken === '', loaded)
+      //
+      //   if (deviceToken === '' && loaded === true) {
+      //     console.log('FIRST IF')
+      //   } else if (deviceToken === '' && loaded === false) {
+      //     console.log('SECOND IF')
+      //     console.log('ADD NEW TOCKEN')
+      //     if (this.props.data_from_api.url !== '') {
+      //       console.log('Start Fetching')
+      //       fetch(this.props.data_from_api.url)
+      //         .then((response) => response.json())
+      //         .then((data) => {
+      //           console.log('Response from the server', data)
+      //           DB.createToken(
+      //             data.tokens.device_token,
+      //             data.tokens.authenticity_token
+      //           )
+      //
+      //           this.props.updateToken(data.tokens)
+      //           this.props.updateUserInfo(data.user_info)
+      //         })
+      //     }
+      //   } else if (deviceToken != '' && this.state.loaded) {
+      //     //     // this.props.linkFromUsersData(deviceToken)
+      //     //     // if (this.props.data_from_api.url !== '') {
+      //     this.setState({ loaded: false })
+      //     // }
+      //   // }
+      // } else {
+      //
+      //   console.log('NEW USER')
       // }
     }
   }
 
   render() {
-    console.log('AppContainer', this.props)
-    // console.log('=========================')
-    // console.log(this.props)
-    // console.log('=========================')
+    const { loaded } = this.state
     const { auth } = this.props.userInfo
-    const { deviceToken } = this.props.tokens
-    return deviceToken === '' ? (
-      <PreloaderScreen />
-    ) : auth ? (
-      <UserNavigation />
-    ) : (
-      <GuestNavigation />
-    )
+    // const { deviceToken } = this.props.tokens
+    // return !loaded ? (
+    //   <Text>======================load</Text>
+    // ) : auth ? (
+    //   <Text>======================AUTH</Text>
+    // ) : (
+    //   <Text>======================GUEST</Text>
+    // )
+    return auth ? <UserNavigation /> : <GuestNavigation />
+    // return deviceToken === '' ? (
+    //   <PreloaderScreen />
+    // ) : auth ? (
+    //   <UserNavigation />
+    // ) : (
+    //   <GuestNavigation />
+    // )
   }
 }
 
@@ -122,6 +165,7 @@ function mapDispatchToProps(dispatch) {
     {
       linkFromTokens,
       linkFromUsersData,
+      linkForGuest,
       getToken,
       updateToken,
       updateUserInfo,

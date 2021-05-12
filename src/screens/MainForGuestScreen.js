@@ -81,8 +81,6 @@ class MainForGuestScreen extends Component {
   }
 
   render() {
-    console.log(this.state)
-
     return this.state.loading ? (
       <Text>Loading.....</Text>
     ) : (

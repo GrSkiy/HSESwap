@@ -16,6 +16,14 @@ export function login(callback, email) {
   }
 }
 
+export function linkForGuest() {
+  return {
+    type: fetchTypes.LINK_FOR_GUEST_FROM_API
+    // deviceToken: data.device_token,
+    // authenticityToken: data.authenticity_token
+  }
+}
+
 export function linkFromTokens() {
   return {
     type: fetchTypes.LINK_FOR_FETCHING_TOKENS_FROM_API
@@ -51,11 +59,11 @@ export function linkForMainScreen() {
     // authenticityToken: data.authenticity_token
   }
 }
-export function linkFromUsersData(device_token) {
+export function linkFromUsersData(authenticity_token) {
   return {
-    type: fetchTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API
+    type: fetchTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API,
+    token: authenticity_token
     // deviceToken: device_token
-    // authenticityToken: data.authenticity_token
   }
 }
 // export function fetchChatRoomMinors() {

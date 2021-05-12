@@ -17,7 +17,7 @@ class DB {
       })
       db.transaction((tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, auth INTEGER, email TEXT, minor TEXT)',
+          'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, auth INTEGER, email TEXT, city TEXT, year INTEGER, minor TEXT)',
           [],
           resolve,
           (_, error) => reject(error)
@@ -34,14 +34,14 @@ class DB {
     })
   }
 
-  static createToken(device_token, authenticity_token) {
+  static createToken(authenticity_token) {
     return new Promise((resolve, reject) => {
-      console.log('DB Create Token')
+      console.log('DB Create Token', authenticity_token)
 
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO tokens (device_token, authenticity_token) VALUES (?, ?)`,
-          ['', ''],
+          `INSERT INTO tokens (authenticity_token) VALUES (?)`,
+          [authenticity_token],
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )
@@ -79,6 +79,21 @@ class DB {
     })
   }
 
+  static createUser(auth, data) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Create User', data)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO user (auth, email,  minor) VALUES (?, ?, ?)`,
+          [auth, data.email, data.minor],
+          (_, result) => resolve(result.insertId),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+
   static getUserInfo(callback) {
     return new Promise((resolve, reject) => {
       console.log('DB Get User Info')
@@ -91,24 +106,10 @@ class DB {
     })
   }
 
-  static createUser(auth) {
+  static updateUser(newStatus) {
     return new Promise((resolve, reject) => {
-      console.log('DB Create Token')
-
-      db.transaction((tx) => {
-        tx.executeSql(
-          `INSERT INTO user (auth) VALUES (?)`,
-          [auth],
-          (_, result) => resolve(result.insertId),
-          (_, error) => reject(error)
-        )
-      })
-    })
-  }
-
-  static updateUserAuth(newStatus) {
-    return new Promise((resolve, reject) => {
-      console.log('DB Update Auth Token', authenticity_token)
+      console.log('##############')
+      console.log('DB Update User', newStatus)
 
       db.transaction((tx) => {
         tx.executeSql(
