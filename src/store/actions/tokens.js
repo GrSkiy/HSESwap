@@ -8,11 +8,13 @@ export function getToken(data) {
   }
 }
 
-export function updateToken(data) {
+export function updateToken(authenticityToken, deviceToken) {
+  console.log('000000000000000000')
+  console.log(authenticityToken, deviceToken)
   return {
     type: actionTypes.UPDATE_TOKEN_IN_DB,
-    deviceToken: data.device_token,
-    authenticityToken: data.authenticity_token
+    deviceToken: deviceToken,
+    authenticityToken: authenticityToken
   }
 }
 

@@ -16,10 +16,26 @@ export function login(callback, email) {
   }
 }
 
+// export function logOut(email) {
+//   return {
+//     type: fetchTypes.LOG_OUT,
+//     email: email
+//   }
+// }
+
 export function linkForGuest() {
   return {
     type: fetchTypes.LINK_FOR_GUEST_FROM_API
     // deviceToken: data.device_token,
+    // authenticityToken: data.authenticity_token
+  }
+}
+
+export function changeProfile(data) {
+  console.log('CHANGE')
+  return {
+    type: fetchTypes.CHANGE_PROFILE,
+    data: data
     // authenticityToken: data.authenticity_token
   }
 }
@@ -59,11 +75,11 @@ export function linkForMainScreen() {
     // authenticityToken: data.authenticity_token
   }
 }
-export function linkFromUsersData(authenticity_token) {
+export function linkFromUsersData(authenticityToken, deviceToken) {
   return {
     type: fetchTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API,
-    token: authenticity_token
-    // deviceToken: device_token
+    authenticityToken: authenticityToken,
+    deviceToken: deviceToken
   }
 }
 // export function fetchChatRoomMinors() {

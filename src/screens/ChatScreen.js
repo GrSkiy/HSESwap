@@ -34,7 +34,6 @@ const cable = new Cable({})
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     url: state.url
   }
 }

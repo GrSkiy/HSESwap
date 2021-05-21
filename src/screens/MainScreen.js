@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react'
 
+import DB from '../db'
+
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromExchangeMinors, fetchData } from '../store/actions/api'
@@ -17,7 +19,8 @@ import Card from '../components/Card'
 function select(state) {
   return {
     tokens: state.tokens,
-    data_from_api: state.data_from_api
+    data_from_api: state.data_from_api,
+    user: state.userInfo
   }
 }
 
@@ -36,6 +39,11 @@ class MainScreen extends React.Component {
     const { deviceToken } = this.props.tokens
     console.log(deviceToken)
     this.props.linkFromExchangeMinors()
+    DB.getUserInfo(this.add)
+  }
+
+  add = (data) => {
+    console.log(data)
   }
 
   componentDidUpdate() {
@@ -100,11 +108,16 @@ class MainScreen extends React.Component {
     return (
       <View>
         {this.renderContent()}
-        <Burger ref={(target) => (burgerRef = target)} />
+        <Burger
+          ref={(target) => (burgerRef = target)}
+          user={this.props.user}
+          navigation={this.props.navigation}
+        />
       </View>
     )
   }
 }
+// logOut={() => this.props.logOut(this.props.tokens.deviceToken)}
 
 MainScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Все объявления',
@@ -135,6 +148,7 @@ function mapDispatchToProps(dispatch) {
     {
       linkFromExchangeMinors,
       fetchData
+      // logOut
     },
     dispatch
   )

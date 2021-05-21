@@ -1,12 +1,31 @@
 import React from 'react'
 
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { changeProfile } from '../store/actions/api'
+
 import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import MainButton from '../components/MainButton'
+import LinkButton from '../components/LinkButton'
 
-export default function PublishingSkreen(props) {
+import DB from '../db'
+
+function select(state) {
+  return {
+    tokens: state.tokens
+  }
+}
+
+function PublishingSkreen(props) {
+  const data = {
+    city_id: props.navigation.getParam('city_id'),
+    minor_id: props.navigation.getParam('minor_id'),
+    year: props.navigation.getParam('year'),
+    wishList: props.navigation.getParam('wishList')
+  }
   return (
     <SafeAreaView style={styles.mainWrapper}>
       <View style={styles.screenWithButtonOnBottom}>
@@ -28,14 +47,52 @@ export default function PublishingSkreen(props) {
         <View style={styles.centredContainer}>
           <MainButton
             title="Открыть объявление"
-            onPress={() => props.navigation.navigate('Main')}
+            className="active"
+            onPress={() =>
+              confirmation(props.tokens, props.navigation, data, true)
+            }
           />
-          <Text style={styles.link}>Сделть это позже</Text>
+          <LinkButton
+            handleClick={() =>
+              confirmation(props.tokens, props.navigation, data, false)
+            }
+            title="Сделть это позже"
+          />
           <View style={styles.zBorder}></View>
         </View>
       </View>
     </SafeAreaView>
   )
+}
+
+const confirmation = async (tokens, navigation, data, isOpen) => {
+  data.isOpen = isOpen
+  data = { action: 'update', update_data: data }
+  DB.getToken((result) => {
+    console.log(result)
+
+    fetch(
+      'http://95.165.28.240:3000/api/v1/profiles?authenticity_token=' +
+        result.authenticity_token +
+        '&device_token=' +
+        result.device_token,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data })
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response from the server')
+      })
+  })
+
+  // changeProfile(data)
+  // props.navigation.navigate('App')
 }
 
 PublishingSkreen.navigationOptions = ({ navigation }) => ({
@@ -49,3 +106,14 @@ PublishingSkreen.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   )
 })
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      changeProfile
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(PublishingSkreen)

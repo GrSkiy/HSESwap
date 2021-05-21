@@ -50,16 +50,18 @@ class AppContainer extends Component {
 
   componentDidMount() {
     DB.getToken((result) => {
-      console.log('********************************************')
       console.log('Redux Action getToken', result)
-      console.log('********************************************')
       if (result === undefined) {
         console.log('App Container IT`s GUEST')
         this.props.linkForGuest()
       } else {
         console.log('App Container USER SIGN IN')
-        const token = result['authenticity_token']
-        this.props.linkFromUsersData(token)
+        const authenticityToken = result['authenticity_token']
+        const deviceToken = result['device_token']
+
+        this.props.updateToken(authenticityToken, deviceToken)
+
+        this.props.linkFromUsersData(authenticityToken, deviceToken)
 
         const { loaded } = this.state
         if (loaded) {
@@ -76,9 +78,22 @@ class AppContainer extends Component {
   }
 
   userDataMemorize = (data) => {
-    DB.createUser(1, data).then((response) =>
-      DB.getUserInfo(this.props.updateUserInfo)
-    )
+    DB.getUserInfo(this.checkUserInDB)
+    let state = this.state
+    state.profile = data
+    state.profile.auth = 1
+    this.setState(state)
+  }
+
+  checkUserInDB = (data) => {
+    if (data) {
+      console.log(this.state)
+      this.props.updateUserInfo(this.state.profile)
+    } else {
+      DB.createUser(1, this.state.profile).then((response) =>
+        this.userDataMemorize(response)
+      )
+    }
   }
 
   componentDidUpdate() {

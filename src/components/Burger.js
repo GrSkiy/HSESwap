@@ -10,6 +10,8 @@ import {
   TouchableOpacity
 } from 'react-native'
 
+import styles from '../stylesheets/main'
+
 import SettingPoint from '../components/SettingPoint'
 // import MainButton from '../components/MainButton'
 import Line from '../components/Line'
@@ -30,12 +32,17 @@ export default class Burger extends React.Component {
   close = () => {
     this.setState({ show: false })
   }
+  changePage = (root) => {
+    this.close()
+    return this.props.navigation.push(root)
+  }
+
+  // logOut = () => {
+  //   "/api/v1/users/sign_out"
+  // }
 
   render() {
-    console.log('=================')
-    console.log('Burger')
-    console.log(this.props)
-    console.log('=================')
+    const { user } = this.props
     let { show } = this.state
 
     return (
@@ -44,24 +51,36 @@ export default class Burger extends React.Component {
         visible={show}
         onRequestClose={this.close}
       >
-        <View style={styles.wrapper}>
-          <TouchableOpacity onPress={this.close} style={styles.modal}>
-            <Text>Burger</Text>
+        <View>
+          <TouchableOpacity onPress={() => this.close()}>
+            <Text style={styles.logOutTitle}>close</Text>
           </TouchableOpacity>
+          <View>
+            <Text>{user.email}</Text>
+            <Text>{user.minor}</Text>
+            <SettingPoint
+              title={'Открыть мое объявление'}
+              // toggle={data.isPublished}
+            />
+          </View>
+          <View style={styles.settingBody}>
+            <View style={styles.pointsCollection}>
+              <SettingPoint
+                title={'Мои данные'}
+                changePage={() => this.changePage('Settings')}
+              />
+              <SettingPoint
+                title={'Список всех майноров'}
+                changePage={() => this.changePage('AllMinors')}
+              />
+              <TouchableOpacity onPress={() => this.close()}>
+                <Text style={styles.logOutTitle}>Выйти</Text>
+              </TouchableOpacity>
+              <Line />
+            </View>
+          </View>
         </View>
       </Modal>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modal: {
-    height: 300
-  }
-})

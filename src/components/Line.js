@@ -7,7 +7,8 @@ export default function Line() {
 
 const styles = StyleSheet.create({
   line: {
-    width: 'calc(100% + 40px)',
+    // width: 'calc(100% + 40px)',
+    width: '100%',
     marginLeft: -20,
     height: 1,
     backgroundColor: '#EAEAEA'

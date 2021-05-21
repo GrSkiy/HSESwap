@@ -49,7 +49,7 @@ const login = (logdata, value, navigation, setCorrect) => {
         console.log('Error')
         setCorrect('false')
       } else {
-        DB.createToken(data.authenticity_token)
+        DB.createToken(data.authenticity_token, data.device_token)
         if (logdata.reg) {
           navigation.navigate('Base')
         } else {

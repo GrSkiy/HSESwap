@@ -1,5 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { fetchData } from '../store/actions/api'
+
 import {
   StyleSheet,
   Text,
@@ -16,13 +21,20 @@ import { MaterialIcons } from '@expo/vector-icons'
 import FullInfoInput from '../components/FullInfoInput'
 import Line from '../components/Line'
 
-export default class Setting_view extends React.Component {
+function select(state) {
+  return {
+    tokens: state.tokens,
+    user: state.userInfo
+  }
+}
+
+class Setting_view extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      data: this.props.navigation.getParam('data')
-    }
+    // this.state = {
+    //   data: this.props.navigation.getParam('data')
+    // }
   }
 
   render() {
@@ -33,8 +45,8 @@ export default class Setting_view extends React.Component {
             title={'Почта HSE'}
             content={'vsinsafutdinova@edu.hse.ru'}
           />
-          <FullInfoInput title={'Мой кампус'} content={this.state.data.city} />
-          <FullInfoInput title={'Мой майнор'} content={this.state.data.minor} />
+          <FullInfoInput title={'Мой кампус'} content={this.props.user.city} />
+          <FullInfoInput title={'Мой майнор'} content={this.props.user.minor} />
         </View>
         <Text style={styles.caption}>
           Ты можешь поменять информацию о себе, если при регистрации допустил
@@ -60,15 +72,26 @@ Setting_view.navigationOptions = ({ navigation }) => ({
       <Item
         title="Toggle Drawer"
         iconName={'pencil'}
-        onPress={() =>
-          navigation.push('EditPersonData', {
-            data: navigation.getParam('data')
-          })
-        }
+        // onPress={() =>
+        //   navigation.push('EditPersonData', {
+        //     data: navigation.getParam('data')
+        //   })
+        // }
       />
     </HeaderButtons>
   )
 })
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      fetchData
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(Setting_view)
 
 const styles = StyleSheet.create({
   itemsBody: {

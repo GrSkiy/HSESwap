@@ -19,7 +19,7 @@ const tokens = (state = initialState, action) => {
     case actionTypes.UPDATE_TOKEN_IN_DB:
       console.log('TOKENS Reducer data UPDATE_TOKEN_IN_DB', action)
 
-      DB.updateToken(action.deviceToken, action.authenticityToken)
+      // DB.updateToken(action.deviceToken, action.authenticityToken)
 
       return Object.assign({}, state, {
         deviceToken: action.deviceToken,

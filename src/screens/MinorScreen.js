@@ -17,8 +17,8 @@ import {
 
 import styles from '../stylesheets/main'
 
+import { MaterialIcons } from '@expo/vector-icons'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
-import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 function select(state) {
   return {
@@ -41,14 +41,13 @@ class MinorScreen extends React.Component {
 
   changeState = (data) => {
     const newState = this.state
-    // newState.data = data
+    newState.data = data
     newState.loading = false
     this.setState(newState)
   }
 
   renderContent = () => {
     let {
-      handleReadMore,
       name,
       credits,
       address,
@@ -94,6 +93,7 @@ class MinorScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
@@ -109,7 +109,7 @@ MinorScreen.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack()}
+      onPress={() => navigation.goBack(null)}
     >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>

@@ -1,9 +1,5 @@
 import React from 'react'
 
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { linkFromAllMinors, fetchData } from '../store/actions/api'
-
 import {
   SafeAreaView,
   View,
@@ -19,122 +15,89 @@ import Line from '../components/Line'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     data_from_api: state.data_from_api
   }
 }
+
+let CONFIRMATION_DATA = {}
 
 class YourWishedMinorsSkreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: true,
-      wishList: []
+      wishList: [],
+      minor_id: props.navigation.getParam('minor_id'),
+      city_id: props.navigation.getParam('city_id'),
+      year: props.navigation.getParam('year'),
+      minors: props.navigation.getParam('minors')
     }
+    CONFIRMATION_DATA = this.state
   }
 
-  componentDidMount() {
-    this.props.linkFromAllMinors()
-  }
+  addToWIshList = (minor_id, id) => {
+    let { minors } = this.state
+    let newState = Object.assign({}, this.state)
 
-  componentDidUpdate() {
-    if (this.state.loading) {
-      const { url } = this.props.data_from_api
-      if (url.search('minors') != -1) {
-        this.props.fetchData(url, this.changeState)
-      }
+    if (minors[id].status != 'pic') {
+      minors[id].status = 'pic'
+      newState.wishList.push(minor_id)
+    } else {
+      delete minors[id].status
+      newState.wishList.find((element, index, array) => {
+        if (element == minor_id) {
+          newState.wishList.splice(index, 1)
+        }
+      })
     }
-  }
-
-  changeState = (data) => {
-    const newState = this.state
-    newState.data = data
-    newState.loading = false
+    newState.minors = minors
     this.setState(newState)
   }
 
-  addToWIshList = (id) => {
-    let state = this.state
-    state.wishList.push(id)
-
-    this.setState(state)
-  }
-
   renderMinors = () => {
-    let minors = this.pushMinors()
+    let minors = this.state.minors
     let minorsItems = []
     minors.forEach((minor, i) => {
-      if (minor.status == 'normal') {
-        minorsItems.push(
-          <View key={'non_' + i}>
-            <TouchableOpacity
-              onPress={() => this.addToWIshList(minor.id)}
-              style={styles.minorPoint}
-            >
-              <Text style={styles.minorTitle}>{minor.name}</Text>
-            </TouchableOpacity>
-            <Line />
-          </View>
-        )
+      if (i + 1 != this.state.minor_id) {
+        if (minor.status == 'pic') {
+          minorsItems.push(
+            <View key={'non_' + i}>
+              <TouchableOpacity
+                onPress={() => this.addToWIshList(minor.value, i)}
+                style={styles.minorPointActive}
+              >
+                <Text style={styles.minorTitle}>{minor.name}</Text>
+              </TouchableOpacity>
+              <Line />
+            </View>
+          )
+        } else {
+          minorsItems.push(
+            <View key={'non_' + i}>
+              <TouchableOpacity
+                onPress={() => this.addToWIshList(minor.value, i)}
+                style={styles.minorPoint}
+              >
+                <Text style={styles.minorTitle}>{minor.name}</Text>
+              </TouchableOpacity>
+              <Line />
+            </View>
+          )
+        }
       } else {
-        console.log(minor)
-        minorsItems.push(
-          <View key={'non_' + i}>
-            <TouchableOpacity
-              onPress={() => this.addToWIshList(minor.id)}
-              style={styles.minorPointActive}
-            >
-              <Text style={styles.minorTitle}>{minor.name}</Text>
-            </TouchableOpacity>
-            <Line />
-          </View>
-        )
+        delete minors[i]
+        CONFIRMATION_DATA.minor_id = minor.value
       }
     })
     return minorsItems
   }
 
-  pushMinors = () => {
-    const { data } = this.state
-    const city_id = this.props.navigation.getParam('city_id')
-
-    let allMinors = []
-
-    data[city_id].minors.forEach((minor, i) => {
-      if (this.state.wishList.length > 0) {
-        this.state.wishList.forEach((id, y) => {
-          if (minor.id == id) {
-            allMinors.push({ id: minor.id, name: minor.name, status: 'select' })
-          } else {
-            allMinors.push({ id: minor.id, name: minor.name, status: 'normal' })
-          }
-        })
-      } else {
-        allMinors.push({ id: minor.id, name: minor.name, status: 'normal' })
-      }
-    })
-
-    let unUniqueIndex = []
-
-    allMinors.forEach((minor, i) => {
-      if (allMinors[i + 1]) {
-        if (minor.name == allMinors[i + 1].name) {
-          unUniqueIndex.push(i)
-        }
-      }
-    })
-
-    unUniqueIndex.forEach((id, i) => {
-      allMinors.splice(id, 1)
-    })
-
-    return allMinors
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index
   }
 
   render() {
-    return this.state.loading ? (
-      <Text>Loading.....</Text>
-    ) : (
+    console.log(CONFIRMATION_DATA)
+    return (
       <SafeAreaView style={styles.mainWrapper}>
         <View>
           <Text style={styles.h2}>Выбери майноры, которые тебе нравятся</Text>
@@ -162,21 +125,18 @@ YourWishedMinorsSkreen.navigationOptions = ({ navigation }) => ({
   headerRight: () => (
     <TouchableOpacity
       style={{ paddingRight: 20, color: '#005AAB' }}
-      onPress={() => navigation.navigate('Publishing')}
+      onPress={() =>
+        navigation.navigate('Publishing', {
+          city_id: CONFIRMATION_DATA.city_id,
+          minor_id: CONFIRMATION_DATA.minor_id,
+          wishList: CONFIRMATION_DATA.wishList,
+          year: CONFIRMATION_DATA.year
+        })
+      }
     >
       <Text style={{ color: '#005AAB' }}>Готово</Text>
     </TouchableOpacity>
   )
 })
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      linkFromAllMinors,
-      fetchData
-    },
-    dispatch
-  )
-}
-
-export default connect(select, mapDispatchToProps)(YourWishedMinorsSkreen)
+export default YourWishedMinorsSkreen

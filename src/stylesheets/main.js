@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native'
+import { Dimensions, StyleSheet, Platform } from 'react-native'
 
 const styles = StyleSheet.create({
   mainWrapper: {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
 
   pinMinorWrapper: {
-    width: 'calc(100% + 40px)',
+    width: Dimensions.get('window').width + 40,
     zIndex: 3,
     paddingTop: 14,
     paddingBottom: 14,
@@ -213,7 +213,10 @@ const styles = StyleSheet.create({
   },
 
   newMessage: {
-    width: 'calc(100% + 40px)',
+    // width: Dimensions.get('window').width + 40,
+    // width: 'calc(100% + 40px)',
+
+    width: '100%',
     flexDirection: 'row',
     marginLeft: -20,
     paddingLeft: 20,

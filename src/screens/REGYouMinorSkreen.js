@@ -14,7 +14,6 @@ import Select from '../components/Select'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     data_from_api: state.data_from_api
   }
 }
@@ -25,7 +24,9 @@ class YouMinorSkreen extends React.Component {
 
     this.state = {
       loading: true,
-      minor_id: 1
+      minor_id: 1,
+      city_id: props.navigation.getParam('city_id'),
+      year: props.navigation.getParam('year')
     }
   }
 
@@ -51,34 +52,47 @@ class YouMinorSkreen extends React.Component {
 
   handleChange = (id, name, field) => {
     let newState = Object.assign({}, this.state)
-
-    if (field == 'year') {
-      newState.year = parseInt(name)
-    } else if (field == 'city') {
-      newState.city_id = id + 1
-      // newState.city.name = name
-    }
+    newState.minor_id = id + 1
     this.setState(newState)
+  }
+
+  minorsMemorize = (minors) => {
+    let newState = this.state
+    newState.data = minors
+    this.setState(newState)
+    console.log(newState)
   }
 
   handleSubmit = () => {
     this.props.navigation.navigate('Whished', {
-      city_id: this.props.navigation.getParam('city_id') - 1
+      city_id: this.state.city_id,
+      year: this.state.year,
+      minor_id: this.state.minor_id,
+      minors: this.state.data
     })
   }
 
   getMinorsList = () => {
     const { data } = this.state
     const city_id = this.props.navigation.getParam('city_id') - 1
-
     let allMinors = []
-    data[city_id].minors.forEach((minor, i) => {
-      allMinors.push({ value: minor.id, name: minor.name })
-    })
+
+    if (data[city_id].minors) {
+      data[city_id].minors.forEach((minor, i) => {
+        allMinors.push({ value: minor.id, name: minor.name })
+      })
+      this.minorsMemorize(allMinors)
+    } else {
+      data.forEach((minor, i) => {
+        allMinors.push({ value: minor.id, name: minor.name })
+      })
+    }
+
     return allMinors
   }
 
   render() {
+    console.log(this.state.minor_id)
     const { loading, data } = this.state
 
     return loading ? (
@@ -97,14 +111,18 @@ class YouMinorSkreen extends React.Component {
               <Select
                 label="Твой майнор"
                 items={this.getMinorsList()}
-                current={2}
-                field="year"
+                current={this.state.minor_id}
+                field="minor"
                 character="three"
                 handleChange={this.handleChange}
               />
             </View>
           </View>
-          <MainButton title="Далее" onPress={this.handleSubmit} />
+          <MainButton
+            title="Далее"
+            className="active"
+            onPress={this.handleSubmit}
+          />
         </View>
       </SafeAreaView>
     )

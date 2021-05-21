@@ -117,6 +117,9 @@ const AllMinorsStack = createStackNavigator(
   {
     AllMinors: {
       screen: AllMinorsScreen
+    },
+    Minor: {
+      screen: MinorScreen
     }
   },
   navigatorOptions
@@ -168,9 +171,6 @@ const AllExchangesStack = createStackNavigator(
     },
     Information: {
       screen: InformationOfExchangeScreen
-    },
-    Minor: {
-      screen: MinorScreen
     },
     login: {
       screen: LogInStack

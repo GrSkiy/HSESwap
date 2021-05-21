@@ -40,6 +40,7 @@ class BaseInfoSkreen extends React.Component {
   handleSubmit = () => {
     console.log(this.state)
     this.props.navigation.navigate('YourMinor', {
+      year: this.state.year,
       city_id: this.state.city_id
     })
   }
@@ -51,7 +52,7 @@ class BaseInfoSkreen extends React.Component {
         <View style={styles.screenWithButtonOnBottom}>
           <View></View>
           <View>
-            <Text style={styles.h2}>Подтверди базовую информацию</Text>
+            <Text style={styles.h2}>Заполни базовую информацию</Text>
             <Text style={styles.span}>
               Твой курс и кампус должны совпадать в реальными, имя можешь
               оставить в тайне
@@ -83,7 +84,11 @@ class BaseInfoSkreen extends React.Component {
               />
             </View>
           </View>
-          <MainButton title="Далее" onPress={this.handleSubmit} />
+          <MainButton
+            title="Далее"
+            className="active"
+            onPress={this.handleSubmit}
+          />
         </View>
       </SafeAreaView>
     )

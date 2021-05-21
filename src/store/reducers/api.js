@@ -1,9 +1,10 @@
 import * as actionTypes from '../constants/api'
 
-const host_root = 'http://127.0.0.1:3000/api/'
-// const host_root = 'http://95.165.28.240:3000/api/'
+// const host_root = 'http://127.0.0.1:3000/api/'
+const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const authenticity_token = '?authenticity_token='
+const device_token = '&device_token='
 
 // 1. Route to auth
 //    - With device token
@@ -28,6 +29,7 @@ const exchange_requests_index_url_v1 = 'exchange_requests'
 const minors_index_url_v1 = 'minors'
 const user_url_v1 = 'profiles'
 const guest = 'guests'
+const log_out = 'users/sign_out'
 
 const post_login = 'login'
 // const chat_room_url_v1 = 'messages'
@@ -77,7 +79,43 @@ const data_from_api = (state = initialState, action) => {
           action.callback(newState.pageData)
         })
 
+    // case actionTypes.LOG_OUT:
+    //   fetch(root + log_out, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ email: action.email })
+    //   })
+
     // return newState
+    case actionTypes.CHANGE_PROFILE:
+      console.log('CHANGE PROFILE')
+    // fetch(
+    //   root +
+    //     user_url_v1 +
+    //     authenticity_token +
+    //     action.authenticityToken +
+    //     device_token +
+    //     action.deviceToken,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(action.data)
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log('Response from the server', data)
+    //     newState = Object.assign({}, state)
+    //     newState.pageData = data
+    //     action.callback(newState.pageData)
+    //   })
+
     case actionTypes.LINK_FOR_GUEST_FROM_API:
       newState = Object.assign({}, state)
       newState.url = root + guest
@@ -106,7 +144,13 @@ const data_from_api = (state = initialState, action) => {
       return newState
     case actionTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API:
       newState = Object.assign({}, state)
-      newState.url = root + user_url_v1 + authenticity_token + action.token
+      newState.url =
+        root +
+        user_url_v1 +
+        authenticity_token +
+        action.authenticityToken +
+        device_token +
+        action.deviceToken
       return newState
     case actionTypes.LINK_FOR_FETCHING_MAIN_SCREEN_DATA_FROM_API:
       newState = Object.assign({}, state)

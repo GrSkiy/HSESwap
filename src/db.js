@@ -34,14 +34,14 @@ class DB {
     })
   }
 
-  static createToken(authenticity_token) {
+  static createToken(authenticity_token, device_token) {
     return new Promise((resolve, reject) => {
-      console.log('DB Create Token', authenticity_token)
+      console.log('DB Create Token', authenticity_token, device_token)
 
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO tokens (authenticity_token) VALUES (?)`,
-          [authenticity_token],
+          `INSERT INTO tokens (authenticity_token, device_token) VALUES (?, ?)`,
+          [authenticity_token, device_token],
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )

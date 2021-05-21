@@ -6,7 +6,8 @@ const renderPicker = (items, current, field, handleChange) => {
 
   items.forEach((item, i) => {
     selectItems.push(
-      <Picker.Item label={item.name} value={item.value} key={i} />
+      // <Picker.Item label={item.name} value={item.value} key={i} />
+      <Picker.Item label={item.name.toString()} value={item.value} key={i} />
     )
   })
 

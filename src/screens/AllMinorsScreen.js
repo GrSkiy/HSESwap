@@ -25,7 +25,6 @@ import Card from '../components/Card'
 function select(state) {
   return {
     tokens: state.tokens,
-    exchangeMinors: state.exchangeMinors.entities,
     data_from_api: state.data_from_api
   }
 }

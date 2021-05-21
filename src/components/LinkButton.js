@@ -1,26 +1,11 @@
-import React from "react";
-import { StyleSheet, Button, Text, View, TouchableOpacity } from "react-native";
+import React from 'react'
+import { Text, TouchableOpacity } from 'react-native'
+import styles from '../stylesheets/main'
 
-export default function LinkButton({ onPress, title }) {
+export default function LinkButton({ handleClick, title }) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.linkButtonArea}>
-      <Text style={styles.likButtonText}>{title}</Text>
+    <TouchableOpacity onPress={handleClick} style={styles.linkButtonArea}>
+      <Text style={styles.link}>{title}</Text>
     </TouchableOpacity>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  linkButtonArea: {
-    elevation: 8,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  likButtonText: {
-    fontSize: 12,
-    color: "#0D407B",
-    fontWeight: "normal",
-    alignSelf: "center",
-  },
-});
