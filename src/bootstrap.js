@@ -3,7 +3,7 @@ import DB from './db'
 
 export function bootstrap() {
   try {
-    DB.removeDB()
+    // DB.removeDB()
 
     DB.init()
     console.log('Database started...')

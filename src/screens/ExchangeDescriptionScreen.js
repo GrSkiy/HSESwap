@@ -30,22 +30,12 @@ class ExchangeDescriptionScreen extends React.Component {
 
   componentDidMount() {
     console.log(this.props.tokens)
+    console.log(this.props.navigation.getParam('url'))
     if (this.state.loading) {
-      const url =
-        this.props.navigation.getParam('url') +
-        '?authenticity_token=' +
-        this.props.tokens.authenticityToken +
-        '&device_token=' +
-        this.props.tokens.deviceToken
-      this.props.fetchData(url, this.changeState)
+      this.props
+        .fetchData(this.props.navigation.getParam('url'))
+        .then(() => this.setState({ loading: false }))
     }
-  }
-
-  changeState = (data) => {
-    const newState = this.state
-    newState.data = data
-    newState.loading = false
-    this.setState(newState)
   }
 
   // let suitsText = "";
@@ -67,7 +57,7 @@ class ExchangeDescriptionScreen extends React.Component {
       suits,
       mainButtonHandle,
       url
-    } = this.state.data
+    } = this.props.data_from_api.pageData
     // <Text style={styles.credits}>{credits}</Text>
     // <Text style={styles.address}>{address}</Text>
     return (
@@ -151,7 +141,9 @@ class ExchangeDescriptionScreen extends React.Component {
   }
 
   render() {
-    // const login = this.props.navigation.getParam('login')
+    console.log('/////////////////////')
+    console.log(this.props.data_from_api)
+    console.log(this.state)
 
     const { auth } = this.props.userInfo
 
@@ -177,7 +169,7 @@ ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack(null)}
+      onPress={() => navigation.navigate('App')}
     >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>

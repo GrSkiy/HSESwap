@@ -4,7 +4,12 @@ import DB from '../db'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { linkFromExchangeMinors, fetchData } from '../store/actions/api'
+import {
+  linkFromExchangeMinors,
+  fetchData,
+  linkForLogOut,
+  logOut
+} from '../store/actions/api'
 
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main.js'
@@ -31,7 +36,8 @@ class MainScreen extends React.Component {
     super(props)
 
     this.state = {
-      loading: true
+      loading: true,
+      logOutLink: false
     }
   }
 
@@ -39,32 +45,23 @@ class MainScreen extends React.Component {
     const { deviceToken } = this.props.tokens
     console.log(deviceToken)
     this.props.linkFromExchangeMinors()
-    DB.getUserInfo(this.add)
-  }
-
-  add = (data) => {
-    console.log(data)
   }
 
   componentDidUpdate() {
     if (this.state.loading) {
+      this.setState({ loading: false })
       const { url } = this.props.data_from_api
       if (url.search('minors') != -1) {
-        this.props.fetchData(url, this.changeState)
+        console.log('FETCH')
+        this.props.fetchData(url)
+        this.props.linkForLogOut()
       }
     }
   }
 
-  changeState = (data) => {
-    const newState = this.state
-    newState.data = data
-    newState.loading = false
-    this.setState(newState)
-  }
-
   renderCards = () => {
     const { push } = this.props.navigation
-    const { exchange_minors } = this.state.data
+    const { exchange_minors } = this.props.data_from_api.pageData
     let cardItems = []
 
     exchange_minors.forEach((minor, i) => {
@@ -92,18 +89,31 @@ class MainScreen extends React.Component {
   }
 
   renderContent = () => {
+    const { pageData } = this.props.data_from_api
+    if (!this.state.logOutLink) {
+      this.props.linkForLogOut()
+      this.setState({ logOutLink: true })
+    }
     return this.state.loading ? (
       <Text>Loading.....</Text>
-    ) : this.state.data.exchange_minors === undefined ? (
+    ) : pageData.exchange_minors === undefined ? (
       <Text>Ой, что-то пошло не так</Text>
-    ) : this.state.data.exchange_minors.length == 0 ? (
+    ) : pageData.exchange_minors.length == 0 ? (
       <Text>Майноров пока нет</Text>
     ) : (
       <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
   }
 
+  logOut = () => {
+    this.props.logOut(this.props.data_from_api.url, this.props.tokens)
+    burgerRef.close()
+    this.props.navigation.navigate('a')
+  }
+
   render() {
+    console.log('//////////MainScreen')
+
     // {this.props.token.device_token} {this.props.token.authenticity_token}
     return (
       <View>
@@ -111,6 +121,7 @@ class MainScreen extends React.Component {
         <Burger
           ref={(target) => (burgerRef = target)}
           user={this.props.user}
+          logOut={this.logOut}
           navigation={this.props.navigation}
         />
       </View>
@@ -147,8 +158,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       linkFromExchangeMinors,
-      fetchData
-      // logOut
+      fetchData,
+      linkForLogOut,
+      logOut
     },
     dispatch
   )

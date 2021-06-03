@@ -26,6 +26,7 @@ function PublishingSkreen(props) {
     year: props.navigation.getParam('year'),
     wishList: props.navigation.getParam('wishList')
   }
+  console.log(data)
   return (
     <SafeAreaView style={styles.mainWrapper}>
       <View style={styles.screenWithButtonOnBottom}>
@@ -69,7 +70,7 @@ const confirmation = async (tokens, navigation, data, isOpen) => {
   data.isOpen = isOpen
   data = { action: 'update', update_data: data }
   DB.getToken((result) => {
-    console.log(result)
+    console.log(data)
 
     fetch(
       'http://95.165.28.240:3000/api/v1/profiles?authenticity_token=' +
@@ -86,13 +87,12 @@ const confirmation = async (tokens, navigation, data, isOpen) => {
       }
     )
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Response from the server')
+      .then(() => {
+        navigation.navigate('App')
       })
   })
 
   // changeProfile(data)
-  // props.navigation.navigate('App')
 }
 
 PublishingSkreen.navigationOptions = ({ navigation }) => ({

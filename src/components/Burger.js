@@ -37,10 +37,6 @@ export default class Burger extends React.Component {
     return this.props.navigation.push(root)
   }
 
-  // logOut = () => {
-  //   "/api/v1/users/sign_out"
-  // }
-
   render() {
     const { user } = this.props
     let { show } = this.state
@@ -73,7 +69,7 @@ export default class Burger extends React.Component {
                 title={'Список всех майноров'}
                 changePage={() => this.changePage('AllMinors')}
               />
-              <TouchableOpacity onPress={() => this.close()}>
+              <TouchableOpacity onPress={this.props.logOut}>
                 <Text style={styles.logOutTitle}>Выйти</Text>
               </TouchableOpacity>
               <Line />

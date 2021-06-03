@@ -38,44 +38,40 @@ class MainForGuestScreen extends Component {
   componentDidUpdate() {
     if (this.state.loading) {
       const { url } = this.props.data_from_api
+
       if (url.search('minors') != -1) {
-        this.props.fetchData(url, this.changeState)
+        this.props.fetchData(url).then(() => this.setState({ loading: false }))
       }
     }
   }
 
-  changeState = (data) => {
-    const newState = this.state
-    newState.data = data
-    newState.loading = false
-    this.setState(newState)
-  }
-
   renderCards = () => {
     const { navigation } = this.props
-    const { exchange_minors } = this.state.data
+    const { exchange_minors } = this.props.data_from_api.pageData
     let cardItems = []
 
-    exchange_minors.forEach((minor, i) => {
-      const { city, year, address, credits, whishedMinors, url } = minor
-      cardItems.push(
-        <Card
-          city={city}
-          year={year}
-          title={minor.minor}
-          address={address}
-          credits={credits}
-          exchangeMinors={whishedMinors}
-          handleBack={() =>
-            navigation.push('ExchangeCard', {
-              url: url,
-              login: false
-            })
-          }
-          key={i}
-        />
-      )
-    })
+    if (exchange_minors) {
+      exchange_minors.forEach((minor, i) => {
+        const { city, year, address, credits, whishedMinors, url } = minor
+        cardItems.push(
+          <Card
+            city={city}
+            year={year}
+            title={minor.minor}
+            address={address}
+            credits={credits}
+            exchangeMinors={whishedMinors}
+            handleBack={() =>
+              navigation.push('ExchangeCard', {
+                url: url,
+                login: false
+              })
+            }
+            key={i}
+          />
+        )
+      })
+    }
 
     return cardItems
   }

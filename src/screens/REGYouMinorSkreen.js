@@ -38,16 +38,10 @@ class YouMinorSkreen extends React.Component {
     if (this.state.loading) {
       const { url } = this.props.data_from_api
       if (url.search('minors') != -1) {
-        this.props.fetchData(url, this.changeState)
+        this.setState({ loading: false })
+        this.props.fetchData(url)
       }
     }
-  }
-
-  changeState = (data) => {
-    const newState = this.state
-    newState.data = data
-    newState.loading = false
-    this.setState(newState)
   }
 
   handleChange = (id, name, field) => {
@@ -56,46 +50,54 @@ class YouMinorSkreen extends React.Component {
     this.setState(newState)
   }
 
-  minorsMemorize = (minors) => {
-    let newState = this.state
-    newState.data = minors
-    this.setState(newState)
-    console.log(newState)
-  }
+  // minorsMemorize = (minors) => {
+  //   let newState = this.state
+  //   newState.data = minors
+  //   this.setState(newState)
+  //   console.log(newState)
+  // }
 
   handleSubmit = () => {
     this.props.navigation.navigate('Whished', {
       city_id: this.state.city_id,
       year: this.state.year,
       minor_id: this.state.minor_id,
-      minors: this.state.data
+      minors: this.state.minors
     })
   }
 
-  getMinorsList = () => {
-    const { data } = this.state
-    const city_id = this.props.navigation.getParam('city_id') - 1
+  renderSelect = (city) => {
     let allMinors = []
 
-    if (data[city_id].minors) {
-      data[city_id].minors.forEach((minor, i) => {
+    if (city) {
+      console.log(city.minors)
+      city.minors.forEach((minor, i) => {
         allMinors.push({ value: minor.id, name: minor.name })
       })
-      this.minorsMemorize(allMinors)
-    } else {
-      data.forEach((minor, i) => {
-        allMinors.push({ value: minor.id, name: minor.name })
-      })
+      if (!this.state.minors) {
+        let newState = this.state
+        newState.minors = allMinors
+      }
+      return (
+        <Select
+          label="Твой майнор"
+          items={allMinors}
+          current={this.state.minor_id}
+          field="minor"
+          character="three"
+          handleChange={this.handleChange}
+        />
+      )
     }
-
-    return allMinors
   }
 
   render() {
-    console.log(this.state.minor_id)
-    const { loading, data } = this.state
+    const city = this.props.data_from_api.pageData[
+      this.props.navigation.getParam('city_id') - 1
+    ]
+    const { loading } = this.state
 
-    return loading ? (
+    return loading && city != undefined ? (
       <Text>Loading.....</Text>
     ) : (
       <SafeAreaView style={styles.mainWrapper}>
@@ -107,16 +109,7 @@ class YouMinorSkreen extends React.Component {
               Это нужно для того, чтобы мы подабрали для тебя предложения об
               обмене на твой майнор
             </Text>
-            <View style={styles.selectWrapper}>
-              <Select
-                label="Твой майнор"
-                items={this.getMinorsList()}
-                current={this.state.minor_id}
-                field="minor"
-                character="three"
-                handleChange={this.handleChange}
-              />
-            </View>
+            <View style={styles.selectWrapper}>{this.renderSelect(city)}</View>
           </View>
           <MainButton
             title="Далее"

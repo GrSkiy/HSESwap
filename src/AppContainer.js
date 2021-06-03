@@ -33,9 +33,9 @@ function select(state) {
   return {
     tokens: state.tokens,
     userInfo: state.userInfo,
-    data_from_api: state.data_from_api
+    data_from_api: state.data_from_api,
     // url: state.data_from_api.url,
-    // pageData: state.data_from_api.pageData
+    pageData: state.pageData
   }
 }
 
@@ -51,6 +51,9 @@ class AppContainer extends Component {
   componentDidMount() {
     DB.getToken((result) => {
       console.log('Redux Action getToken', result)
+
+      //TO_DO переписать
+
       if (result === undefined) {
         console.log('App Container IT`s GUEST')
         this.props.linkForGuest()
@@ -60,16 +63,17 @@ class AppContainer extends Component {
         const deviceToken = result['device_token']
 
         this.props.updateToken(authenticityToken, deviceToken)
-
         this.props.linkFromUsersData(authenticityToken, deviceToken)
-
         const { loaded } = this.state
+
         if (loaded) {
           const { url } = this.props.data_from_api
           if (url) {
             if (url.search('profiles') != -1) {
-              this.setState({ loaded: false })
-              this.props.fetchData(url, this.userDataMemorize)
+              this.props.fetchData(url).then(() => {
+                this.setState({ loaded: false })
+                this.userDataMemorize()
+              })
             }
           }
         }
@@ -77,18 +81,10 @@ class AppContainer extends Component {
     })
   }
 
-  userDataMemorize = (data) => {
-    DB.getUserInfo(this.checkUserInDB)
-    let state = this.state
-    state.profile = data
-    state.profile.auth = 1
-    this.setState(state)
-  }
-
-  checkUserInDB = (data) => {
+  userDataMemorize = () => {
+    const data = this.props.data_from_api.pageData
     if (data) {
-      console.log(this.state)
-      this.props.updateUserInfo(this.state.profile)
+      this.props.updateUserInfo(data, 1)
     } else {
       DB.createUser(1, this.state.profile).then((response) =>
         this.userDataMemorize(response)
@@ -97,8 +93,8 @@ class AppContainer extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.data_from_api.url !== '') {
-      console.log('Start Fetching')
+    const { url } = this.props.data_from_api
+    if (url !== '' && url.search('guests') != -1) {
       fetch(this.props.data_from_api.url)
         .then((response) => response.json())
         .then((data) => {
@@ -154,17 +150,19 @@ class AppContainer extends Component {
   }
 
   render() {
+    console.log('/////////////APP CONTAINER')
     const { loaded } = this.state
     const { auth } = this.props.userInfo
+    return auth ? <UserNavigation /> : <GuestNavigation />
     // const { deviceToken } = this.props.tokens
-    // return !loaded ? (
+    // return <Text>======================load</Text>
+    // return loaded ? (
     //   <Text>======================load</Text>
     // ) : auth ? (
     //   <Text>======================AUTH</Text>
     // ) : (
     //   <Text>======================GUEST</Text>
     // )
-    return auth ? <UserNavigation /> : <GuestNavigation />
     // return deviceToken === '' ? (
     //   <PreloaderScreen />
     // ) : auth ? (
@@ -175,8 +173,8 @@ class AppContainer extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
       linkFromTokens,
       linkFromUsersData,
@@ -188,6 +186,5 @@ function mapDispatchToProps(dispatch) {
     },
     dispatch
   )
-}
 
 export default connect(select, mapDispatchToProps)(AppContainer)

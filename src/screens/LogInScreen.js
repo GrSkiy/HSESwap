@@ -2,7 +2,7 @@ import React from 'react'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { login } from '../store/actions/api'
+import { linkFromLogIn, login } from '../store/actions/api'
 
 import {
   StyleSheet,
@@ -27,7 +27,7 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
 function select(state) {
   return {
-    tokens: state.tokens
+    data_from_api: state.data_from_api
   }
 }
 
@@ -36,19 +36,27 @@ class LogInScreen extends React.Component {
     super(props)
 
     this.state = {
-      email: ''
+      email: '',
+      loading: true
     }
   }
 
-  newEmail = (data) => {
-    if (data.approved) {
-      this.props.navigation.navigate('EmailVerification', {
-        data: data,
-        tokens: this.props.tokens
-      })
-    } else {
-      console.log('something happened T_T')
-    }
+  componentDidMount() {
+    this.props.linkFromLogIn()
+  }
+
+  newEmail = (email) => {
+    this.props.login(this.props.data_from_api.url, email).then((data) => {
+      const { pageData } = this.props.data_from_api
+      if (pageData.approved) {
+        this.props.navigation.navigate('EmailVerification', {
+          data: pageData,
+          tokens: this.props.tokens
+        })
+      } else {
+        console.log('something happened T_T')
+      }
+    })
   }
 
   setEmail = (text) => {
@@ -62,7 +70,7 @@ class LogInScreen extends React.Component {
       <MainButton
         title="Далее"
         className="active"
-        onPress={() => this.props.login(this.newEmail, this.state.email)}
+        onPress={() => this.newEmail(email)}
       />
     ) : (
       <MainButton title="Далее" className="inactive" />
@@ -101,13 +109,13 @@ LogInScreen.navigationOptions = ({ navigation }) => ({
   )
 })
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
     {
+      linkFromLogIn,
       login
     },
     dispatch
   )
-}
 
 export default connect(select, mapDispatchToProps)(LogInScreen)

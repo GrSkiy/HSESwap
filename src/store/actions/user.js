@@ -7,9 +7,10 @@ export function getUserInfo(token) {
   }
 }
 
-export function updateUserInfo(data) {
+export function updateUserInfo(data, auth) {
   return {
     type: actionTypes.UPDATE_USER_INFO,
-    data: data
+    data: data,
+    auth: auth
   }
 }

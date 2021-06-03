@@ -96,7 +96,7 @@ class YourWishedMinorsSkreen extends React.Component {
   }
 
   render() {
-    console.log(CONFIRMATION_DATA)
+    console.log('CONF', CONFIRMATION_DATA)
     return (
       <SafeAreaView style={styles.mainWrapper}>
         <View>

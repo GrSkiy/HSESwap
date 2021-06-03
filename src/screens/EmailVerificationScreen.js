@@ -53,6 +53,7 @@ const login = (logdata, value, navigation, setCorrect) => {
         if (logdata.reg) {
           navigation.navigate('Base')
         } else {
+          console.log(data.device_token)
           navigation.navigate('App')
         }
       }

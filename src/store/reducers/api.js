@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/api'
 
-const host_root = 'http://127.0.0.1:3000/api/'
-// const host_root = 'http://95.165.28.240:3000/api/'
+// const host_root = 'http://127.0.0.1:3000/api/'
+const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const authenticity_token = '?authenticity_token='
 const device_token = '&device_token='
@@ -55,39 +55,19 @@ const postData = async (url = '', data = {}) => {
 const data_from_api = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.FETCH_DATA_FROM_API:
-      fetch(action.url)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Response from the server', data)
-          action.callback(data)
-        })
+      newState = Object.assign({}, state)
+      newState.pageData = action.data
+      return newState
 
     case actionTypes.LOG_IN:
-      fetch(root + post_login, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ type: 'email', email: action.email })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Response from the server', data)
-          newState = Object.assign({}, state)
-          newState.pageData = data
-          action.callback(newState.pageData)
-        })
+      newState = Object.assign({}, state)
+      newState.pageData = data
+      return newState
 
-    // case actionTypes.LOG_OUT:
-    //   fetch(root + log_out, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ email: action.email })
-    //   })
+    case actionTypes.LOG_OUT:
+      newState = Object.assign({}, state)
+      newState.pageData = data
+      return newState
 
     // return newState
     case actionTypes.CHANGE_PROFILE:
@@ -159,6 +139,18 @@ const data_from_api = (state = initialState, action) => {
         exchange_minors_index_url_v1 +
         authenticity_token +
         action.deviceToken
+      return newState
+
+    case actionTypes.LINK_FOR_LOG_IN_FROM_API:
+      newState = Object.assign({}, state)
+      newState.url = root + post_login
+      console.log('LINK')
+      console.log(newState)
+      return newState
+    case actionTypes.LINK_FOR_LOG_OUT:
+      newState = Object.assign({}, state)
+      newState.url = root + log_out
+      console.log(newState)
       return newState
 
     default:

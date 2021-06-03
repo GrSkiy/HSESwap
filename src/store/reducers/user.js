@@ -20,7 +20,7 @@ const userInfo = (state = initialState, action) => {
     case actionTypes.UPDATE_USER_INFO:
       console.log('UPDATE USER INFO Reducer data GET_USER_INFO', action)
 
-      if (action.data.auth == 1) {
+      if (action.auth == 1) {
         return Object.assign({}, state, {
           auth: true,
           email: action.data.email,

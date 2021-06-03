@@ -1,27 +1,53 @@
 import * as fetchTypes from '../constants/api'
+import DB from '../../db'
 
-export function fetchData(url, callback) {
-  return {
-    type: fetchTypes.FETCH_DATA_FROM_API,
-    url: url,
-    callback: callback
-  }
-}
-
-export function login(callback, email) {
+function saveLogInDataToStore(data) {
   return {
     type: fetchTypes.LOG_IN,
-    email: email,
-    callback: callback
+    email: email
   }
 }
 
-// export function logOut(email) {
-//   return {
-//     type: fetchTypes.LOG_OUT,
-//     email: email
-//   }
-// }
+function fetchLogInData(url, email) {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email })
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response from the server', data)
+      return data
+    })
+}
+
+export function login(url, email) {
+  return function (dispatch) {
+    return fetchLogInData(url, email).then((data) =>
+      dispatch(saveFetchDataToStore(data))
+    )
+  }
+}
+
+export function logOut(url, tokens) {
+  return function (dispatch) {
+    return logOutFetch(url, tokens)
+  }
+}
+
+export function logOutFetch(url, tokens) {
+  fetch(url + '?authenticity_token=' + tokens.authenticityToken, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ deviceToken: tokens.deviceToken })
+  }).then(() => DB.removeDB())
+}
 
 export function linkForGuest() {
   return {
@@ -31,8 +57,15 @@ export function linkForGuest() {
   }
 }
 
+export function linkForLogOut() {
+  return {
+    type: fetchTypes.LINK_FOR_LOG_OUT
+    // deviceToken: data.device_token,
+    // authenticityToken: data.authenticity_token
+  }
+}
+
 export function changeProfile(data) {
-  console.log('CHANGE')
   return {
     type: fetchTypes.CHANGE_PROFILE,
     data: data
@@ -82,6 +115,11 @@ export function linkFromUsersData(authenticityToken, deviceToken) {
     deviceToken: deviceToken
   }
 }
+export function linkFromLogIn() {
+  return {
+    type: fetchTypes.LINK_FOR_LOG_IN_FROM_API
+  }
+}
 // export function fetchChatRoomMinors() {
 //   return {
 //     type: linkFromTypes.LINK_FOR_FETCHING_CHAT_ROOM_FROM_API
@@ -89,3 +127,27 @@ export function linkFromUsersData(authenticityToken, deviceToken) {
 //     // authenticityToken: data.authenticity_token
 //   }
 // }
+
+export function fetchData(url) {
+  return function (dispatch) {
+    return fetchNewData(url).then((data) =>
+      dispatch(saveFetchDataToStore(data))
+    )
+  }
+}
+
+function fetchNewData(url) {
+  return fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('FETCH_DATA_FROM_API Response from the server', data)
+      return data
+    })
+}
+
+function saveFetchDataToStore(data) {
+  return {
+    type: fetchTypes.FETCH_DATA_FROM_API,
+    data: data
+  }
+}
