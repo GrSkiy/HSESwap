@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromLogIn, login, linktoLogIn } from '../store/actions/api'
 
+// import BackArrow from '../../assets/svg/BackArrow.svg'
+
 import {
   StyleSheet,
   View,
@@ -12,11 +14,18 @@ import {
   Button,
   Alert,
   TouchableOpacity,
-  Platform
+  Platform,
+  TouchableHighlight,
+  Pressable,
+  Image,
+  Dimensions
 } from 'react-native'
+
+import BackArrow from '../../assets/svg/backArrow.svg'
+
 import styles from '../stylesheets/main.js'
 
-import { MaterialIcons } from '@expo/vector-icons'
+// import { AntDesign } from '@expo/vector-icons'
 
 import LinkButton from '../components/LinkButton'
 import MainButton from '../components/MainButton'
@@ -98,18 +107,25 @@ class LogInScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.mainWrapper}>
-        <View style={styles.screenWithButtonOnBottom}>
-          <View style={styles.loginContainer}>
-            <Text style={styles.h1}>Вход по почте HSE</Text>
-            <View style={styles.liginPadding}></View>
-            <LargeInput
-              lableText="Корпоративная почта hse"
-              placeholder="youe@edu.hse.ru"
-              setText={this.setEmail}
-            />
+      <View style={styles.backgroundImageContainer}>
+        <Image
+          style={styles.backgroundImage}
+          resizeMode="scale"
+          source={require('../../assets/png/Loginillustration.png')}
+        />
+        <View style={styles.mainWrapper}>
+          <View style={styles.screenWithButtonOnBottom}>
+            <View style={styles.loginContainer}>
+              <Text style={styles.h1}>Вход по почте HSE</Text>
+              <View style={styles.liginPadding}></View>
+              <LargeInput
+                lableText="Корпоративная почта hse"
+                placeholder="youe@edu.hse.ru"
+                setText={this.setEmail}
+              />
+            </View>
+            {this.renderBut()}
           </View>
-          {this.renderBut()}
         </View>
       </View>
     )
@@ -119,13 +135,17 @@ class LogInScreen extends React.Component {
 LogInScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Вход',
   headerLeft: () => (
-    <TouchableOpacity
-      style={{ paddingLeft: 20 }}
+    <Pressable
       onPress={() => navigation.goBack(null)}
+      style={{ width: 40, height: 40, flex: 1, justifyContent: 'center' }}
     >
-      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
-    </TouchableOpacity>
-  )
+      <BackArrow />
+    </Pressable>
+  ),
+  headerStatusBarHeight: 50,
+  headerLeftContainerStyle: {
+    paddingLeft: 20
+  }
 })
 
 const mapDispatchToProps = (dispatch) =>

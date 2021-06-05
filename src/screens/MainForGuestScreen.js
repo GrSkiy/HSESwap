@@ -92,7 +92,8 @@ class MainForGuestScreen extends Component {
 }
 
 MainForGuestScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'Все объявления'
+  headerTitle: 'Все объявления',
+  headerStatusBarHeight: 50
 })
 
 function mapDispatchToProps(dispatch) {

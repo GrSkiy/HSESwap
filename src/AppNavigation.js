@@ -37,11 +37,15 @@ const navigatorOptions = {
   defaultNavigationOptions: {
     headerTitleAlign: 'center',
     headerStyle: {
-      backgroundColor: '#FAFAFA'
+      backgroundColor: '#fAfAfA'
     },
+    headerStatusBarHeight: 50,
     headerTitleStyle: {
       fontSize: 16,
       fontWeight: '700'
+    },
+    cardStyle: {
+      backgroundColor: 'white'
     }
   }
 }
