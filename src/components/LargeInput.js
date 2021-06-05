@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TextInput, Text, View } from 'react-native'
+import { StyleSheet, TextInput, Text, View, Pressable } from 'react-native'
 
 export default function LargeInput({
   marginBottom,
@@ -18,6 +18,10 @@ export default function LargeInput({
         // value={}
         placeholder={placeholder}
         placeholderTextColor="#979797"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
+        keyboardType="default"
       />
     </View>
   )

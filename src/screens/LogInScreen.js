@@ -18,7 +18,8 @@ import {
   TouchableHighlight,
   Pressable,
   Image,
-  Dimensions
+  Dimensions,
+  Keyboard
 } from 'react-native'
 
 import BackArrow from '../../assets/svg/backArrow.svg'
@@ -46,12 +47,14 @@ class LogInScreen extends React.Component {
 
     this.state = {
       email: '',
-      loading: true
+      loading: true,
+      containerHeight: '0%'
     }
   }
 
   componentDidMount() {
     this.props.linkFromLogIn()
+    Keyboard.addListener('keyboardWillShow', this.changeContainerHeight)
   }
 
   componentDidUpdate() {
@@ -67,6 +70,18 @@ class LogInScreen extends React.Component {
     }
     // if (props.data_from_api.url)
     // const get_password_url = props.data_from_api.url
+  }
+
+  changeContainerHeight = () => {
+    let { containerHeight, email, loading } = this.state
+
+    containerHeight = '-40%'
+
+    this.setState(
+      Object.assign({}, this.state, {
+        containerHeight: containerHeight
+      })
+    )
   }
 
   newEmail = (email) => {
@@ -107,11 +122,20 @@ class LogInScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.backgroundImageContainer}>
+      <View
+        style={{
+          marginTop: 20,
+          height: '100%',
+          width: '100%',
+          position: 'absolute',
+          top: this.state.containerHeight,
+          zIndex: -10
+        }}
+      >
         <Image
           style={styles.backgroundImage}
-          resizeMode="scale"
-          source={require('../../assets/png/Loginillustration.png')}
+          resizeMode="stretch"
+          source={require('../../assets/png/LogInIllustration.png')}
         />
         <View style={styles.mainWrapper}>
           <View style={styles.screenWithButtonOnBottom}>
@@ -122,9 +146,10 @@ class LogInScreen extends React.Component {
                 lableText="Корпоративная почта hse"
                 placeholder="youe@edu.hse.ru"
                 setText={this.setEmail}
+                // onPress={this.changeContainerHeight}
               />
             </View>
-            {this.renderBut()}
+            <View style={styles.logInButtonContainer}>{this.renderBut()}</View>
           </View>
         </View>
       </View>

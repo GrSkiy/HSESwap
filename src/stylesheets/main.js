@@ -9,12 +9,43 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     height: '100%'
   },
+
+  mainButtonContainer: {},
+
   backgroundImage: {
     width: '100%',
-    height: '36%'
+    height: 420,
+    marginTop: 10
   },
-  backgroundImageContainer: {
-    marginTop: 20
+
+  exchangeMinorHeader: {
+    paddingTop: 30,
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 16,
+    backgroundColor: '#fff'
+  },
+
+  exchangeMinorDescription: {
+    marginTop: 8,
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    backgroundColor: '#fff',
+    height: '100%'
+  },
+
+  mainWrapperExchangeDescriptionScreen: {
+    backgroundColor: '#f8f8f8',
+    minWidth: '100%',
+    height: '100%'
+  },
+
+  backgroundContainer: {
+    // marginTop: 20,
+    // height: '100%',
+    // width: '100%',
+    // position: 'absolute'
   },
 
   logInWrapper: {
@@ -27,8 +58,26 @@ const styles = StyleSheet.create({
   },
 
   screenWithButtonOnBottom: {
-    height: '100%',
     justifyContent: 'space-between'
+  },
+
+  mainWrapperFlex: {
+    paddingTop: 30,
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: '15%',
+    backgroundColor: '#fff',
+    minWidth: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+
+  logInButtonContainer: {
+    marginTop: 120,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   leftHeaderButton: {
@@ -55,7 +104,8 @@ const styles = StyleSheet.create({
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
-    lineHeight: 26
+    lineHeight: 26,
+    color: '#0488FF'
   },
   h1Log: {
     fontSize: 20,
@@ -76,7 +126,9 @@ const styles = StyleSheet.create({
   },
 
   paragraph: {
-    fontSize: 14
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '400'
   },
   paragraphLog: {
     fontSize: 14,
@@ -84,6 +136,12 @@ const styles = StyleSheet.create({
   },
 
   link: {
+    fontSize: 14,
+    color: '#0488FF'
+  },
+
+  linkReadMore: {
+    marginTop: 2,
     fontSize: 14,
     color: '#0488FF'
   },
@@ -110,22 +168,44 @@ const styles = StyleSheet.create({
 
   chips: {
     backgroundColor: '#F3F3F3',
-    borderRadius: 36,
+    borderRadius: 15,
     minWidth: 69,
-    textAlign: 'center',
-    paddingTop: 4,
-    paddingBottom: 4,
+    textAlign: 'left',
+    display: 'flex',
+    paddingTop: 6,
+    paddingBottom: 6,
     paddingLeft: 12,
     paddingRight: 12,
     fontSize: 14,
-    marginTop: 14
+    marginTop: 14,
+    overflow: 'hidden'
+  },
+  chipsCredits: {
+    backgroundColor: '#F3F3F3',
+    borderRadius: 15,
+    minWidth: 69,
+    textAlign: 'center',
+    display: 'flex',
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontSize: 14,
+    marginTop: 14,
+    overflow: 'hidden'
   },
 
-  responsibleContainer: {
+  responsibleMainContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    marginTop: 6
+  },
+
+  responsibleContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginTop: 6
   },
 
@@ -133,7 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     marginBottom: 12
   },
 

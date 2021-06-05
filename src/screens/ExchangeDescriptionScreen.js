@@ -4,7 +4,17 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromAllMinors, fetchData } from '../store/actions/api'
 
-import { Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  Pressable
+} from 'react-native'
+
+import BackArrow from '../../assets/svg/backArrow.svg'
+import EmailIcon from '../../assets/svg/emailIcon.svg'
+
 import styles from '../stylesheets/main.js'
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
@@ -61,37 +71,35 @@ class ExchangeDescriptionScreen extends React.Component {
     // <Text style={styles.credits}>{credits}</Text>
     // <Text style={styles.address}>{address}</Text>
     return (
-      <View>
-        <View style={styles.exchanheMinorHeader}>
+      <View style={styles.mainWrapperExchangeDescriptionScreen}>
+        <View style={styles.exchangeMinorHeader}>
           <Text style={styles.h1}>{minor}</Text>
           <View style={styles.creditAddresssContainer}>
             <View style={styles.chipsContainer}>
               <Text style={styles.h2}>Кредиты</Text>
-              <Text style={styles.chips}>45</Text>
+              <Text style={styles.chipsCredits}>45</Text>
             </View>
             <View style={styles.chipsContainer}>
               <Text style={styles.h2}>Адрес</Text>
               <Text style={styles.chips}>
-                Ул. Стараная Басманная, д.24/1, стр. 3
+                Ул. Стараная Басманная, д.24/1, стр.
               </Text>
             </View>
           </View>
-          <View>
-            <Text style={styles.h2}>Ответственный за майнор</Text>
+          <View style={styles.responsibleMainContainer}>
             <View style={styles.responsibleContainer}>
+              <Text style={styles.h2}>Ответственный за майнор</Text>
               <Text style={styles.link}>{responsible}</Text>
-              <Ionicons name="mail-outline" size={18} color="#0488FF" />
             </View>
+            <EmailIcon style={{ width: 18, height: 14 }} />
           </View>
         </View>
 
-        <View style={styles.border}></View>
-
-        <View style={styles.exchanheMinorDescription}>
+        <View style={styles.exchangeMinorDescription}>
           <View style={styles.descriptionheader}>
             <Text style={styles.h2}>Описание майнора</Text>
             <TouchableOpacity onPress={() => console.log(url)}>
-              <Text style={styles.link}>Подробнее</Text>
+              <Text style={styles.linkReadMore}>Читать подробнее</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.paragraph}>{description}</Text>
@@ -167,13 +175,17 @@ class ExchangeDescriptionScreen extends React.Component {
 ExchangeDescriptionScreen.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Объявление обмена',
   headerLeft: () => (
-    <TouchableOpacity
-      style={{ paddingLeft: 20 }}
-      onPress={() => navigation.navigate('App')}
+    <Pressable
+      onPress={() => navigation.goBack(null)}
+      style={{ width: 40, height: 40, flex: 1, justifyContent: 'center' }}
     >
-      <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
-    </TouchableOpacity>
-  )
+      <BackArrow />
+    </Pressable>
+  ),
+  headerStatusBarHeight: 50,
+  headerLeftContainerStyle: {
+    paddingLeft: 20
+  }
 })
 
 function mapDispatchToProps(dispatch) {
