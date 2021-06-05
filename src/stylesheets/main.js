@@ -9,10 +9,30 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     height: '100%'
   },
+  backgroundImage: {
+    width: '100%',
+    height: '36%'
+  },
+  backgroundImageContainer: {
+    marginTop: 20
+  },
+
+  logInWrapper: {
+    paddingTop: 30,
+    paddingRight: 20,
+    paddingLeft: 20,
+    backgroundColor: '#fff',
+    minWidth: '100%',
+    height: '100%'
+  },
 
   screenWithButtonOnBottom: {
     height: '100%',
     justifyContent: 'space-between'
+  },
+
+  leftHeaderButton: {
+    paddingLeft: 20
   },
 
   sentredWrepper: {
