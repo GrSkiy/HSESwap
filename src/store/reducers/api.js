@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/api'
 
-// const host_root = 'http://127.0.0.1:3000/api/'
-const host_root = 'http://95.165.28.240:3000/api/'
+const host_root = 'http://127.0.0.1:3000/api/'
+// const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const authenticity_token = '?authenticity_token='
 const device_token = '&device_token='
@@ -30,8 +30,10 @@ const minors_index_url_v1 = 'minors'
 const user_url_v1 = 'profiles'
 const guest = 'guests'
 const log_out = 'users/sign_out'
+const messages = 'messages'
 
 const post_login = 'login'
+const login = 'users/sign_in'
 // const chat_room_url_v1 = 'messages'
 
 const initialState = {
@@ -41,16 +43,6 @@ const initialState = {
 
 const root = host_root + api_version
 let newState = Object.assign({}, initialState)
-
-const postData = async (url = '', data = {}) => {
-  await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ data })
-  })
-}
 
 const data_from_api = (state = initialState, action) => {
   switch (action.type) {
@@ -150,6 +142,16 @@ const data_from_api = (state = initialState, action) => {
     case actionTypes.LINK_FOR_LOG_OUT:
       newState = Object.assign({}, state)
       newState.url = root + log_out
+      console.log(newState)
+      return newState
+    case actionTypes.LINK_TO_LOG_IN:
+      newState = Object.assign({}, state)
+      newState.url = root + login
+      console.log(newState)
+      return newState
+    case actionTypes.LINK_TO_NEW_MESSAGE:
+      newState = Object.assign({}, state)
+      newState.url = root + messages
       console.log(newState)
       return newState
 

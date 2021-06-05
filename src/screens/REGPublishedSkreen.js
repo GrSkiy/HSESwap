@@ -15,16 +15,17 @@ import DB from '../db'
 
 function select(state) {
   return {
-    tokens: state.tokens
+    tokens: state.tokens,
+    userInfo: state.userInfo
   }
 }
 
 function PublishingSkreen(props) {
   const data = {
-    city_id: props.navigation.getParam('city_id'),
-    minor_id: props.navigation.getParam('minor_id'),
-    year: props.navigation.getParam('year'),
-    wishList: props.navigation.getParam('wishList')
+    city_id: props.userInfo.city_id,
+    minor_id: props.userInfo.minor_id,
+    year: props.userInfo.year,
+    wishList: props.userInfo.wishList
   }
   console.log(data)
   return (

@@ -4,25 +4,26 @@ import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { updateRegUserInfo } from '../store/actions/user'
+
 import MainButton from '../components/MainButton'
 import LargeInput from '../components/LargeInput'
 import Select from '../components/Select'
+
+function select(state) {
+  return {
+    tokens: state.tokens,
+    userInfo: state.userInfo
+  }
+}
 
 class BaseInfoSkreen extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      year: 2,
-      city_id: 1,
-      name: ''
-    }
-  }
-
-  changeName = (name) => {
-    let newState = Object.assign({}, this.state)
-    newState.name = name
-    this.setState(newState)
+    this.state = { year: 2, city_id: 1 }
   }
 
   handleChange = (id, name, field) => {
@@ -35,17 +36,16 @@ class BaseInfoSkreen extends React.Component {
       // newState.city.name = name
     }
     this.setState(newState)
+    this.props.updateRegUserInfo(newState)
   }
 
   handleSubmit = () => {
-    console.log(this.state)
-    this.props.navigation.navigate('YourMinor', {
-      year: this.state.year,
-      city_id: this.state.city_id
-    })
+    console.log('SUBMIT')
+    this.props.navigation.navigate('YourMinor')
   }
 
   render() {
+    console.log(this.props.userInfo)
     const { year, city_id } = this.state
     return (
       <SafeAreaView style={styles.mainWrapper}>
@@ -112,4 +112,13 @@ BaseInfoSkreen.navigationOptions = ({ navigation }) => ({
   )
 })
 
-export default BaseInfoSkreen
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      updateRegUserInfo
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(BaseInfoSkreen)

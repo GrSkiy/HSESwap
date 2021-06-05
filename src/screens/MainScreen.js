@@ -10,6 +10,8 @@ import {
   linkForLogOut,
   logOut
 } from '../store/actions/api'
+import { removeTokens } from '../store/actions/tokens'
+import { updateUserInfo } from '../store/actions/user'
 
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main.js'
@@ -43,17 +45,18 @@ class MainScreen extends React.Component {
 
   componentDidMount() {
     const { deviceToken } = this.props.tokens
-    console.log(deviceToken)
     this.props.linkFromExchangeMinors()
   }
 
   componentDidUpdate() {
+    if (!this.state.logOutLink) {
+      this.props.linkForLogOut()
+      this.setState({ logOutLink: true })
+    }
     if (this.state.loading) {
-      this.setState({ loading: false })
       const { url } = this.props.data_from_api
       if (url.search('minors') != -1) {
-        console.log('FETCH')
-        this.props.fetchData(url)
+        this.props.fetchData(url).then(() => this.setState({ loading: false }))
         this.props.linkForLogOut()
       }
     }
@@ -90,24 +93,26 @@ class MainScreen extends React.Component {
 
   renderContent = () => {
     const { pageData } = this.props.data_from_api
-    if (!this.state.logOutLink) {
-      this.props.linkForLogOut()
-      this.setState({ logOutLink: true })
-    }
-    return this.state.loading ? (
+    // console.log(pageData)
+    return this.state.loading && pageData ? (
       <Text>Loading.....</Text>
-    ) : pageData.exchange_minors === undefined ? (
-      <Text>Ой, что-то пошло не так</Text>
+    ) : !pageData.exchange_minors ? (
+      <Text>Что-то пошло не так</Text>
     ) : pageData.exchange_minors.length == 0 ? (
       <Text>Майноров пока нет</Text>
     ) : (
       <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
     )
+    // ) : (
+    // )
   }
 
   logOut = () => {
+    console.log('+++++++++++ LOGOUT +++++++++++')
     this.props.logOut(this.props.data_from_api.url, this.props.tokens)
     burgerRef.close()
+    this.props.removeTokens()
+    this.props.updateUserInfo('', false)
     this.props.navigation.navigate('a')
   }
 
@@ -160,7 +165,9 @@ function mapDispatchToProps(dispatch) {
       linkFromExchangeMinors,
       fetchData,
       linkForLogOut,
-      logOut
+      logOut,
+      removeTokens,
+      updateUserInfo
     },
     dispatch
   )

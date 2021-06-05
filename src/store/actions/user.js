@@ -14,3 +14,10 @@ export function updateUserInfo(data, auth) {
     auth: auth
   }
 }
+
+export function updateRegUserInfo(data) {
+  return {
+    type: actionTypes.REG_INFO,
+    data: data
+  }
+}

@@ -3,6 +3,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromAllMinors, fetchData } from '../store/actions/api'
+import { updateRegUserInfo } from '../store/actions/user'
 
 import { SafeAreaView, View, Text, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main'
@@ -14,7 +15,8 @@ import Select from '../components/Select'
 function select(state) {
   return {
     tokens: state.tokens,
-    data_from_api: state.data_from_api
+    data_from_api: state.data_from_api,
+    userInfo: state.userInfo
   }
 }
 
@@ -25,8 +27,8 @@ class YouMinorSkreen extends React.Component {
     this.state = {
       loading: true,
       minor_id: 1,
-      city_id: props.navigation.getParam('city_id'),
-      year: props.navigation.getParam('year')
+      city_id: props.userInfo.city_id,
+      year: props.userInfo.year
     }
   }
 
@@ -44,33 +46,22 @@ class YouMinorSkreen extends React.Component {
     }
   }
 
-  handleChange = (id, name, field) => {
+  handleChange = (itemId, minorId, field) => {
     let newState = Object.assign({}, this.state)
-    newState.minor_id = id + 1
+    newState.minor_id = minorId
+    this.props.updateRegUserInfo(newState)
     this.setState(newState)
   }
 
-  // minorsMemorize = (minors) => {
-  //   let newState = this.state
-  //   newState.data = minors
-  //   this.setState(newState)
-  //   console.log(newState)
-  // }
-
   handleSubmit = () => {
-    this.props.navigation.navigate('Whished', {
-      city_id: this.state.city_id,
-      year: this.state.year,
-      minor_id: this.state.minor_id,
-      minors: this.state.minors
-    })
+    this.props.navigation.navigate('Whished')
   }
 
   renderSelect = (city) => {
     let allMinors = []
 
     if (city) {
-      console.log(city.minors)
+      // console.log(city.minors)
       city.minors.forEach((minor, i) => {
         allMinors.push({ value: minor.id, name: minor.name })
       })
@@ -82,7 +73,7 @@ class YouMinorSkreen extends React.Component {
         <Select
           label="Твой майнор"
           items={allMinors}
-          current={this.state.minor_id}
+          current={this.props.userInfo.minor_id}
           field="minor"
           character="three"
           handleChange={this.handleChange}
@@ -93,7 +84,7 @@ class YouMinorSkreen extends React.Component {
 
   render() {
     const city = this.props.data_from_api.pageData[
-      this.props.navigation.getParam('city_id') - 1
+      this.props.userInfo.city_id - 1
     ]
     const { loading } = this.state
 
@@ -138,7 +129,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       linkFromAllMinors,
-      fetchData
+      fetchData,
+      updateRegUserInfo
     },
     dispatch
   )

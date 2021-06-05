@@ -35,6 +35,14 @@ const tokens = (state = initialState, action) => {
         authenticityToken: action.authenticityToken,
         loaded: true
       })
+    case actionTypes.REMOVE_TOKENS:
+      console.log('TOKENS Reducer data REMOVE_TOKENS', action)
+
+      return Object.assign({}, state, {
+        authenticityToken: '',
+        deviceToken: '',
+        loaded: false
+      })
     default:
       return state
   }

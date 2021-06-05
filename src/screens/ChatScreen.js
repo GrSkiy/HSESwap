@@ -2,19 +2,15 @@ import React from 'react'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { fetchData } from '../store/actions/api'
+import { fetchData, sendMessage, linkToNewMessage } from '../store/actions/api'
 
 import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable'
 
 import {
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
-  Platform,
   TouchableOpacity,
-  Image,
-  Alert,
   TextInput
 } from 'react-native'
 
@@ -34,6 +30,7 @@ const cable = new Cable({})
 function select(state) {
   return {
     tokens: state.tokens,
+    data_from_api: state.data_from_api,
     url: state.url
   }
 }
@@ -50,21 +47,32 @@ class ChatScreen extends React.Component {
 
   componentDidMount() {
     const url = this.props.navigation.getParam('url')
-    this.props.fetchData(url, this.changeState)
+    this.props.fetchData(url).then(this.addChannel)
+    this.props.linkToNewMessage()
   }
 
-  changeState = (data) => {
+  componentDidUpdate() {
+    const { url } = this.props.data_from_api
+    console.log('urlurlurlurlurlurl')
+    if (url.search('messages') != -1) {
+      let newState = this.state
+      newState.newMessageUrl = url
+      console.log(newState)
+      // this.setState(newState)
+    }
+  }
+
+  addChannel = () => {
     this.setState({
-      data: data,
+      data: this.props.data_from_api.pageData.data,
       loading: false,
       profile_id: this.props.navigation.getParam('profile_id')
     })
-
     const channel = cable.setChannel(
-      `room_channel_${this.state.data.data.id}`,
+      `room_channel_${this.state.data.id}`,
       actionCable.subscriptions.create({
         channel: 'RoomChannel',
-        room_id: this.state.data.data.id
+        room_id: this.state.data.id
       })
     )
     channel.on('received', this.sentMessage)
@@ -90,24 +98,21 @@ class ChatScreen extends React.Component {
     this.setState(data)
   }
 
-  confirmation = async (content) => {
+  //new_message
+
+  confirmation = (content) => {
     let message = {
       profile_id: this.state.profile_id,
-      exchange_request_id: this.state.data.data.id,
+      exchange_request_id: this.state.data.id,
       content: this.state.message
     }
+    // .then(() => console.log(this.props))
 
-    await fetch(`http://127.0.0.1:3000/api/v1/messages`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    })
-
-    console.log(message)
     this.setState({ message: '' })
   }
 
-  renderMessages = (messages) => {
+  renderMessages = () => {
+    const { messages } = this.props.data_from_api.pageData
     let messages_items = []
 
     messages.forEach((message, i) => {
@@ -135,52 +140,51 @@ class ChatScreen extends React.Component {
     return messages_items
   }
 
-  getState = () => {
-    return this.state
+  approvedRequest = (approved) => {
+    console.log('APPROVED', approved)
+    // const exchangeId = this.props.navigation.getParam('id')
+    //
+    // let data = {
+    //   process: 'approved',
+    //   id: exchangeId,
+    //   approved: approved
+    // }
+    //
+    // console.log(data)
+    // await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(data)
+    // })
   }
 
-  approvedRequest = async (approved) => {
-    const exchangeId = this.props.navigation.getParam('id')
-
-    let data = {
-      process: 'approved',
-      id: exchangeId,
-      approved: approved
-    }
-
-    console.log(data)
-    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-  }
-
-  changeUserStatus = async (i) => {
-    const userStatus = this.props.navigation.getParam('user_status')
-    const studentStatus = this.props.navigation.getParam('student_status')
-    const userID = this.state.profile_id
-    const responder_id = this.props.navigation.getParam('responder_id')
-    const requester_id = this.props.navigation.getParam('requester_id')
-    const newUserStatus = userStatus + i
-    const exchangeId = this.props.navigation.getParam('id')
-
-    let newExchangeData = {
-      process: 'changeUSerStatus',
-      id: exchangeId,
-      userID: userID,
-      newStatus: newUserStatus,
-      studentStatus: studentStatus
-    }
-
-    await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newExchangeData)
-    })
+  changeUserStatus = (i) => {
+    console.log('NEW STATUS')
+    // const userStatus = this.props.navigation.getParam('user_status')
+    // const studentStatus = this.props.navigation.getParam('student_status')
+    // const userID = this.state.profile_id
+    // const responder_id = this.props.navigation.getParam('responder_id')
+    // const requester_id = this.props.navigation.getParam('requester_id')
+    // const newUserStatus = userStatus + i
+    // const exchangeId = this.props.navigation.getParam('id')
+    //
+    // let newExchangeData = {
+    //   process: 'changeUSerStatus',
+    //   id: exchangeId,
+    //   userID: userID,
+    //   newStatus: newUserStatus,
+    //   studentStatus: studentStatus
+    // }
+    //
+    // await fetch(`http://127.0.0.1:3000/api/v1/exchange_requests`, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(newExchangeData)
+    // })
   }
 
   render() {
+    console.log(this.state)
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
@@ -201,9 +205,7 @@ class ChatScreen extends React.Component {
             />
           </View>
           <View style={styles.chatWrapper}>
-            <View style={styles.messagesList}>
-              {this.renderMessages(this.state.data.messages)}
-            </View>
+            <View style={styles.messagesList}>{this.renderMessages()}</View>
             <View>
               <Line />
               <View style={styles.newMessage}>
@@ -235,7 +237,7 @@ ChatScreen.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack(null)}
+      onPress={() => navigation.goBack()}
     >
       <MaterialIcons name="keyboard-arrow-left" size={30} color="#0488FF" />
     </TouchableOpacity>
@@ -245,7 +247,9 @@ ChatScreen.navigationOptions = ({ navigation }) => ({
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      fetchData
+      fetchData,
+      sendMessage,
+      linkToNewMessage
     },
     dispatch
   )

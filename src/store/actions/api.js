@@ -120,6 +120,37 @@ export function linkFromLogIn() {
     type: fetchTypes.LINK_FOR_LOG_IN_FROM_API
   }
 }
+export function linkForLogIn() {
+  return {
+    type: fetchTypes.LINK_FOR_LOG_IN_FROM_API
+  }
+}
+export function linktoLogIn() {
+  return {
+    type: fetchTypes.LINK_TO_LOG_IN
+  }
+}
+export function linkToNewMessage() {
+  return {
+    type: fetchTypes.LINK_TO_NEW_MESSAGE
+  }
+}
+
+export function sendMessage(message, url) {
+  return function (dispatch) {
+    return fetchNewMessage(message, url)
+  }
+}
+
+function fetchNewMessage(message, url) {
+  console.log(url)
+  //
+  // await fetch(`http://127.0.0.1:3000/api/v1/messages`, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ message })
+  // })
+}
 // export function fetchChatRoomMinors() {
 //   return {
 //     type: linkFromTypes.LINK_FOR_FETCHING_CHAT_ROOM_FROM_API

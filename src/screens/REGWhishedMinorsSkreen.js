@@ -10,28 +10,28 @@ import {
 import styles from '../stylesheets/main'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { updateRegUserInfo } from '../store/actions/user'
+
 import Line from '../components/Line'
 
 function select(state) {
   return {
-    tokens: state.tokens,
-    data_from_api: state.data_from_api
+    userInfo: state.userInfo
   }
 }
-
-let CONFIRMATION_DATA = {}
 
 class YourWishedMinorsSkreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       wishList: [],
-      minor_id: props.navigation.getParam('minor_id'),
-      city_id: props.navigation.getParam('city_id'),
-      year: props.navigation.getParam('year'),
-      minors: props.navigation.getParam('minors')
+      minor_id: props.userInfo.minor_id,
+      city_id: props.userInfo.city_id,
+      year: props.userInfo.year,
+      minors: props.userInfo.minors
     }
-    CONFIRMATION_DATA = this.state
   }
 
   addToWIshList = (minor_id, id) => {
@@ -50,6 +50,7 @@ class YourWishedMinorsSkreen extends React.Component {
       })
     }
     newState.minors = minors
+    this.props.updateRegUserInfo(newState)
     this.setState(newState)
   }
 
@@ -57,35 +58,60 @@ class YourWishedMinorsSkreen extends React.Component {
     let minors = this.state.minors
     let minorsItems = []
     minors.forEach((minor, i) => {
-      if (i + 1 != this.state.minor_id) {
+      if (minor.value != this.props.userInfo.minor_id) {
         if (minor.status == 'pic') {
-          minorsItems.push(
-            <View key={'non_' + i}>
-              <TouchableOpacity
-                onPress={() => this.addToWIshList(minor.value, i)}
-                style={styles.minorPointActive}
-              >
-                <Text style={styles.minorTitle}>{minor.name}</Text>
-              </TouchableOpacity>
-              <Line />
-            </View>
-          )
+          if (i == 0) {
+            minorsItems.push(
+              <View key={'non_' + i}>
+                <TouchableOpacity
+                  onPress={() => this.addToWIshList(minor.value, i)}
+                  style={styles.minorPointActive}
+                >
+                  <Text style={styles.minorTitle}>{minor.name}</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          } else {
+            minorsItems.push(
+              <View key={'non_' + i}>
+                <Line />
+                <TouchableOpacity
+                  onPress={() => this.addToWIshList(minor.value, i)}
+                  style={styles.minorPointActive}
+                >
+                  <Text style={styles.minorTitle}>{minor.name}</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
         } else {
-          minorsItems.push(
-            <View key={'non_' + i}>
-              <TouchableOpacity
-                onPress={() => this.addToWIshList(minor.value, i)}
-                style={styles.minorPoint}
-              >
-                <Text style={styles.minorTitle}>{minor.name}</Text>
-              </TouchableOpacity>
-              <Line />
-            </View>
-          )
+          if (i == 0) {
+            minorsItems.push(
+              <View key={'non_' + i}>
+                <TouchableOpacity
+                  onPress={() => this.addToWIshList(minor.value, i)}
+                  style={styles.minorPoint}
+                >
+                  <Text style={styles.minorTitle}>{minor.name}</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          } else {
+            minorsItems.push(
+              <View key={'non_' + i}>
+                <Line />
+                <TouchableOpacity
+                  onPress={() => this.addToWIshList(minor.value, i)}
+                  style={styles.minorPoint}
+                >
+                  <Text style={styles.minorTitle}>{minor.name}</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
         }
       } else {
         delete minors[i]
-        CONFIRMATION_DATA.minor_id = minor.value
       }
     })
     return minorsItems
@@ -96,7 +122,7 @@ class YourWishedMinorsSkreen extends React.Component {
   }
 
   render() {
-    console.log('CONF', CONFIRMATION_DATA)
+    console.log('CONF', this.props.userInfo)
     return (
       <SafeAreaView style={styles.mainWrapper}>
         <View>
@@ -125,18 +151,20 @@ YourWishedMinorsSkreen.navigationOptions = ({ navigation }) => ({
   headerRight: () => (
     <TouchableOpacity
       style={{ paddingRight: 20, color: '#005AAB' }}
-      onPress={() =>
-        navigation.navigate('Publishing', {
-          city_id: CONFIRMATION_DATA.city_id,
-          minor_id: CONFIRMATION_DATA.minor_id,
-          wishList: CONFIRMATION_DATA.wishList,
-          year: CONFIRMATION_DATA.year
-        })
-      }
+      onPress={() => navigation.navigate('Publishing')}
     >
       <Text style={{ color: '#005AAB' }}>Готово</Text>
     </TouchableOpacity>
   )
 })
 
-export default YourWishedMinorsSkreen
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      updateRegUserInfo
+    },
+    dispatch
+  )
+}
+
+export default connect(select, mapDispatchToProps)(YourWishedMinorsSkreen)

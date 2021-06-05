@@ -69,7 +69,7 @@ export default class Burger extends React.Component {
                 title={'Список всех майноров'}
                 changePage={() => this.changePage('AllMinors')}
               />
-              <TouchableOpacity onPress={this.props.logOut}>
+              <TouchableOpacity onPress={() => this.props.logOut()}>
                 <Text style={styles.logOutTitle}>Выйти</Text>
               </TouchableOpacity>
               <Line />

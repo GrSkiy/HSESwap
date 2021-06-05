@@ -2,7 +2,7 @@ import React from 'react'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { linkFromLogIn, login } from '../store/actions/api'
+import { linkFromLogIn, login, linktoLogIn } from '../store/actions/api'
 
 import {
   StyleSheet,
@@ -45,13 +45,32 @@ class LogInScreen extends React.Component {
     this.props.linkFromLogIn()
   }
 
+  componentDidUpdate() {
+    const { url } = this.props.data_from_api
+
+    if (url.search('login') != -1) {
+      this.props.linktoLogIn()
+      this.setState(
+        Object.assign({}, this.state, {
+          get_password_url: url
+        })
+      )
+    }
+    // if (props.data_from_api.url)
+    // const get_password_url = props.data_from_api.url
+  }
+
   newEmail = (email) => {
-    this.props.login(this.props.data_from_api.url, email).then((data) => {
+    const { get_password_url } = this.state
+    this.props.login(get_password_url, email).then((data) => {
       const { pageData } = this.props.data_from_api
       if (pageData.approved) {
         this.props.navigation.navigate('EmailVerification', {
           data: pageData,
-          tokens: this.props.tokens
+          tokens: this.props.tokens,
+          get_password_url: get_password_url,
+          login_link: this.props.data_from_api.url,
+          email: email
         })
       } else {
         console.log('something happened T_T')
@@ -113,7 +132,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       linkFromLogIn,
-      login
+      login,
+      linktoLogIn
     },
     dispatch
   )

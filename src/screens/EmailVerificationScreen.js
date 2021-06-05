@@ -2,10 +2,6 @@ import React, { useState, Fragment } from 'react'
 
 import DB from '../db'
 
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { linkFromAllMinors, fetchData } from '../store/actions/api'
-
 import {
   StyleSheet,
   View,
@@ -31,10 +27,16 @@ import {
   useClearByFocusCell
 } from 'react-native-confirmation-code-field'
 
-const login = (logdata, value, navigation, setCorrect) => {
+function select(state) {
+  return {
+    tokens: state.tokens,
+    userInfo: state.userInfo
+  }
+}
+
+const fetchLogin = (logdata, navigation, value, setCorrect, url) => {
   const email = logdata.email
   const user = { email: email, password: value }
-  const url = 'http://95.165.28.240:3000/api/v1/users/sign_in'
   fetch(url, {
     method: 'POST',
     headers: {
@@ -60,17 +62,12 @@ const login = (logdata, value, navigation, setCorrect) => {
     })
 }
 
-const handleClick = (data, navigation, value, handleCorrectChange) => {
-  login(data, value, navigation, handleCorrectChange)
-  // navigation.navigate('GuestMain')
-}
-
-const renderMainButton = (navigation, value, data, tokens, setCorrect) => {
+const renderMainButton = (navigation, value, data, tokens, setCorrect, url) => {
   return value.length == 4 ? (
     <MainButton
       title="Далее"
       className="active"
-      onPress={() => handleClick(data, navigation, value, tokens, setCorrect)}
+      onPress={() => fetchLogin(data, navigation, value, setCorrect, url)}
     />
   ) : (
     <MainButton title="Далее" />
@@ -83,6 +80,22 @@ const renderMes = (cor) => {
   }
 }
 
+const getNewPassword = (url, email) => {
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email })
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response from the server', data)
+      return data
+    })
+}
+
 const EmailVerificationScreen = (props) => {
   const [value, setValue] = useState('')
   const [correct, setCorrect] = useState('true')
@@ -93,7 +106,10 @@ const EmailVerificationScreen = (props) => {
   })
 
   const tokens = props.navigation.getParam('tokens')
+  const new_password_link = props.navigation.getParam('get_password_url')
+  const login_link = props.navigation.getParam('login_link')
   const data = props.navigation.getParam('data')
+  const email = props.navigation.getParam('email')
 
   const CELL_COUNT = 4
 
@@ -129,15 +145,20 @@ const EmailVerificationScreen = (props) => {
             )}
           />
           <TouchableOpacity
-            onPress={() =>
-              console.log('отправка на сервер запроса еще раз выслать код')
-            }
+            onPress={() => getNewPassword(new_password_link, email)}
             style={styles.sendAgainContainer}
           >
             <Text style={styles.link}>Отправить код еще раз</Text>
           </TouchableOpacity>
         </View>
-        {renderMainButton(props.navigation, value, data, tokens, setCorrect)}
+        {renderMainButton(
+          props.navigation,
+          value,
+          data,
+          tokens,
+          setCorrect,
+          login_link
+        )}
       </View>
     </SafeAreaView>
   )
