@@ -46,13 +46,21 @@ export function logOutFetch(url, tokens) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ deviceToken: tokens.deviceToken })
-  }).then(() => DB.removeDB())
+  }).then(() => DB.removeDB().then(() => DB.init()))
 }
 
 export function linkForGuest() {
   return {
     type: fetchTypes.LINK_FOR_GUEST_FROM_API
     // deviceToken: data.device_token,
+    // authenticityToken: data.authenticity_token
+  }
+}
+
+export function linkForChengeProfileData(tokens) {
+  return {
+    type: fetchTypes.LINK_FOR_CHANGE_PROFILE_DATA,
+    tokens: tokens
     // authenticityToken: data.authenticity_token
   }
 }
@@ -143,13 +151,13 @@ export function sendMessage(message, url) {
 }
 
 function fetchNewMessage(message, url) {
+  console.log(message)
   console.log(url)
-  //
-  // await fetch(`http://127.0.0.1:3000/api/v1/messages`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ message })
-  // })
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(message)
+  }).then((data) => console.log(data))
 }
 // export function fetchChatRoomMinors() {
 //   return {

@@ -31,7 +31,8 @@ function select(state) {
   return {
     tokens: state.tokens,
     data_from_api: state.data_from_api,
-    url: state.url
+    url: state.url,
+    userInfo: state.userInfo
   }
 }
 
@@ -47,49 +48,41 @@ class ChatScreen extends React.Component {
 
   componentDidMount() {
     const url = this.props.navigation.getParam('url')
-    this.props.fetchData(url).then(this.addChannel)
-    this.props.linkToNewMessage()
+    this.props.fetchData(url).then(this.props.linkToNewMessage)
   }
 
   componentDidUpdate() {
     const { url } = this.props.data_from_api
-    console.log('urlurlurlurlurlurl')
-    if (url.search('messages') != -1) {
-      let newState = this.state
+    if (url.search('messages') != -1 && this.state.loading) {
+      let newState = Object.assign({}, this.state)
       newState.newMessageUrl = url
-      console.log(newState)
-      // this.setState(newState)
-    }
-  }
+      newState.chatData = this.props.data_from_api.pageData
+      newState.profile_id = this.props.navigation.getParam(
+        'profile_id'
+      ).profile_id
+      newState.loading = false
 
-  addChannel = () => {
-    this.setState({
-      data: this.props.data_from_api.pageData.data,
-      loading: false,
-      profile_id: this.props.navigation.getParam('profile_id')
-    })
-    const channel = cable.setChannel(
-      `room_channel_${this.state.data.id}`,
-      actionCable.subscriptions.create({
-        channel: 'RoomChannel',
-        room_id: this.state.data.id
-      })
-    )
-    channel.on('received', this.sentMessage)
+      this.setState(newState)
+
+      const channel = cable.setChannel(
+        `room_channel_${this.props.data_from_api.pageData.data.id}`,
+        actionCable.subscriptions.create({
+          channel: 'RoomChannel',
+          room_id: this.props.data_from_api.pageData.data.id
+        })
+      )
+      channel.on('received', this.sentMessage)
+    }
   }
 
   sentMessage = (data) => {
-    console.log(this.state)
-    console.log(data.message.content)
-
-    let state = this.state
-    const newMessage = {
-      content: data.message.content
-    }
-    state.data.messages.push(data.message)
-
-    this.setState(state)
-    console.log(this.state)
+    console.log(data)
+    // let state = this.state
+    // const newMessage = {
+    //   content: data.content
+    // }
+    // state.chatData.messages.push(data)
+    // this.setState(state)
   }
 
   changeTetx = (text) => {
@@ -100,13 +93,14 @@ class ChatScreen extends React.Component {
 
   //new_message
 
-  confirmation = (content) => {
+  confirmation = () => {
     let message = {
       profile_id: this.state.profile_id,
-      exchange_request_id: this.state.data.id,
+      exchange_request_id: this.state.chatData.data.id,
       content: this.state.message
     }
-    // .then(() => console.log(this.props))
+
+    this.props.sendMessage(message, this.state.newMessageUrl)
 
     this.setState({ message: '' })
   }
@@ -115,27 +109,27 @@ class ChatScreen extends React.Component {
     const { messages } = this.props.data_from_api.pageData
     let messages_items = []
 
-    messages.forEach((message, i) => {
-      if (message.profile_id == this.state.profile_id) {
-        messages_items.push(
-          <Message
-            content={message.content}
-            className="my"
-            time={message.created_at}
-            key={i}
-          />
-        )
-      } else {
-        messages_items.push(
-          <Message
-            content={message.content}
-            className="their"
-            time={message.created_at}
-            key={i}
-          />
-        )
-      }
-    })
+    // messages.forEach((message, i) => {
+    //   if (message.profile_id == this.state.profile_id) {
+    //     messages_items.push(
+    //       <Message
+    //         content={message.content}
+    //         className="my"
+    //         time={message.created_at}
+    //         key={i}
+    //       />
+    //     )
+    //   } else {
+    //     messages_items.push(
+    //       <Message
+    //         content={message.content}
+    //         className="their"
+    //         time={message.created_at}
+    //         key={i}
+    //       />
+    //     )
+    //   }
+    // })
 
     return messages_items
   }
@@ -184,7 +178,7 @@ class ChatScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (

@@ -53,6 +53,7 @@ const fetchLogin = (logdata, navigation, value, setCorrect, url) => {
       } else {
         DB.createToken(data.authenticity_token, data.device_token)
         if (logdata.reg) {
+          console.log(data)
           navigation.navigate('Base')
         } else {
           console.log(data.device_token)

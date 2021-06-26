@@ -3,6 +3,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { linkFromUsersExchangeMinors, fetchData } from '../store/actions/api'
+import { changeExchanges } from '../store/actions/usersExchanges'
 
 import { Text, ScrollView, TouchableOpacity } from 'react-native'
 
@@ -20,7 +21,8 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon'
 function select(state) {
   return {
     tokens: state.tokens,
-    data_from_api: state.data_from_api
+    data_from_api: state.data_from_api,
+    usersExchanges: state.usersExchanges
   }
 }
 
@@ -41,9 +43,14 @@ class UsersExchangesScreen extends React.Component {
     if (this.state.loading) {
       const { url } = this.props.data_from_api
       if (url.search('exchange_requests') != -1) {
-        this.props.fetchData(url).then(this.setState({ loading: false }))
+        this.props.fetchData(url).then(this.storeFilling)
       }
     }
+  }
+
+  storeFilling = () => {
+    this.props.changeExchanges(this.props.data_from_api.pageData)
+    this.setState({ loading: false })
   }
 
   render_exshanges = (exshanges) => {
@@ -77,6 +84,7 @@ class UsersExchangesScreen extends React.Component {
               this.props.navigation.navigate('Chat', {
                 id: exshange.id,
                 url: exshange.url,
+                profile_id: data,
                 exchange_status: status,
                 responder_id: exshange.responder_id,
                 requester_id: exshange.requester_id,
@@ -89,8 +97,7 @@ class UsersExchangesScreen extends React.Component {
                 student_status:
                   exshange.responder_status == exshange.responder_id
                     ? exshange.responder_status
-                    : exshange.requester_id,
-                profile_id: data.profile_id
+                    : exshange.requester_id
               })
             }
             key={i}
@@ -106,7 +113,7 @@ class UsersExchangesScreen extends React.Component {
     const {
       requests_for_profile_data,
       requests_from_profile_data
-    } = this.props.data_from_api.pageData
+    } = this.props.usersExchanges.usersExchanges
     return this.state.loading ? (
       <Text> Loading ...</Text>
     ) : (
@@ -134,7 +141,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       linkFromUsersExchangeMinors,
-      fetchData
+      fetchData,
+      changeExchanges
     },
     dispatch
   )

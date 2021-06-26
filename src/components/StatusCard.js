@@ -91,7 +91,6 @@ export default function StatusCard({
   handleStatusChange,
   handleApprovedRequest
 }) {
-  console.log(exchange_status)
   if (exchange_status == 'Обмен состоялся') {
     return (
       <View style={styles.cardWrapper}>
@@ -103,7 +102,10 @@ export default function StatusCard({
       <View style={styles.cardWrapper}>
         <View style={styles.mainWrapper}>
           <Text style={styles.span}>Ты отправил запрос на обмен</Text>
-          <TouchableOpacity style={styles.bigBut}>
+          <TouchableOpacity
+            onPress={() => handleApprovedRequest(false)}
+            style={styles.bigBut}
+          >
             <Text style={styles.butText}>Отменить</Text>
           </TouchableOpacity>
         </View>

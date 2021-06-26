@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/api'
 
-const host_root = 'http://127.0.0.1:3000/api/'
-// const host_root = 'http://95.165.28.240:3000/api/'
+// const host_root = 'http://192.168.43.146:3000/api/'
+const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const authenticity_token = '?authenticity_token='
 const device_token = '&device_token='
@@ -152,6 +152,17 @@ const data_from_api = (state = initialState, action) => {
     case actionTypes.LINK_TO_NEW_MESSAGE:
       newState = Object.assign({}, state)
       newState.url = root + messages
+      console.log(newState)
+      return newState
+    case actionTypes.LINK_FOR_CHANGE_PROFILE_DATA:
+      newState = Object.assign({}, state)
+      newState.url =
+        root +
+        user_url_v1 +
+        '?authenticity_token=' +
+        action.tokens.authenticity_token +
+        '&device_token=' +
+        action.tokens.device_token
       console.log(newState)
       return newState
 

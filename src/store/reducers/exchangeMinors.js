@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/exchangeMinors'
 
 const initialState = {
-  entities: []
+  exchangeMinors: []
 }
 
 const exchangeMinors = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const exchangeMinors = (state = initialState, action) => {
     case actionTypes.UPDATE_EXCHANGE_MINORS:
       console.log('EXCHANGE MINOR Reducer Data', action)
       return Object.assign({}, state, {
-        entities: action.exchangeMinors
+        exchangeMinors: action.exchangeMinors
       })
     default:
       return state

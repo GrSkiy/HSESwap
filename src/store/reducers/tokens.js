@@ -37,7 +37,7 @@ const tokens = (state = initialState, action) => {
       })
     case actionTypes.REMOVE_TOKENS:
       console.log('TOKENS Reducer data REMOVE_TOKENS', action)
-
+      // DB.removeDB().then(() => DB.init())
       return Object.assign({}, state, {
         authenticityToken: '',
         deviceToken: '',

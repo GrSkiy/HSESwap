@@ -108,11 +108,6 @@ class LogInScreen extends React.Component {
   render() {
     return (
       <View style={styles.backgroundImageContainer}>
-        <Image
-          style={styles.backgroundImage}
-          resizeMode="scale"
-          source={require('../../assets/png/Loginillustration.png')}
-        />
         <View style={styles.mainWrapper}>
           <View style={styles.screenWithButtonOnBottom}>
             <View style={styles.loginContainer}>

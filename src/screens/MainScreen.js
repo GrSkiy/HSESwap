@@ -12,6 +12,7 @@ import {
 } from '../store/actions/api'
 import { removeTokens } from '../store/actions/tokens'
 import { updateUserInfo } from '../store/actions/user'
+import { updateExchangeMinors } from '../store/actions/exchangeMinors'
 
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main.js'
@@ -27,7 +28,8 @@ function select(state) {
   return {
     tokens: state.tokens,
     data_from_api: state.data_from_api,
-    user: state.userInfo
+    user: state.userInfo,
+    exchamgeMinors: state.exchangeMinors
   }
 }
 
@@ -56,18 +58,25 @@ class MainScreen extends React.Component {
     if (this.state.loading) {
       const { url } = this.props.data_from_api
       if (url.search('minors') != -1) {
-        this.props.fetchData(url).then(() => this.setState({ loading: false }))
+        this.props.fetchData(url).then(() => this.a())
         this.props.linkForLogOut()
       }
     }
   }
 
+  a = () => {
+    this.props.updateExchangeMinors(
+      this.props.data_from_api.pageData.exchange_minors
+    )
+    this.setState({ loading: false })
+  }
+
   renderCards = () => {
     const { push } = this.props.navigation
-    const { exchange_minors } = this.props.data_from_api.pageData
+    const { exchamgeMinors } = this.props
     let cardItems = []
 
-    exchange_minors.forEach((minor, i) => {
+    exchamgeMinors.exchangeMinors.forEach((minor, i) => {
       const { city, year, address, credits, whishedMinors, url } = minor
 
       cardItems.push(
@@ -92,13 +101,14 @@ class MainScreen extends React.Component {
   }
 
   renderContent = () => {
-    const { pageData } = this.props.data_from_api
+    const { exchamgeMinors } = this.props
+
     // console.log(pageData)
-    return this.state.loading && pageData ? (
+    return this.state.loading && exchamgeMinors ? (
       <Text>Loading.....</Text>
-    ) : !pageData.exchange_minors ? (
+    ) : !exchamgeMinors.exchangeMinors ? (
       <Text>Что-то пошло не так</Text>
-    ) : pageData.exchange_minors.length == 0 ? (
+    ) : exchamgeMinors.exchangeMinors.length == 0 ? (
       <Text>Майноров пока нет</Text>
     ) : (
       <ScrollView style={styles.mainWrapper}>{this.renderCards()}</ScrollView>
@@ -167,7 +177,8 @@ function mapDispatchToProps(dispatch) {
       linkForLogOut,
       logOut,
       removeTokens,
-      updateUserInfo
+      updateUserInfo,
+      updateExchangeMinors
     },
     dispatch
   )

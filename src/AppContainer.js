@@ -70,12 +70,10 @@ class AppContainer extends Component {
           if (loaded) {
             const { url } = this.props.data_from_api
             if (url) {
-              if (url.search('profiles') != -1) {
-                this.props.fetchData(url).then(() => {
-                  this.setState({ loaded: false })
-                  this.userDataMemorize()
-                })
-              }
+              this.props.fetchData(url).then(() => {
+                this.setState({ loaded: false })
+                this.userDataMemorize()
+              })
             }
           }
         } else {
