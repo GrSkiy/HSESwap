@@ -1,0 +1,1 @@
+export const UPDATE_EXCHANGES = 'UPDATE_EXCHANGES'
