@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 
 import DB from '../db'
 
@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   Platform,
   SafeAreaView,
-  Pressable
+  Pressable,
+  Keyboard
 } from 'react-native'
 
 import BackArrow from '../../assets/svg/backArrow.svg'
@@ -107,7 +108,23 @@ const EmailVerificationScreen = (props) => {
     value,
     setValue
   })
+  const [containerHeight, setContainerHeight] = useState('100%')
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillShow', () => {
+      setContainerHeight('60%')
+    })
 
+    return
+  })
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillShow', () => {
+      setContainerHeight('60%')
+    })
+    Keyboard.addListener('keyboardWillHide', () => {
+      setContainerHeight('100%')
+    })
+  })
   const tokens = props.navigation.getParam('tokens')
   const new_password_link = props.navigation.getParam('get_password_url')
   const login_link = props.navigation.getParam('login_link')
@@ -117,7 +134,19 @@ const EmailVerificationScreen = (props) => {
   const CELL_COUNT = 4
 
   return (
-    <View style={styles.mainWrapperFlex}>
+    <View
+      style={{
+        paddingTop: 30,
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingBottom: '15%',
+        backgroundColor: '#fff',
+        minWidth: '100%',
+        height: containerHeight,
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}
+    >
       <View></View>
       <View style={styles.centredContainer}>
         <Text style={styles.h1InVerification}>

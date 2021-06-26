@@ -54,7 +54,12 @@ class LogInScreen extends React.Component {
 
   componentDidMount() {
     this.props.linkFromLogIn()
-    Keyboard.addListener('keyboardWillShow', this.changeContainerHeight)
+    Keyboard.addListener('keyboardWillShow', () => {
+      this.changeContainerHeight('-40%')
+    })
+    Keyboard.addListener('keyboardWillHide', () => {
+      this.changeContainerHeight('0%')
+    })
   }
 
   componentDidUpdate() {
@@ -72,14 +77,10 @@ class LogInScreen extends React.Component {
     // const get_password_url = props.data_from_api.url
   }
 
-  changeContainerHeight = () => {
-    let { containerHeight, email, loading } = this.state
-
-    containerHeight = '-40%'
-
+  changeContainerHeight = (percentage) => {
     this.setState(
       Object.assign({}, this.state, {
-        containerHeight: containerHeight
+        containerHeight: percentage
       })
     )
   }

@@ -16,9 +16,11 @@ import { updateUserInfo } from '../store/actions/user'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import styles from '../stylesheets/main.js'
 
+import Hamburger from '../../assets/svg/hamburger.svg'
+import ChatBubble from '../../assets/svg/chatBubble.svg'
+
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
-import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 import Burger from '../components/Burger'
 import Card from '../components/Card'
@@ -146,15 +148,28 @@ MainScreen.navigationOptions = ({ navigation }) => ({
     //   />
     // </HeaderButtons>
     <TouchableOpacity
-      style={{ paddingRight: 20 }}
+      style={{
+        width: 54,
+        height: 44,
+        paddingTop: 13,
+        paddingLeft: 16
+      }}
       onPress={() => navigation.navigate('Chat')}
     >
-      <Ionicons name="chatbubble-outline" size={24} color="#005AAB" />
+      <ChatBubble style={{ width: 18, height: 18 }} />
     </TouchableOpacity>
   ),
   headerLeft: () => (
-    <TouchableOpacity style={{ paddingLeft: 20 }} onPress={burgerRef.show}>
-      <MaterialIcons name="menu" size={25} color="#005AAB" />
+    <TouchableOpacity
+      style={{
+        width: 54,
+        height: 44,
+        paddingLeft: 20,
+        paddingTop: 16
+      }}
+      onPress={burgerRef.show}
+    >
+      <Hamburger style={{ width: 18, height: 12 }} />
     </TouchableOpacity>
   )
 })
