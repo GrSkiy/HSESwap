@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 
 import DB from '../db'
 
@@ -11,8 +11,12 @@ import {
   Alert,
   TouchableOpacity,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  Pressable,
+  Keyboard
 } from 'react-native'
+
+import BackArrow from '../../assets/svg/backArrow.svg'
 
 import styles from '../stylesheets/main'
 
@@ -105,7 +109,23 @@ const EmailVerificationScreen = (props) => {
     value,
     setValue
   })
+  const [containerHeight, setContainerHeight] = useState('100%')
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillShow', () => {
+      setContainerHeight('60%')
+    })
 
+    return
+  })
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillShow', () => {
+      setContainerHeight('60%')
+    })
+    Keyboard.addListener('keyboardWillHide', () => {
+      setContainerHeight('100%')
+    })
+  })
   const tokens = props.navigation.getParam('tokens')
   const new_password_link = props.navigation.getParam('get_password_url')
   const login_link = props.navigation.getParam('login_link')
@@ -115,43 +135,55 @@ const EmailVerificationScreen = (props) => {
   const CELL_COUNT = 4
 
   return (
-    <SafeAreaView style={styles.mainWrapper}>
-      <View style={styles.screenWithButtonOnBottom}>
-        <View></View>
-        <View style={styles.centredContainer}>
-          <Text style={styles.h1InVerification}>
-            Мы отправили код на твою корпоративную почту
-          </Text>
-          {renderMes(correct)}
-          <CodeField
-            ref={ref}
-            {...pr}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <View
-                // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
-                onLayout={getCellOnLayoutHandler(index)}
-                key={index}
-                style={[styles.cellRoot, isFocused && styles.focusCell]}
-              >
-                <Text style={styles.cellText}>
-                  {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
-              </View>
-            )}
-          />
-          <TouchableOpacity
-            onPress={() => getNewPassword(new_password_link, email)}
-            style={styles.sendAgainContainer}
-          >
-            <Text style={styles.link}>Отправить код еще раз</Text>
-          </TouchableOpacity>
-        </View>
+    <View
+      style={{
+        paddingTop: 30,
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingBottom: '15%',
+        backgroundColor: '#fff',
+        minWidth: '100%',
+        height: containerHeight,
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}
+    >
+      <View></View>
+      <View style={styles.centredContainer}>
+        <Text style={styles.h1InVerification}>
+          Мы отправили код на твою корпоративную почту
+        </Text>
+        {renderMes(correct)}
+        <CodeField
+          ref={ref}
+          {...pr}
+          value={value}
+          onChangeText={setValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.codeFieldRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          renderCell={({ index, symbol, isFocused }) => (
+            <View
+              // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
+              onLayout={getCellOnLayoutHandler(index)}
+              key={index}
+              style={[styles.cellRoot, isFocused && styles.focusCell]}
+            >
+              <Text style={styles.cellText}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            </View>
+          )}
+        />
+        <TouchableOpacity
+          onPress={() => getNewPassword(new_password_link, email)}
+          style={styles.sendAgainContainer}
+        >
+          <Text style={styles.link}>Отправить код еще раз</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.logInButtonContainer}>
         {renderMainButton(
           props.navigation,
           value,
@@ -161,12 +193,24 @@ const EmailVerificationScreen = (props) => {
           login_link
         )}
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
 EmailVerificationScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'Вход'
+  headerTitle: 'Вход',
+  headerLeft: () => (
+    <Pressable
+      onPress={() => navigation.goBack(null)}
+      style={{ width: 40, height: 40, flex: 1, justifyContent: 'center' }}
+    >
+      <BackArrow />
+    </Pressable>
+  ),
+  headerStatusBarHeight: 50,
+  headerLeftContainerStyle: {
+    paddingLeft: 20
+  }
 })
 
 export default EmailVerificationScreen

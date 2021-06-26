@@ -15,15 +15,9 @@ export default function MainButton({ onPress, className, title }) {
 
 const styles = StyleSheet.create({
   activeMainButtonArea: {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    marginBottom: 42,
-    minWidth: 160,
+    width: 246,
+    height: 60,
     elevation: 8,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 30,
-    paddingRight: 30,
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
@@ -31,15 +25,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#0488FF'
   },
   inactiveMainButtonArea: {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    marginBottom: 42,
-    minWidth: 160,
+    width: 246,
+    height: 60,
     elevation: 8,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 30,
-    paddingRight: 30,
     borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
