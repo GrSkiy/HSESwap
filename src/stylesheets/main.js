@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet, Platform } from 'react-native'
 
 const styles = StyleSheet.create({
   mainWrapper: {
-    paddingTop: 30,
+    paddingTop: 20,
     paddingRight: 20,
     paddingLeft: 20,
     backgroundColor: '#fff',
@@ -19,16 +19,14 @@ const styles = StyleSheet.create({
   },
 
   exchangeMinorHeader: {
-    paddingTop: 30,
+    paddingTop: 20,
     paddingRight: 20,
     paddingLeft: 20,
-    paddingBottom: 16,
     backgroundColor: '#fff'
   },
 
   exchangeMinorDescription: {
-    marginTop: 8,
-    paddingTop: 20,
+    marginTop: 20,
     paddingRight: 20,
     paddingLeft: 20,
     backgroundColor: '#fff',
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
   },
 
   mainWrapperExchangeDescriptionScreen: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#fff',
     minWidth: '100%',
     height: '100%'
   },
@@ -115,8 +113,7 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 12
+    fontWeight: '500'
   },
 
   span: {
@@ -137,7 +134,8 @@ const styles = StyleSheet.create({
 
   link: {
     fontSize: 14,
-    color: '#0488FF'
+    color: '#0488FF',
+    marginTop: 10
   },
 
   linkReadMore: {
@@ -158,7 +156,6 @@ const styles = StyleSheet.create({
 
   creditAddresssContainer: {
     flexDirection: 'row',
-    marginBottom: 30,
     marginTop: 20
   },
 
@@ -167,46 +164,29 @@ const styles = StyleSheet.create({
   },
 
   chips: {
-    backgroundColor: '#F3F3F3',
     borderRadius: 15,
-    minWidth: 69,
-    textAlign: 'left',
-    display: 'flex',
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 12,
-    paddingRight: 12,
     fontSize: 14,
-    marginTop: 14,
-    overflow: 'hidden'
+    marginTop: 10
   },
+
   chipsCredits: {
-    backgroundColor: '#F3F3F3',
     borderRadius: 15,
     minWidth: 69,
-    textAlign: 'center',
-    display: 'flex',
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 12,
-    paddingRight: 12,
     fontSize: 14,
-    marginTop: 14,
-    overflow: 'hidden'
+    marginTop: 10
   },
 
   responsibleMainContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 6
+    marginTop: 20
   },
 
   responsibleContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginTop: 6
+    alignItems: 'flex-start'
   },
 
   descriptionheader: {

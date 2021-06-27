@@ -2,19 +2,23 @@ import React from 'react'
 
 import {
   StyleSheet,
-  Modal,
   Text,
   View,
   Image,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native'
+
+import Modal from 'react-native-modal'
 
 import styles from '../stylesheets/main'
 
 import SettingPoint from '../components/SettingPoint'
 // import MainButton from '../components/MainButton'
 import Line from '../components/Line'
+import NotificationBanner from '../components/NotificationBanner'
+import ArchivedCard from '../components/ArchivedCard'
 
 export default class Burger extends React.Component {
   constructor(props) {
@@ -25,6 +29,34 @@ export default class Burger extends React.Component {
     }
   }
 
+  renderCards = () => {
+    const { archivedMinors } = this.props
+    let cardItems = []
+
+    archivedMinors.exchangeMinors.forEach((minor, i) => {
+      const { city, year, address, credits, whishedMinors, url } = minor
+
+      cardItems.push(
+        <ArchivedCard
+          city={city}
+          year={year}
+          title={minor.minor}
+          address={address}
+          credits={credits}
+          wiched_minors={whishedMinors}
+          key={i}
+        />
+      )
+    })
+
+    return cardItems
+  }
+
+  componentDidMount() {
+    console.log('///////////Burger - mounted')
+    console.log(this.props.user)
+  }
+
   show = () => {
     this.setState({ show: true })
   }
@@ -32,6 +64,7 @@ export default class Burger extends React.Component {
   close = () => {
     this.setState({ show: false })
   }
+
   changePage = (root) => {
     this.close()
     return this.props.navigation.push(root)
@@ -41,41 +74,113 @@ export default class Burger extends React.Component {
     const { user } = this.props
     let { show } = this.state
 
+    const a = 'a'
+    const b = 'b'
+    const c = 'c'
+    const d = 'd'
+
     return (
       <Modal
-        styleanimationType={'fade'}
-        visible={show}
-        onRequestClose={this.close}
+        isVisible={show}
+        onSwipeComplete={() => this.close()}
+        swipeDirection="down"
+        backgroundColor="#fff"
+        style={{
+          margin: 0,
+          marginTop: '20%',
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20
+        }}
       >
-        <View>
-          <TouchableOpacity onPress={() => this.close()}>
-            <Text style={styles.logOutTitle}>close</Text>
-          </TouchableOpacity>
+        <ScrollView
+          style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }}
+        >
           <View>
-            <Text>{user.email}</Text>
-            <Text>{user.minor}</Text>
-            <SettingPoint
-              title={'Открыть мое объявление'}
-              // toggle={data.isPublished}
-            />
-          </View>
-          <View style={styles.settingBody}>
-            <View style={styles.pointsCollection}>
-              <SettingPoint
-                title={'Мои данные'}
-                changePage={() => this.changePage('Settings')}
-              />
-              <SettingPoint
-                title={'Список всех майноров'}
-                changePage={() => this.changePage('AllMinors')}
-              />
-              <TouchableOpacity onPress={() => this.props.logOut()}>
-                <Text style={styles.logOutTitle}>Выйти</Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Text style={{ fontSize: 22, fontWeight: '500' }}>
+                Общая информация
+              </Text>
+              <TouchableOpacity
+                onPress={() => this.changePage('Settings')}
+                style={{ marginTop: 6 }}
+              >
+                <Text style={styles.linkReadMore}>Редактировать</Text>
               </TouchableOpacity>
-              <Line />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              <View style={{ width: '45%', marginTop: 20 }}>
+                <View style={{}}>
+                  <Text style={styles.h2}>Имя</Text>
+                  <Text style={styles.chips}>Григорий Петрович</Text>
+                </View>
+                <View style={{ marginTop: 20 }}>
+                  <Text style={styles.h2}>Твой майнор</Text>
+                  <Text style={styles.chips}>sdadsadasdasdasdasdasdasdasd</Text>
+                </View>
+              </View>
+              <View style={{ width: '45%', marginTop: 20 }}>
+                <View style={{}}>
+                  <Text style={styles.h2}>Кампус</Text>
+                  <Text style={styles.chips}>asdasdasdasd</Text>
+                </View>
+                <View style={{ marginTop: 20 }}>
+                  <Text style={styles.h2}>Курс</Text>
+                  <Text style={styles.chips}>{d}</Text>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
+          <View style={{ marginTop: 40 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 20
+              }}
+            >
+              <Text style={{ fontSize: 22, fontWeight: '500' }}>
+                Твое объявление
+              </Text>
+              <TouchableOpacity
+                onPress={() => this.changePage('CreateNewExchange')}
+                style={{ marginTop: 6 }}
+              >
+                <Text style={styles.linkReadMore}>Создать объявление</Text>
+              </TouchableOpacity>
+            </View>
+            <NotificationBanner
+              text={
+                'Сейчас у тебя нет активного объявления, для обмена заполни недостоющую информацию'
+              }
+            />
+          </View>
+          <View
+            style={{
+              marginTop: 20
+            }}
+          >
+            <Text style={{ fontSize: 22, fontWeight: '500' }}>
+              Архив объявлений
+            </Text>
+            <View>{}</View>
+          </View>
+          <TouchableOpacity onPress={() => this.props.logOut()}>
+            <Text style={styles.logOutTitle}>Выйти</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </Modal>
     )
   }

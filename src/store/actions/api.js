@@ -168,6 +168,7 @@ function fetchNewMessage(message, url) {
 // }
 
 export function fetchData(url) {
+  console.log('//////////////////')
   return function (dispatch) {
     return fetchNewData(url).then((data) =>
       dispatch(saveFetchDataToStore(data))

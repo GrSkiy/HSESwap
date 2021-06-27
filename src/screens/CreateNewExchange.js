@@ -17,7 +17,6 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { AppHeaderIcon } from '../components/AppHeaderIcon'
 
-import { MaterialIcons } from '@expo/vector-icons'
 import FullInfoInput from '../components/FullInfoInput'
 import Line from '../components/Line'
 import BackArrow from '../../assets/svg/backArrow.svg'
@@ -33,7 +32,7 @@ function select(state) {
   }
 }
 
-class Setting_view extends React.Component {
+class CreateNewExchange extends React.Component {
   constructor(props) {
     super(props)
 
@@ -67,7 +66,7 @@ class Setting_view extends React.Component {
   }
 }
 
-Setting_view.navigationOptions = ({ navigation }) => ({
+CreateNewExchange.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Общая информация',
   headerLeft: () => (
     <TouchableOpacity
@@ -93,7 +92,7 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-export default connect(select, mapDispatchToProps)(Setting_view)
+export default connect(select, mapDispatchToProps)(CreateNewExchange)
 
 const styles = StyleSheet.create({
   itemsBody: {

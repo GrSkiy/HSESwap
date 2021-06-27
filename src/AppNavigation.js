@@ -25,6 +25,7 @@ import ChatScreen from './screens/ChatScreen'
 import Burger from './screens/Burger'
 import Setting_view from './screens/Setting_view'
 import Setting_change from './screens/Setting_change'
+import CreateNewExchange from './screens/CreateNewExchange'
 import AllMinorsScreen from './screens/AllMinorsScreen'
 
 import MinorScreen from './screens/MinorScreen'
@@ -92,13 +93,16 @@ const LogInStack = createStackNavigator(
   navigatorOptions
 )
 
-const SettinsStack = createStackNavigator(
+const SettingsStack = createStackNavigator(
   {
     PersonData: {
       screen: Setting_view
     },
     EditPersonData: {
       screen: Setting_change
+    },
+    CreateNewExchange: {
+      screen: CreateNewExchange
     }
   },
   navigatorOptions
@@ -159,7 +163,7 @@ const AllExchangesStack = createStackNavigator(
       screen: Burger
     },
     Settings: {
-      screen: SettinsStack
+      screen: SettingsStack
     },
     AllMinors: {
       screen: AllMinorsStack
@@ -195,7 +199,7 @@ const ForUserMainStack = createStackNavigator(
       screen: Burger
     },
     Settings: {
-      screen: SettinsStack
+      screen: SettingsStack
     },
     ExchangeCard: {
       screen: ExchangeCardStack
