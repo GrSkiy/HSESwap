@@ -122,6 +122,11 @@ class LogInScreen extends React.Component {
   }
 
   render() {
+    // <Image
+    // style={styles.backgroundImage}
+    // resizeMode="stretch"
+    // source={require('../../assets/png/LogInIllustration.png')}
+    // />
     return (
       <View
         style={{
@@ -133,11 +138,6 @@ class LogInScreen extends React.Component {
           zIndex: -10
         }}
       >
-        <Image
-          style={styles.backgroundImage}
-          resizeMode="stretch"
-          source={require('../../assets/png/LogInIllustration.png')}
-        />
         <View style={styles.mainWrapper}>
           <View style={styles.screenWithButtonOnBottom}>
             <View style={styles.loginContainer}>

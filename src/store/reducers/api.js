@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/api'
 
-// const host_root = 'http://192.168.43.146:3000/api/'
-const host_root = 'http://95.165.28.240:3000/api/'
+const host_root = 'http://192.168.0.107:3000/api/'
+// const host_root = 'http://95.165.28.240:3000/api/'
 const api_version = 'v1/'
 const authenticity_token = '?authenticity_token='
 const device_token = '&device_token='
@@ -116,6 +116,7 @@ const data_from_api = (state = initialState, action) => {
       return newState
     case actionTypes.LINK_FOR_FETCHING_USERS_DATA_FROM_API:
       newState = Object.assign({}, state)
+      console.log(action)
       newState.url =
         root +
         user_url_v1 +

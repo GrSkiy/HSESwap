@@ -17,7 +17,15 @@ class DB {
       })
       db.transaction((tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, auth INTEGER, email TEXT, city TEXT, year INTEGER, minor TEXT)',
+          'CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, auth INTEGER, profileId INTEGER, email TEXT, city TEXT, exchangeMinorId INTEGER, year INTEGER, minor TEXT)',
+          [],
+          resolve,
+          (_, error) => reject(error)
+        )
+      })
+      db.transaction((tx) => {
+        tx.executeSql(
+          'CREATE TABLE IF NOT EXISTS whishedMinors (id INTEGER PRIMARY KEY NOT NULL, name TEXT)',
           [],
           resolve,
           (_, error) => reject(error)
@@ -85,8 +93,30 @@ class DB {
 
       db.transaction((tx) => {
         tx.executeSql(
-          `INSERT INTO user (auth, email,  minor) VALUES (?, ?, ?)`,
-          [auth, data.email, data.minor],
+          `INSERT INTO user (auth, profileId, email, city, year, minor, exchangeMinorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            auth,
+            data.id,
+            data.email,
+            data.city,
+            data.year,
+            data.minor,
+            data.exchangeMinorId
+          ],
+          (_, result) => resolve(result.insertId),
+          (_, error) => reject(error)
+        )
+      })
+    })
+  }
+  static createWhishedMinors(name) {
+    return new Promise((resolve, reject) => {
+      console.log('DB Create WM', name)
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO user (name) VALUES (?)`,
+          [name],
           (_, result) => resolve(result.insertId),
           (_, error) => reject(error)
         )

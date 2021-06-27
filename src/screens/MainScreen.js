@@ -129,6 +129,7 @@ class MainScreen extends React.Component {
   }
 
   render() {
+    console.log(burgerRef)
     console.log('//////////MainScreen')
 
     // {this.props.token.device_token} {this.props.token.authenticity_token}
@@ -147,42 +148,44 @@ class MainScreen extends React.Component {
 }
 // logOut={() => this.props.logOut(this.props.tokens.deviceToken)}
 
-MainScreen.navigationOptions = ({ navigation }) => ({
-  headerTitle: 'Все объявления',
-  headerRight: () => (
-    // <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-    //   <Item
-    //     title="Toggle Drawer"
-    //     iconName={'md-options-outline'}
-    //     onPress={openPopUp}
-    //   />
-    // </HeaderButtons>
-    <TouchableOpacity
-      style={{
-        width: 54,
-        height: 44,
-        paddingTop: 13,
-        paddingLeft: 16
-      }}
-      onPress={() => navigation.navigate('Chat')}
-    >
-      <ChatBubble style={{ width: 18, height: 18 }} />
-    </TouchableOpacity>
-  ),
-  headerLeft: () => (
-    <TouchableOpacity
-      style={{
-        width: 54,
-        height: 44,
-        paddingLeft: 20,
-        paddingTop: 16
-      }}
-      onPress={burgerRef.show}
-    >
-      <Hamburger style={{ width: 18, height: 12 }} />
-    </TouchableOpacity>
-  )
-})
+if (burgerRef) {
+  MainScreen.navigationOptions = ({ navigation }) => ({
+    headerTitle: 'Все объявления',
+    headerRight: () => (
+      // <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+      //   <Item
+      //     title="Toggle Drawer"
+      //     iconName={'md-options-outline'}
+      //     onPress={openPopUp}
+      //   />
+      // </HeaderButtons>
+      <TouchableOpacity
+        style={{
+          width: 54,
+          height: 44,
+          paddingTop: 13,
+          paddingLeft: 16
+        }}
+        onPress={() => navigation.navigate('Chat')}
+      >
+        <ChatBubble style={{ width: 18, height: 18 }} />
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <TouchableOpacity
+        style={{
+          width: 54,
+          height: 44,
+          paddingLeft: 20,
+          paddingTop: 16
+        }}
+        onPress={burgerRef.show}
+      >
+        <Hamburger style={{ width: 18, height: 12 }} />
+      </TouchableOpacity>
+    )
+  })
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(

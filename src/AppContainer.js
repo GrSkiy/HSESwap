@@ -44,11 +44,13 @@ class AppContainer extends Component {
     super(props)
 
     this.state = {
-      loaded: true
+      loaded: true,
+      auth: false
     }
   }
 
   componentDidMount() {
+    console.log('0000000000000000000000000000000000000000')
     DB.getToken((result) => {
       console.log('Redux Action getToken', result)
 
@@ -59,6 +61,7 @@ class AppContainer extends Component {
         this.props.linkForGuest()
       } else {
         console.log('App Container USER SIGN IN')
+        this.setState({ auth: true })
         const authenticityToken = result['authenticity_token']
         const deviceToken = result['device_token']
 
@@ -69,6 +72,7 @@ class AppContainer extends Component {
 
           if (loaded) {
             const { url } = this.props.data_from_api
+            console.log(url)
             if (url) {
               this.props.fetchData(url).then(() => {
                 this.setState({ loaded: false })
@@ -77,7 +81,8 @@ class AppContainer extends Component {
             }
           }
         } else {
-          this.setState({ loded: false })
+          this.setState({ loaded: false, auth: true })
+          this.userDataMemorize()
         }
       }
     })
@@ -85,17 +90,15 @@ class AppContainer extends Component {
 
   userDataMemorize = () => {
     const data = this.props.data_from_api.pageData
+    const { auth } = this.state
     if (data) {
-      this.props.updateUserInfo(data, 1)
-    } else {
-      DB.createUser(1, this.state.profile).then((response) =>
-        this.userDataMemorize(response)
-      )
+      this.props.updateUserInfo(data, auth)
     }
   }
 
   componentDidUpdate() {
     const { url } = this.props.data_from_api
+    console.log(url)
     if (url !== '' && url.search('guests') != -1) {
       fetch(this.props.data_from_api.url)
         .then((response) => response.json())
@@ -155,6 +158,7 @@ class AppContainer extends Component {
     console.log('/////////////APP CONTAINER')
     const { loaded } = this.state
     const { auth } = this.props.userInfo
+    console.log(auth)
     return auth ? <UserNavigation /> : <GuestNavigation />
     // const { deviceToken } = this.props.tokens
     // return <Text>======================load</Text>
