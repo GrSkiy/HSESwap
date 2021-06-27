@@ -46,7 +46,6 @@ export default class SettingPoint extends React.Component {
   render() {
     return (
       <View style={styles.settingLine}>
-        <Line />
         <TouchableOpacity
           style={styles.handleContainer}
           onPress={this.props.changePage}

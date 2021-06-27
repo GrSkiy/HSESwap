@@ -48,6 +48,12 @@ class MainScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log('INFO/INFO/INFO/INFO/INFO/INFO')
+    // console.log(this.props.data_from_api)
+    console.log(this.props.userInfo)
+    // console.log(this.props.exchamgeMinors)
+    console.log('INFO/INFO/INFO/INFO/INFO/INFO')
+
     const { deviceToken } = this.props.tokens
     this.props.linkFromExchangeMinors()
   }
@@ -131,6 +137,10 @@ class MainScreen extends React.Component {
   render() {
     console.log(burgerRef)
     console.log('//////////MainScreen')
+
+    console.log(this.props.navigation)
+    console.log('//////////ExchangeMinors')
+    console.log(this.props.exchangeMinors)
 
     // {this.props.token.device_token} {this.props.token.authenticity_token}
     return (

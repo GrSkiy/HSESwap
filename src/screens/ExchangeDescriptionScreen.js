@@ -9,7 +9,9 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Pressable
+  Pressable,
+  TouchableHighlight,
+  ScrollView
 } from 'react-native'
 
 import BackArrow from '../../assets/svg/backArrow.svg'
@@ -20,6 +22,7 @@ import styles from '../stylesheets/main.js'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import MainButton from '../components/MainButton'
 import Banner from '../components/Banner'
+import ButtonSet from '../components/ButtonSet'
 
 function select(state) {
   return {
@@ -66,44 +69,64 @@ class ExchangeDescriptionScreen extends React.Component {
       description,
       suits,
       mainButtonHandle,
-      url
+      url,
+      whished_minors
     } = this.props.data_from_api.pageData
+
+    let userName = 'Ворона любви'
+    userName += ' меняет'
+    // console.log('aaaaaa.aaaa')
+    // console.log(whished_minors[0])
+    // console.log('aaaaaaaaaa')
+
     // <Text style={styles.credits}>{credits}</Text>
     // <Text style={styles.address}>{address}</Text>
     return (
-      <View style={styles.mainWrapperExchangeDescriptionScreen}>
-        <View style={styles.exchangeMinorHeader}>
-          <Text style={styles.h1}>{minor}</Text>
-          <View style={styles.creditAddresssContainer}>
-            <View style={styles.chipsContainer}>
-              <Text style={styles.h2}>Кредиты</Text>
-              <Text style={styles.chipsCredits}>45</Text>
+      <View>
+        <ScrollView style={styles.mainWrapperExchangeDescriptionScreen}>
+          <View style={styles.exchangeMinorHeader}>
+            <Text style={{ marginBottom: 12 }}>{userName}</Text>
+            <Text style={styles.h1}>{minor}</Text>
+            <View style={{ marginTop: 12 }}>
+              <Text style={{ marginBottom: 6 }}>Желаемые майноры</Text>
+              <ButtonSet wished_minors={whished_minors[0]} />
             </View>
-            <View style={styles.chipsContainer}>
-              <Text style={styles.h2}>Адрес</Text>
-              <Text style={styles.chips}>
-                Ул. Стараная Басманная, д.24/1, стр.
+            <View style={{ marginTop: 32 }}>
+              <Text style={{ fontSize: 22, fontWeight: '500' }}>
+                Подробнее о майноре
               </Text>
+              <View style={styles.creditAddresssContainer}>
+                <View style={styles.chipsContainer}>
+                  <Text style={styles.h2}>Кредиты</Text>
+                  <Text style={styles.chipsCredits}>45</Text>
+                </View>
+                <View style={styles.chipsContainer}>
+                  <Text style={styles.h2}>Адрес</Text>
+                  <Text style={styles.chips}>
+                    Ул. Стараная Басманная, д.24/1, стр.
+                  </Text>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={styles.responsibleMainContainer}>
-            <View style={styles.responsibleContainer}>
-              <Text style={styles.h2}>Ответственный за майнор</Text>
-              <Text style={styles.link}>{responsible}</Text>
-            </View>
-            <EmailIcon style={{ width: 18, height: 14 }} />
-          </View>
-        </View>
-
-        <View style={styles.exchangeMinorDescription}>
-          <View style={styles.descriptionheader}>
-            <Text style={styles.h2}>Описание майнора</Text>
-            <TouchableOpacity onPress={() => console.log(url)}>
-              <Text style={styles.linkReadMore}>Читать подробнее</Text>
+            <TouchableOpacity style={styles.responsibleMainContainer}>
+              <View style={styles.responsibleContainer}>
+                <Text style={styles.h2}>Ответственный за майнор</Text>
+                <Text style={styles.link}>{responsible}</Text>
+              </View>
+              <EmailIcon style={{ width: 18, height: 14 }} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.paragraph}>{description}</Text>
-        </View>
+
+          <View style={styles.exchangeMinorDescription}>
+            <View style={styles.descriptionheader}>
+              <Text style={styles.h2}>Описание майнора</Text>
+              <TouchableOpacity onPress={() => console.log(url)}>
+                <Text style={styles.linkReadMore}>Читать подробнее</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.paragraph}>{description}</Text>
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -133,10 +156,23 @@ class ExchangeDescriptionScreen extends React.Component {
   renderMainButton = (login) => {
     if (login) {
       return (
-        <MainButton
-          title="Предложить обмен"
-          onPress={this.createExchangeMinor}
-        />
+        <View
+          style={{
+            height: '14%',
+            position: 'absolute',
+            width: '100%',
+            backgroundColor: '#fff',
+            bottom: 0,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <MainButton
+            title="Предложить обмен"
+            onPress={this.createExchangeMinor}
+          />
+        </View>
       )
     } else {
       return (

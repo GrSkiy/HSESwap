@@ -112,33 +112,6 @@ class MainForGuestScreen extends Component {
       <Text>Loading.....</Text>
     ) : (
       <ScrollView contentContainerStyle={styles.mainWrapper}>
-        <View style={{}}>
-          <TouchableOpacity
-            style={{
-              paddingTop: 6,
-              paddingBottom: 6,
-              paddingLeft: 12,
-              paddingRight: 12,
-              backgroundColor: '#F1F1F1',
-              borderRadius: 25,
-              maxWidth: 300
-            }}
-          >
-            <Text>dasdhkashdaksjdhakjsd </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>sadasd</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>f,rqweor</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>xzcmvkmsmfklmskf</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>as;dla;sldka;skd;lakd;</Text>
-          </TouchableOpacity>
-        </View>
         <Banner
           className="reg"
           handleClick={() => this.props.navigation.navigate('Login')}
