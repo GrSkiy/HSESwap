@@ -7,7 +7,8 @@ export default function LargeInput({
   placeholder,
   setText,
   style,
-  field
+  field,
+  placeholderColor
 }) {
   return (
     <View style={styles.inputWrapper}>
@@ -17,7 +18,7 @@ export default function LargeInput({
         onChangeText={(value) => setText(value)}
         // value={}
         placeholder={placeholder}
-        placeholderTextColor="#979797"
+        placeholderTextColor={placeholderColor}
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="while-editing"
@@ -26,7 +27,7 @@ export default function LargeInput({
     </View>
   )
 }
-
+// placeholderTextColor="#979797"
 const styles = StyleSheet.create({
   inputWrapper: {
     width: '100%',

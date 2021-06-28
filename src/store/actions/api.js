@@ -133,6 +133,11 @@ export function linkForLogIn() {
     type: fetchTypes.LINK_FOR_LOG_IN_FROM_API
   }
 }
+export function linkForGetCityData() {
+  return {
+    type: fetchTypes.LINK_FOR_GET_CITY_DATA
+  }
+}
 export function linktoLogIn() {
   return {
     type: fetchTypes.LINK_TO_LOG_IN

@@ -135,12 +135,8 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    console.log(burgerRef)
     console.log('//////////MainScreen')
-
-    console.log(this.props.navigation)
     console.log('//////////ExchangeMinors')
-    console.log(this.props.exchangeMinors)
 
     // {this.props.token.device_token} {this.props.token.authenticity_token}
     return (

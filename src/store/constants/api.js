@@ -27,3 +27,4 @@ export const CHANGE_PROFILE = 'CHANGE_PROFILE'
 
 export const LOG_IN = 'LOG_IN'
 export const LOG_OUT = 'LOG_OUT'
+export const LINK_FOR_GET_CITY_DATA = 'LINK_FOR_GET_CITY_DATA'

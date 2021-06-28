@@ -70,17 +70,22 @@ class ExchangeDescriptionScreen extends React.Component {
       suits,
       mainButtonHandle,
       url,
-      whished_minors
+      whishedMinors
     } = this.props.data_from_api.pageData
 
     let userName = 'Ворона любви'
     userName += ' меняет'
+
+    // console.log('___________________________')
+    // console.log(this.props.data_from_api.pageData)
+    // console.log('___________________________')
     // console.log('aaaaaa.aaaa')
     // console.log(whished_minors[0])
     // console.log('aaaaaaaaaa')
 
     // <Text style={styles.credits}>{credits}</Text>
     // <Text style={styles.address}>{address}</Text>
+
     return (
       <View>
         <ScrollView style={styles.mainWrapperExchangeDescriptionScreen}>
@@ -89,7 +94,7 @@ class ExchangeDescriptionScreen extends React.Component {
             <Text style={styles.h1}>{minor}</Text>
             <View style={{ marginTop: 12 }}>
               <Text style={{ marginBottom: 6 }}>Желаемые майноры</Text>
-              <ButtonSet wished_minors={whished_minors[0]} />
+              <ButtonSet wished_minors={whishedMinors} />
             </View>
             <View style={{ marginTop: 32 }}>
               <Text style={{ fontSize: 22, fontWeight: '500' }}>

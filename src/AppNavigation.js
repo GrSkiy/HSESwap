@@ -108,6 +108,15 @@ const SettingsStack = createStackNavigator(
   navigatorOptions
 )
 
+const CreateNewExchangeStack = createStackNavigator(
+  {
+    CreateNewExchange: {
+      screen: CreateNewExchange
+    }
+  },
+  navigatorOptions
+)
+
 const UsersExchangesStack = createStackNavigator(
   {
     UsersExchanges: {

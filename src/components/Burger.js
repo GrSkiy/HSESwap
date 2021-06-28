@@ -67,7 +67,7 @@ export default class Burger extends React.Component {
 
   changePage = (root) => {
     this.close()
-    return this.props.navigation.push(root)
+    return this.props.navigation.navigate(root)
   }
 
   render() {
@@ -127,17 +127,17 @@ export default class Burger extends React.Component {
                 </View>
                 <View style={{ marginTop: 20 }}>
                   <Text style={styles.h2}>Твой майнор</Text>
-                  <Text style={styles.chips}>sdadsadasdasdasdasdasdasdasd</Text>
+                  <Text style={styles.chips}>{user.minor}</Text>
                 </View>
               </View>
               <View style={{ width: '45%', marginTop: 20 }}>
                 <View style={{}}>
                   <Text style={styles.h2}>Кампус</Text>
-                  <Text style={styles.chips}>asdasdasdasd</Text>
+                  <Text style={styles.chips}>{this.city}</Text>
                 </View>
                 <View style={{ marginTop: 20 }}>
                   <Text style={styles.h2}>Курс</Text>
-                  <Text style={styles.chips}>{d}</Text>
+                  <Text style={styles.chips}>{this.year}</Text>
                 </View>
               </View>
             </View>

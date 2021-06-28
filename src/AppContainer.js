@@ -50,7 +50,6 @@ class AppContainer extends Component {
   }
 
   componentDidMount() {
-    console.log('0000000000000000000000000000000000000000')
     DB.getToken((result) => {
       console.log('Redux Action getToken', result)
 

@@ -11,7 +11,8 @@ import {
   View,
   Image,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Switch
 } from 'react-native'
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
@@ -24,11 +25,13 @@ import LargeInput from '../components/LargeInput'
 import LargeSelect from '../components/LargeSelect'
 import MediumSelect from '../components/MediumSelect'
 import Select from '../components/Select'
+import ButtonSet from '../components/ButtonSet'
 
 function select(state) {
   return {
     tokens: state.tokens,
-    user: state.userInfo
+    data_from_api: state.data_from_api,
+    userInfo: state.userInfo
   }
 }
 
@@ -36,9 +39,9 @@ class CreateNewExchange extends React.Component {
   constructor(props) {
     super(props)
 
-    // this.state = {
-    //   data: this.props.navigation.getParam('data')
-    // }
+    this.state = {
+      switchIsEnabled: false
+    }
   }
 
   handleChange = (itemId, minorId, field) => {
@@ -48,19 +51,83 @@ class CreateNewExchange extends React.Component {
     this.setState(newState)
   }
 
-  render() {
-    let allMinors = ['a', 'b', ' c', 'd']
-    return (
-      <View>
-        <Text>Общая информация</Text>
-        <Text>
-          Твой курс и кампус должны совпадать с реальными. Твое уникальное имя
-          мы сгенерируем самостоятельно.
-        </Text>
+  toggleSwitch = () => {
+    let { switchIsEnabled } = this.state
 
-        <LargeInput />
-        <LargeSelect />
-        <MediumSelect />
+    this.setState({
+      switchIsEnabled: !switchIsEnabled
+    })
+  }
+
+  render() {
+    console.log('___________32_1________')
+    console.log(this.props.userInfo)
+    console.log('______________1________')
+    let { switchIsEnabled } = this.state
+
+    let isEnabled = true
+    return (
+      <View style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: '500' }}>
+            Твои желаемые майноры
+          </Text>
+          <TouchableOpacity
+            onPress={() => console.log(1)}
+            style={{ marginTop: 0 }}
+          >
+            <Text style={{ marginTop: 2, fontSize: 14, color: '#0488FF' }}>
+              Изменить
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={{ marginTop: 12, marginBottom: 22 }}>
+          Ты можешь выбрать один или несколько майноров, на которые хочешь
+          поменяться с другим студентом
+        </Text>
+        <ButtonSet wished_minors={this.props.userInfo.whishedMinors} />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 32
+          }}
+        >
+          <View style={{ width: 260 }}>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>
+              Видимость твоего объявления
+            </Text>
+            <Text style={{ marginTop: 12, fontSize: 14 }}>
+              Сейчас объявление будет видно другим пользователям
+            </Text>
+          </View>
+          <View
+            style={{
+              borderWidth: 1,
+              width: 53,
+              height: 34,
+              borderColor: '#0488ff',
+              borderRadius: 25
+            }}
+          >
+            <Switch
+              trackColor={{
+                false: '#fff',
+                true: 'rgba(4, 136, 255, 0.44)'
+              }}
+              thumbColor={'#0488ff'}
+              ios_backgroundColor="#fff"
+              onValueChange={() => this.toggleSwitch()}
+              value={switchIsEnabled}
+            />
+          </View>
+        </View>
       </View>
     )
   }
@@ -71,14 +138,14 @@ CreateNewExchange.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
     <TouchableOpacity
       style={{ paddingLeft: 20 }}
-      onPress={() => navigation.goBack(null)}
+      onPress={() => navigation.navigate('Main')}
     >
       <BackArrow />
     </TouchableOpacity>
   ),
   headerRight: () => (
-    <TouchableOpacity>
-      <Text>Готово</Text>
+    <TouchableOpacity style={{ paddingRight: 20 }}>
+      <Text style={{ color: '#0488ff', fontSize: 16 }}>Готово</Text>
     </TouchableOpacity>
   )
 })

@@ -33,6 +33,7 @@ const user_url_v1 = 'profiles'
 const guest = 'guests'
 const log_out = 'users/sign_out'
 const messages = 'messages'
+const cities = 'cities'
 
 const post_login = 'login'
 const login = 'users/sign_in'
@@ -166,6 +167,11 @@ const data_from_api = (state = initialState, action) => {
         action.tokens.authenticity_token +
         '&device_token=' +
         action.tokens.device_token
+      console.log(newState)
+      return newState
+    case actionTypes.LINK_FOR_GET_CITY_DATA:
+      newState = Object.assign({}, state)
+      newState.url = root + cities
       console.log(newState)
       return newState
 

@@ -40,7 +40,7 @@ class PublishingSkreen extends React.Component {
 
   confirmation = (navigation, isOpen) => {
     let data = this.state
-    data = { action: 'update', update_data: data, isOpen: isOpen }
+    data = { action: 'registraion', update_data: data, isOpen: isOpen }
     console.log(this.props.data_from_api.url)
 
     console.log(data)
