@@ -49,9 +49,6 @@ class Setting_view extends React.Component {
     // } else if (currentYear == 3) {
     //   currentYear = '3-й курс 2018 год поступления'
     // }
-    console.log('______2_____________')
-    console.log(this.props.user)
-    console.log('___________1________')
 
     this.state = {
       loading: true,
@@ -137,7 +134,10 @@ class Setting_view extends React.Component {
   }
 
   changePage = () => {
-    console.log('1')
+    let { navigate } = this.props.navigation
+    let { currentCity } = this.state
+
+    navigate('ChangeYourMinor', { city: currentCity })
   }
 
   setName = (text) => {

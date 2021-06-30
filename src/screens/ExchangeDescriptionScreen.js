@@ -42,12 +42,31 @@ class ExchangeDescriptionScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.tokens)
+    console.log(this.props.tokens.authenticityToken)
     console.log(this.props.navigation.getParam('url'))
+
+    const authenticity_token = this.props.tokens.authenticityToken
+    const device_token = this.props.tokens.deviceToken
+
     if (this.state.loading) {
-      this.props
-        .fetchData(this.props.navigation.getParam('url'))
-        .then(() => this.setState({ loading: false }))
+      if (this.props.tokens.deviceToken) {
+        const url =
+          this.props.navigation.getParam('url') +
+          '?authenticity_token=' +
+          authenticity_token +
+          '&device_token=' +
+          device_token
+
+        console.log(url)
+
+        this.props
+          .fetchData(this.props.navigation.getParam('url'))
+          .then(() => this.setState({ loading: false }))
+      } else {
+        this.props
+          .fetchData(this.props.navigation.getParam('url'))
+          .then(() => this.setState({ loading: false }))
+      }
     }
   }
 

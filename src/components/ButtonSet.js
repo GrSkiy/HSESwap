@@ -22,6 +22,7 @@ const renderWishedMinors = (wishedMinors) => {
           marginTop: 6,
           marginLeft: 6
         }}
+        key={i}
       >
         <Text
           style={{ fontSize: 14, color: '#0488FF' }}

@@ -59,10 +59,13 @@ class CreateNewExchange extends React.Component {
     })
   }
 
+  handleUpdate = (whishedMinors) => {
+    this.setState({
+      whishedMinors: whishedMinors
+    })
+  }
+
   render() {
-    console.log('___________32_1________')
-    console.log(this.props.userInfo)
-    console.log('______________1________')
     let { switchIsEnabled } = this.state
 
     let isEnabled = true
@@ -78,7 +81,9 @@ class CreateNewExchange extends React.Component {
             Твои желаемые майноры
           </Text>
           <TouchableOpacity
-            onPress={() => console.log(1)}
+            onPress={() =>
+              this.props.navigation.navigate('ChangeYourWishedMinor')
+            }
             style={{ marginTop: 0 }}
           >
             <Text style={{ marginTop: 2, fontSize: 14, color: '#0488FF' }}>

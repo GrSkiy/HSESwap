@@ -22,7 +22,6 @@ import PublishingSkreen from './screens/REGPublishedSkreen'
 import UsersExchangesScreens from './screens/UsersExchangesScreens'
 import ChatScreen from './screens/ChatScreen'
 
-import Burger from './screens/Burger'
 import Setting_view from './screens/Setting_view'
 import Setting_change from './screens/Setting_change'
 import CreateNewExchange from './screens/CreateNewExchange'
@@ -33,6 +32,8 @@ import ExchangeDescriptionScreen from './screens/ExchangeDescriptionScreen'
 import SuccessExchangeScreen from './screens/SuccessExchangeScreen'
 import SucsessExchangeDescriptionScreen from './screens/SucsessExchangeDescriptionScreen'
 import InformationOfExchangeScreen from './screens/InformationOfExchangeScreen'
+import ChangeYourMinorScreen from './screens/ChangeYourMinorScreen'
+import ChangeYourWishedMinors from './screens/ChangeYourWishedMinors'
 
 const navigatorOptions = {
   defaultNavigationOptions: {
@@ -93,16 +94,25 @@ const LogInStack = createStackNavigator(
   navigatorOptions
 )
 
-const SettingsStack = createStackNavigator(
+const ProfileSettingsStack = createStackNavigator(
   {
     PersonData: {
       screen: Setting_view
     },
-    EditPersonData: {
-      screen: Setting_change
-    },
-    CreateNewExchange: {
+    ChangeYourMinor: {
+      screen: ChangeYourMinorScreen
+    }
+  },
+  navigatorOptions
+)
+
+const ExchangeSettingsStack = createStackNavigator(
+  {
+    ExhangeData: {
       screen: CreateNewExchange
+    },
+    ChangeYourWishedMinor: {
+      screen: ChangeYourWishedMinors
     }
   },
   navigatorOptions
@@ -168,11 +178,11 @@ const AllExchangesStack = createStackNavigator(
     Chat: {
       screen: UsersExchangesStack
     },
-    Profile: {
-      screen: Burger
+    ExchangeSettings: {
+      screen: ExchangeSettingsStack
     },
-    Settings: {
-      screen: SettingsStack
+    ProfileSettings: {
+      screen: ProfileSettingsStack
     },
     AllMinors: {
       screen: AllMinorsStack
@@ -204,11 +214,11 @@ const ForUserMainStack = createStackNavigator(
     Chat: {
       screen: UsersExchangesStack
     },
-    Profile: {
-      screen: Burger
+    ExchangeSettings: {
+      screen: ExchangeSettingsStack
     },
-    Settings: {
-      screen: SettingsStack
+    ProfileSettings: {
+      screen: ProfileSettingsStack
     },
     ExchangeCard: {
       screen: ExchangeCardStack

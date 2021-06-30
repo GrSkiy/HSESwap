@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/api'
 
-const host_root = 'http://192.168.1.64:3000/api/'
+const host_root = 'http://192.168.1.67:3000/api/'
 // const host_root = 'http://192.168.0.107:3000/api/'
 // const host_root = 'http://192.168.43.146:3000/api/'
 // const host_root = 'http://95.165.28.240:3000/api/'
@@ -101,11 +101,18 @@ const data_from_api = (state = initialState, action) => {
       return newState
     case actionTypes.LINK_FOR_FETCHING_EXCHANGE_MINORS_FROM_API:
       newState = Object.assign({}, state)
-      newState.url =
-        root +
-        exchange_minors_index_url_v1 +
-        authenticity_token +
-        action.deviceToken
+      if (action.deviceToken) {
+        newState.url =
+          root +
+          exchange_minors_index_url_v1 +
+          authenticity_token +
+          action.deviceToken
+      } else {
+        newState.url = root + exchange_minors_index_url_v1
+      }
+      console.log('asdmlasdlkamsdlamsdlkams')
+
+      console.log(newState.url)
       return newState
     case actionTypes.LINK_FOR_FETCHING_USERS_EXCHANGE_FROM_API:
       newState = Object.assign({}, state)

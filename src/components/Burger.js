@@ -107,7 +107,7 @@ export default class Burger extends React.Component {
                 Общая информация
               </Text>
               <TouchableOpacity
-                onPress={() => this.changePage('Settings')}
+                onPress={() => this.changePage('PersonData')}
                 style={{ marginTop: 6 }}
               >
                 <Text style={styles.linkReadMore}>Редактировать</Text>
@@ -155,7 +155,7 @@ export default class Burger extends React.Component {
                 Твое объявление
               </Text>
               <TouchableOpacity
-                onPress={() => this.changePage('CreateNewExchange')}
+                onPress={() => this.changePage('ExhangeData')}
                 style={{ marginTop: 6 }}
               >
                 <Text style={styles.linkReadMore}>Создать объявление</Text>
